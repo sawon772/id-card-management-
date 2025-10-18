@@ -1,163 +1,346 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Advanced ID Card Tool with Print & Share</title>
-<style>
-  body { font-family: Arial; text-align: center; margin: 20px; background: #f5f5f5; }
-  #a4canvas { width: 794px; height: 1123px; border: 1px solid #999; background: white; margin-top: 20px; }
-  .btn, select, input { margin: 8px; padding: 10px 15px; font-size: 15px; }
-  .preview-img { width: 150px; margin: 5px; border: 1px solid #ccc; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced ID Card Tool with Cloud Save</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin: 20px; background: #f5f5f5; }
+        #a4canvas { width: 794px; height: 1123px; border: 1px solid #999; background: white; margin-top: 20px; }
+        .btn, select, input { margin: 8px; padding: 10px 15px; font-size: 15px; }
+        .preview-img { width: 150px; margin: 5px; border: 1px solid #ccc; }
+        .card-item { border: 1px solid #ccc; margin: 10px; padding: 10px; background: white; border-radius: 5px; }
+    </style>
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 </head>
 <body>
+    <h1>🪪 Advanced Driving License ID Tool</h1>
 
-<h2>🪪 Advanced Driving License ID Tool</h2>
+    <div>
+        <input type="file" id="file1" accept="image/*">
+        <input type="file" id="file2" accept="image/*">
+    </div>
+    
+    <div>
+        <img id="preview1" class="preview-img" src="" alt="Front Preview">
+        <img id="preview2" class="preview-img" src="" alt="Back Preview">
+    </div>
 
-<!-- Upload -->
-<input type="file" id="file1" accept="image/*">
-<input type="file" id="file2" accept="image/*"><br>
+    <div>
+        <label>Width (mm):</label>
+        <input type="number" id="widthMM" value="85" step="0.1">
+        
+        <label>Height (mm):</label>
+        <input type="number" id="heightMM" value="54" step="0.1">
+        
+        <label>Paper Size:</label>
+        <select id="paperSize">
+            <option value="A4">A4</option>
+            <option value="Letter">Letter</option>
+            <option value="Legal">Legal</option>
+        </select>
+        
+        <label>Download as:</label>
+        <select id="downloadType">
+            <option value="PDF">PDF</option>
+            <option value="JPG">JPG</option>
+            <option value="PNG">PNG</option>
+        </select>
+    </div>
 
-<!-- Preview -->
-<img id="preview1" class="preview-img">
-<img id="preview2" class="preview-img"><br>
+    <div>
+        <button class="btn" onclick="drawCanvas()">Preview & Arrange</button>
+        <button class="btn" onclick="downloadOutput()">Download</button>
+        <button class="btn" onclick="printCanvas()">Print</button>
+        <button class="btn" onclick="shareCanvas()">Share</button>
+        <button class="btn" onclick="saveToFirestore()" style="background: #4CAF50; color: white;">Save to Cloud</button>
+        <button class="btn" onclick="viewMyCards()" style="background: #2196F3; color: white;">My Saved Cards</button>
+    </div>
 
-<!-- Card Size -->
-<label>Width (mm):</label>
-<input type="number" id="widthMM" value="85.6" step="0.1">
-<label>Height (mm):</label>
-<input type="number" id="heightMM" value="54" step="0.1"><br>
+    <canvas id="a4canvas"></canvas>
 
-<!-- Paper Size -->
-<label>Paper Size:</label>
-<select id="paperSize">
-  <option value="A4">A4</option>
-  <option value="Letter">Letter</option>
-  <option value="Legal">Legal</option>
-</select>
+    <div id="savedCardsList"></div>
 
-<!-- Download Type -->
-<label>Download as:</label>
-<select id="downloadType">
-  <option value="pdf">PDF</option>
-  <option value="jpg">JPG</option>
-  <option value="png">PNG</option>
-</select><br>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB_jVIj6vnpjRowsysZg79oH3iPFEX40Ow",
+            authDomain: "idcardtool.firebaseapp.com",
+            projectId: "idcardtool",
+            storageBucket: "idcardtool.firebasestorage.app",
+            messagingSenderId: "542300187907",
+            appId: "1:542300187907:web:227d6f48edc5ca110d0d36",
+            measurementId: "G-9XP8EHP686"
+        };
 
-<!-- Buttons -->
-<button class="btn" onclick="drawCanvas()">Preview & Arrange</button>
-<button class="btn" onclick="downloadOutput()">Download</button>
-<button class="btn" onclick="window.print()">Print</button>
-<button class="btn" onclick="shareCanvas()">Share</button>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-<canvas id="a4canvas"></canvas>
+        // Existing Canvas Code
+        const canvas = document.getElementById("a4canvas");
+        const ctx = canvas.getContext("2d");
+        let img1 = null;
+        let img2 = null;
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-const canvas = document.getElementById("a4canvas");
-const ctx = canvas.getContext("2d");
-
-let img1 = null;
-let img2 = null;
-
-// Auto preview on file select
-document.getElementById("file1").addEventListener("change", function(e){
-  if(e.target.files[0]){
-    const reader = new FileReader();
-    reader.onload = () => document.getElementById("preview1").src = reader.result;
-    reader.readAsDataURL(e.target.files[0]);
-  }
-});
-document.getElementById("file2").addEventListener("change", function(e){
-  if(e.target.files[0]){
-    const reader = new FileReader();
-    reader.onload = () => document.getElementById("preview2").src = reader.result;
-    reader.readAsDataURL(e.target.files[0]);
-  }
-});
-
-async function loadImage(file){
-  return new Promise(resolve=>{
-    const reader = new FileReader();
-    reader.onload = ()=>{
-      const img = new Image();
-      img.onload = ()=>resolve(img);
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function drawCanvas(){
-  const file1 = document.getElementById("file1").files[0];
-  const file2 = document.getElementById("file2").files[0];
-  if(!file1 || !file2){ alert("দুইটি ফাইল বেছে নিন!"); return; }
-
-  img1 = await loadImage(file1);
-  img2 = await loadImage(file2);
-
-  // Set canvas size based on paper
-  const paper = document.getElementById("paperSize").value;
-  switch(paper){
-    case "A4": canvas.width=794; canvas.height=1123; break;
-    case "Letter": canvas.width=816; canvas.height=1056; break;
-    case "Legal": canvas.width=816; canvas.height=1344; break;
-  }
-
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="white";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
-  const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
-  const gap = 90; // 1 inch approx
-
-  const x = (canvas.width - cardWidth)/2;
-  const y1 = (canvas.height - (cardHeight*2 + gap))/2;
-  const y2 = y1 + cardHeight + gap;
-
-  ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
-  ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
-
-  alert("প্রিভিউ তৈরি হয়েছে ✅");
-}
-
-function downloadOutput(){
-  const type = document.getElementById("downloadType").value;
-  if(type==="pdf"){
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p","pt",canvas.width,canvas.height);
-    pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
-    pdf.save("ID_Arranged.pdf");
-  } else {
-    const link = document.createElement("a");
-    link.download = `ID_Arranged.${type}`;
-    link.href = canvas.toDataURL(`image/${type}`);
-    link.click();
-  }
-}
-
-// Share Button for mobile
-async function shareCanvas(){
-  canvas.toBlob(async function(blob){
-    const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
-
-    if(navigator.canShare && navigator.canShare({ files: filesArray })){
-      try{
-        await navigator.share({
-          files: filesArray,
-          title: 'ID Card A4',
-          text: 'Here is your arranged ID card!'
+        // Auto preview on file select
+        document.getElementById("file1").addEventListener("change", function(e){
+            if(e.target.files[0]){
+                const reader = new FileReader();
+                reader.onload = () => document.getElementById("preview1").src = reader.result;
+                reader.readAsDataURL(e.target.files[0]);
+            }
         });
-        alert("Shared successfully ✅");
-      } catch(err){
-        alert("Share failed: " + err);
-      }
-    } else {
-      alert("Your device/browser does not support direct file sharing!");
-    }
-  });
-}
-</script>
+
+        document.getElementById("file2").addEventListener("change", function(e){
+            if(e.target.files[0]){
+                const reader = new FileReader();
+                reader.onload = () => document.getElementById("preview2").src = reader.result;
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        async function loadImage(file){
+            return new Promise(resolve=>{
+                const reader = new FileReader();
+                reader.onload = ()=>{
+                    const img = new Image();
+                    img.onload = ()=>resolve(img);
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function drawCanvas(){
+            const file1 = document.getElementById("file1").files[0];
+            const file2 = document.getElementById("file2").files[0];
+            if(!file1 || !file2){
+                alert("দুইটি ফাইল বেছে নিন!");
+                return;
+            }
+            img1 = await loadImage(file1);
+            img2 = await loadImage(file2);
+            
+            setCanvasSize(document.getElementById("paperSize").value);
+            
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="white";
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
+            const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
+            const gap = 90;
+            const x = (canvas.width - cardWidth)/2;
+            const y1 = (canvas.height - (cardHeight*2 + gap))/2;
+            const y2 = y1 + cardHeight + gap;
+
+            ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
+            ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
+            
+            alert("প্রিভিউ তৈরি হয়েছে ✅");
+        }
+
+        function setCanvasSize(paper) {
+            switch(paper) {
+                case "A4": 
+                    canvas.width = 794; 
+                    canvas.height = 1123; 
+                    break;
+                case "Letter": 
+                    canvas.width = 816; 
+                    canvas.height = 1056; 
+                    break;
+                case "Legal": 
+                    canvas.width = 816; 
+                    canvas.height = 1344; 
+                    break;
+            }
+        }
+
+        function downloadOutput(){
+            const type = document.getElementById("downloadType").value;
+            if(type==="PDF"){
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
+                pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
+                pdf.save("ID_Arranged.pdf");
+            } else {
+                const link = document.createElement("a");
+                link.download = `ID_Arranged.${type.toLowerCase()}`;
+                link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
+                link.click();
+            }
+        }
+
+        function printCanvas(){
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head><title>Print ID Card</title></head>
+                    <body style="text-align: center;">
+                        <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%;">
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        async function shareCanvas(){
+            canvas.toBlob(async function(blob){
+                const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
+                if(navigator.canShare && navigator.canShare({ files: filesArray })){
+                    try{
+                        await navigator.share({
+                            files: filesArray,
+                            title: 'ID Card A4',
+                            text: 'Here is your arranged ID card!'
+                        });
+                        alert("Shared successfully ✅");
+                    } catch(err){
+                        alert("Share failed: " + err);
+                    }
+                } else {
+                    alert("Your device/browser does not support direct file sharing!");
+                }
+            });
+        }
+
+        // Firebase Functions
+        async function saveToFirestore() {
+            if (!canvas.width) {
+                alert("প্রথমে Preview তৈরি করুন!");
+                return;
+            }
+
+            const canvasDataURL = canvas.toDataURL('image/png');
+            const cardId = 'card_' + Date.now();
+            
+            try {
+                await db.collection('idcards').doc(cardId).set({
+                    canvasImage: canvasDataURL,
+                    image1: document.getElementById("preview1").src,
+                    image2: document.getElementById("preview2").src,
+                    width: document.getElementById("widthMM").value,
+                    height: document.getElementById("heightMM").value,
+                    paperSize: document.getElementById("paperSize").value,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                alert(`সফলভাবে সেভ হয়েছে! ✅\nআপনার ID: ${cardId}`);
+                
+                const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
+                alert(`শেয়ার করার লিংক:\n${shareableLink}`);
+                
+            } catch (error) {
+                console.error("Error saving:", error);
+                alert("সেভ করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        async function viewMyCards() {
+            try {
+                const snapshot = await db.collection('idcards')
+                    .orderBy('createdAt', 'desc')
+                    .limit(10)
+                    .get();
+                
+                const cardsList = document.getElementById('savedCardsList');
+                cardsList.innerHTML = '<h3>My Saved Cards:</h3>';
+                
+                if (snapshot.empty) {
+                    cardsList.innerHTML += '<p>No saved cards found.</p>';
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'card-item';
+                    
+                    cardElement.innerHTML = `
+                        <p><strong>ID:</strong> ${doc.id}</p>
+                        <p><strong>Saved:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
+                        <p><strong>Size:</strong> ${data.width}mm x ${data.height}mm</p>
+                        <button class="btn" onclick="loadCard('${doc.id}')">Load This Card</button>
+                        <button class="btn" onclick="shareCard('${doc.id}')">Share</button>
+                        <button class="btn" onclick="deleteCard('${doc.id}')" style="background: #f44336; color: white;">Delete</button>
+                    `;
+                    
+                    cardsList.appendChild(cardElement);
+                });
+                
+            } catch (error) {
+                console.error("Error loading cards:", error);
+                alert("কার্ড লোড করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        async function loadCard(cardId) {
+            try {
+                const doc = await db.collection('idcards').doc(cardId).get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        setCanvasSize(data.paperSize);
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        alert("কার্ড লোড হয়েছে! ✅");
+                    };
+                    img.src = data.canvasImage;
+                    
+                } else {
+                    alert("কার্ড খুঁজে পাওয়া যায়নি!");
+                }
+            } catch (error) {
+                console.error("Error loading card:", error);
+                alert("লোড করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        function shareCard(cardId) {
+            const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareableLink);
+                alert("লিংক কপি হয়েছে! ✅\n\n" + shareableLink);
+            } else {
+                alert("শেয়ার করার লিংক:\n" + shareableLink);
+            }
+        }
+
+        async function deleteCard(cardId) {
+            if (confirm("আপনি কি এই কার্ড ডিলিট করতে চান?")) {
+                try {
+                    await db.collection('idcards').doc(cardId).delete();
+                    alert("কার্ড ডিলিট হয়েছে! ✅");
+                    viewMyCards();
+                } catch (error) {
+                    console.error("Error deleting:", error);
+                    alert("ডিলিট করতে সমস্যা হয়েছে!");
+                }
+            }
+        }
+
+        // Load card from URL when page loads
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cardId = urlParams.get('id');
+            
+            if (cardId) {
+                setTimeout(() => {
+                    loadCard(cardId);
+                }, 1000);
+            }
+        };
+    </script>
 </body>
 </html>
