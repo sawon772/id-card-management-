@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>Advanced ID Card Tool with Print & Share</title>
+<style>
+  body { font-family: Arial; text-align: center; margin: 20px; background: #f5f5f5; }
+  #a4canvas { width: 794px; height: 1123px; border: 1px solid #999; background: white; margin-top: 20px; }
+  .btn, select, input { margin: 8px; padding: 10px 15px; font-size: 15px; }
+  .preview-img { width: 150px; margin: 5px; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+
+<h2>🪪 Advanced Driving License ID Tool</h2>
+
+<!-- Upload -->
+<input type="file" id="file1" accept="image/*">
+<input type="file" id="file2" accept="image/*"><br>
+
+<!-- Preview -->
+<img id="preview1" class="preview-img">
+<img id="preview2" class="preview-img"><br>
+
+<!-- Card Size -->
+<label>Width (mm):</label>
+<input type="number" id="widthMM" value="85.6" step="0.1">
+<label>Height (mm):</label>
+<input type="number" id="heightMM" value="54" step="0.1"><br>
+
+<!-- Paper Size -->
+<label>Paper Size:</label>
+<select id="paperSize">
+  <option value="A4">A4</option>
+  <option value="Letter">Letter</option>
+  <option value="Legal">Legal</option>
+</select>
+
+<!-- Download Type -->
+<label>Download as:</label>
+<select id="downloadType">
+  <option value="pdf">PDF</option>
+  <option value="jpg">JPG</option>
+  <option value="png">PNG</option>
+</select><br>
+
+<!-- Buttons -->
+<button class="btn" onclick="drawCanvas()">Preview & Arrange</button>
+<button class="btn" onclick="downloadOutput()">Download</button>
+<button class="btn" onclick="window.print()">Print</button>
+<button class="btn" onclick="shareCanvas()">Share</button>
+
+<canvas id="a4canvas"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const canvas = document.getElementById("a4canvas");
+const ctx = canvas.getContext("2d");
+
+let img1 = null;
+let img2 = null;
+
+// Auto preview on file select
+document.getElementById("file1").addEventListener("change", function(e){
+  if(e.target.files[0]){
+    const reader = new FileReader();
+    reader.onload = () => document.getElementById("preview1").src = reader.result;
+    reader.readAsDataURL(e.target.files[0]);
+  }
+});
+document.getElementById("file2").addEventListener("change", function(e){
+  if(e.target.files[0]){
+    const reader = new FileReader();
+    reader.onload = () => document.getElementById("preview2").src = reader.result;
+    reader.readAsDataURL(e.target.files[0]);
+  }
+});
+
+async function loadImage(file){
+  return new Promise(resolve=>{
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const img = new Image();
+      img.onload = ()=>resolve(img);
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function drawCanvas(){
+  const file1 = document.getElementById("file1").files[0];
+  const file2 = document.getElementById("file2").files[0];
+  if(!file1 || !file2){ alert("দুইটি ফাইল বেছে নিন!"); return; }
+
+  img1 = await loadImage(file1);
+  img2 = await loadImage(file2);
+
+  // Set canvas size based on paper
+  const paper = document.getElementById("paperSize").value;
+  switch(paper){
+    case "A4": canvas.width=794; canvas.height=1123; break;
+    case "Letter": canvas.width=816; canvas.height=1056; break;
+    case "Legal": canvas.width=816; canvas.height=1344; break;
+  }
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
+  const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
+  const gap = 90; // 1 inch approx
+
+  const x = (canvas.width - cardWidth)/2;
+  const y1 = (canvas.height - (cardHeight*2 + gap))/2;
+  const y2 = y1 + cardHeight + gap;
+
+  ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
+  ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
+
+  alert("প্রিভিউ তৈরি হয়েছে ✅");
+}
+
+function downloadOutput(){
+  const type = document.getElementById("downloadType").value;
+  if(type==="pdf"){
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p","pt",canvas.width,canvas.height);
+    pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
+    pdf.save("ID_Arranged.pdf");
+  } else {
+    const link = document.createElement("a");
+    link.download = `ID_Arranged.${type}`;
+    link.href = canvas.toDataURL(`image/${type}`);
+    link.click();
+  }
+}
+
+// Share Button for mobile
+async function shareCanvas(){
+  canvas.toBlob(async function(blob){
+    const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
+
+    if(navigator.canShare && navigator.canShare({ files: filesArray })){
+      try{
+        await navigator.share({
+          files: filesArray,
+          title: 'ID Card A4',
+          text: 'Here is your arranged ID card!'
+        });
+        alert("Shared successfully ✅");
+      } catch(err){
+        alert("Share failed: " + err);
+      }
+    } else {
+      alert("Your device/browser does not support direct file sharing!");
+    }
+  });
+}
+</script>
+</body>
+</html>
