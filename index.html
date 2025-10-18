@@ -5,242 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced ID Card Tool with Cloud Save</title>
     <style>
-        /* Mobile First CSS */
         body { 
-            font-family: Arial, sans-serif; 
+            font-family: Arial; 
             text-align: center; 
             margin: 10px; 
             background: #f5f5f5;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        
-        h1 {
-            font-size: 1.4em;
-            margin: 10px 0;
-            color: #333;
         }
         
         #a4canvas { 
-            max-width: 95%;
-            height: auto;
+            width: 794px; 
+            height: 1123px; 
+            max-width: 100%;
             border: 1px solid #999; 
             background: white; 
             margin: 10px auto;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .btn, select, input { 
-            margin: 4px;
-            padding: 10px 12px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: white;
-            width: 95%;
-            max-width: 200px;
-            box-sizing: border-box;
-        }
-        
-        .btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .btn:hover {
-            background: #0056b3;
-        }
-        
-        .btn-success {
-            background: #28a745;
-        }
-        
-        .btn-success:hover {
-            background: #1e7e34;
-        }
-        
-        .btn-info {
-            background: #17a2b8;
-        }
-        
-        .btn-info:hover {
-            background: #138496;
-        }
-        
-        .btn-danger {
-            background: #dc3545;
-        }
-        
-        .btn-danger:hover {
-            background: #c82333;
+            margin: 5px; 
+            padding: 8px 12px; 
+            font-size: 14px; 
         }
         
         .preview-img { 
-            width: 120px;
-            height: 80px;
+            width: 120px; 
             margin: 5px; 
-            border: 2px solid #ddd; 
-            border-radius: 5px;
-            object-fit: cover;
+            border: 1px solid #ccc; 
         }
         
         .card-item { 
-            border: 1px solid #ddd; 
-            margin: 8px 0; 
-            padding: 12px; 
+            border: 1px solid #ccc; 
+            margin: 8px; 
+            padding: 8px; 
             background: white; 
-            border-radius: 8px;
-            font-size: 14px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 5px; 
         }
         
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            margin: 15px 0;
-        }
-        
-        .input-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin: 5px 0;
-        }
-        
-        .input-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 5px;
-        }
-        
-        .input-item label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 13px;
-            color: #555;
-        }
-        
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 6px;
-            margin: 15px 0;
-        }
-        
-        .button-group .btn {
-            flex: 1;
-            min-width: 130px;
-            max-width: 180px;
-            padding: 10px 8px;
-            font-size: 13px;
-        }
-        
-        .file-input {
-            margin: 10px 0;
-        }
-        
-        .file-input input {
-            width: 95%;
-            max-width: 300px;
-            padding: 8px;
-        }
-        
-        /* Desktop Styles */
-        @media (min-width: 768px) {
+        /* Mobile Friendly Improvements */
+        @media (max-width: 768px) {
             body {
-                margin: 20px;
-                font-size: 16px;
-            }
-            
-            h1 {
-                font-size: 2em;
+                margin: 5px;
             }
             
             .btn, select, input {
-                width: auto;
-                margin: 6px;
-                padding: 12px 16px;
-                font-size: 15px;
+                width: 90%;
+                max-width: 200px;
+                margin: 4px;
+                padding: 10px;
             }
             
             #a4canvas {
-                width: 794px;
-                height: 1123px;
-                max-width: none;
-            }
-            
-            .preview-img {
-                width: 150px;
-                height: 100px;
-            }
-            
-            .input-group {
-                flex-direction: row;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .button-group .btn {
-                min-width: 150px;
-                font-size: 14px;
-            }
-            
-            .card-item {
-                font-size: 15px;
-                padding: 15px;
-            }
-        }
-        
-        /* Small Mobile Devices */
-        @media (max-width: 360px) {
-            body {
-                margin: 5px;
-                font-size: 13px;
-            }
-            
-            .button-group .btn {
-                min-width: 110px;
-                font-size: 12px;
-                padding: 8px 6px;
+                width: 100%;
+                height: auto;
             }
             
             .preview-img {
                 width: 100px;
-                height: 70px;
             }
         }
         
-        .loading {
-            display: none;
-            color: #007bff;
-            font-weight: bold;
+        .input-group {
             margin: 10px 0;
         }
         
-        .success-message {
-            color: #28a745;
-            font-weight: bold;
-            margin: 10px 0;
-            padding: 10px;
-            background: #d4edda;
-            border-radius: 5px;
+        .button-group {
+            margin: 15px 0;
         }
         
-        .error-message {
-            color: #dc3545;
-            font-weight: bold;
-            margin: 10px 0;
-            padding: 10px;
-            background: #f8d7da;
-            border-radius: 5px;
+        .button-group .btn {
+            margin: 4px;
+            min-width: 120px;
         }
     </style>
     <!-- jsPDF Library -->
@@ -252,69 +86,49 @@
 <body>
     <h1>🪪 Advanced Driving License ID Tool</h1>
 
-    <!-- File Upload Section -->
-    <div class="file-input">
+    <div class="input-group">
         <input type="file" id="file1" accept="image/*">
         <input type="file" id="file2" accept="image/*">
     </div>
     
-    <!-- Image Previews -->
     <div>
         <img id="preview1" class="preview-img" src="" alt="Front Preview">
         <img id="preview2" class="preview-img" src="" alt="Back Preview">
     </div>
 
-    <!-- Input Controls -->
     <div class="input-group">
-        <div class="input-row">
-            <div class="input-item">
-                <label>Width (mm):</label>
-                <input type="number" id="widthMM" value="85" step="0.1" style="width: 100px;">
-            </div>
-            <div class="input-item">
-                <label>Height (mm):</label>
-                <input type="number" id="heightMM" value="54" step="0.1" style="width: 100px;">
-            </div>
-        </div>
+        <label>Width (mm):</label>
+        <input type="number" id="widthMM" value="85" step="0.1">
         
-        <div class="input-row">
-            <div class="input-item">
-                <label>Paper Size:</label>
-                <select id="paperSize" style="width: 120px;">
-                    <option value="A4">A4</option>
-                    <option value="Letter">Letter</option>
-                    <option value="Legal">Legal</option>
-                </select>
-            </div>
-            <div class="input-item">
-                <label>Download as:</label>
-                <select id="downloadType" style="width: 120px;">
-                    <option value="PDF">PDF</option>
-                    <option value="JPG">JPG</option>
-                    <option value="PNG">PNG</option>
-                </select>
-            </div>
-        </div>
+        <label>Height (mm):</label>
+        <input type="number" id="heightMM" value="54" step="0.1">
+        
+        <label>Paper Size:</label>
+        <select id="paperSize">
+            <option value="A4">A4</option>
+            <option value="Letter">Letter</option>
+            <option value="Legal">Legal</option>
+        </select>
+        
+        <label>Download as:</label>
+        <select id="downloadType">
+            <option value="PDF">PDF</option>
+            <option value="JPG">JPG</option>
+            <option value="PNG">PNG</option>
+        </select>
     </div>
 
-    <!-- Action Buttons -->
     <div class="button-group">
-        <button class="btn" onclick="drawCanvas()">Preview</button>
+        <button class="btn" onclick="drawCanvas()">Preview & Arrange</button>
         <button class="btn" onclick="downloadOutput()">Download</button>
         <button class="btn" onclick="printCanvas()">Print</button>
         <button class="btn" onclick="shareCanvas()">Share</button>
-        <button class="btn btn-success" onclick="saveToFirestore()">Save Cloud</button>
-        <button class="btn btn-info" onclick="viewMyCards()">My Cards</button>
+        <button class="btn" onclick="saveToFirestore()" style="background: #4CAF50; color: white;">Save to Cloud</button>
+        <button class="btn" onclick="viewMyCards()" style="background: #2196F3; color: white;">My Saved Cards</button>
     </div>
 
-    <!-- Loading and Messages -->
-    <div id="loading" class="loading">Processing...</div>
-    <div id="message"></div>
-
-    <!-- Canvas -->
     <canvas id="a4canvas"></canvas>
 
-    <!-- Saved Cards List -->
     <div id="savedCardsList"></div>
 
     <script>
@@ -333,45 +147,17 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Canvas Elements
+        // Existing Canvas Code - NO CHANGES IN FUNCTIONALITY
         const canvas = document.getElementById("a4canvas");
         const ctx = canvas.getContext("2d");
         let img1 = null;
         let img2 = null;
 
-        // UI Elements
-        const loadingElement = document.getElementById("loading");
-        const messageElement = document.getElementById("message");
-
-        // Show message function
-        function showMessage(text, type = 'success') {
-            messageElement.textContent = text;
-            messageElement.className = type === 'success' ? 'success-message' : 'error-message';
-            messageElement.style.display = 'block';
-            
-            setTimeout(() => {
-                messageElement.style.display = 'none';
-            }, 3000);
-        }
-
-        // Show loading
-        function showLoading() {
-            loadingElement.style.display = 'block';
-        }
-
-        // Hide loading
-        function hideLoading() {
-            loadingElement.style.display = 'none';
-        }
-
         // Auto preview on file select
         document.getElementById("file1").addEventListener("change", function(e){
             if(e.target.files[0]){
                 const reader = new FileReader();
-                reader.onload = () => {
-                    document.getElementById("preview1").src = reader.result;
-                    document.getElementById("preview1").style.display = 'inline';
-                };
+                reader.onload = () => document.getElementById("preview1").src = reader.result;
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
@@ -379,202 +165,123 @@
         document.getElementById("file2").addEventListener("change", function(e){
             if(e.target.files[0]){
                 const reader = new FileReader();
-                reader.onload = () => {
-                    document.getElementById("preview2").src = reader.result;
-                    document.getElementById("preview2").style.display = 'inline';
-                };
+                reader.onload = () => document.getElementById("preview2").src = reader.result;
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
 
-        // Load image function
         async function loadImage(file){
-            return new Promise(resolve => {
+            return new Promise(resolve=>{
                 const reader = new FileReader();
-                reader.onload = () => {
+                reader.onload = ()=>{
                     const img = new Image();
-                    img.onload = () => resolve(img);
+                    img.onload = ()=>resolve(img);
                     img.src = reader.result;
                 };
                 reader.readAsDataURL(file);
             });
         }
 
-        // Set canvas size based on device and paper size
-        function setCanvasSize(paper) {
-            const isMobile = window.innerWidth < 768;
-            
-            if (isMobile) {
-                // Mobile sizes
-                switch(paper) {
-                    case "A4": 
-                        canvas.width = 350; 
-                        canvas.height = 495; 
-                        break;
-                    case "Letter": 
-                        canvas.width = 350; 
-                        canvas.height = 453; 
-                        break;
-                    case "Legal": 
-                        canvas.width = 350; 
-                        canvas.height = 578; 
-                        break;
-                }
-            } else {
-                // Desktop sizes
-                switch(paper) {
-                    case "A4": 
-                        canvas.width = 794; 
-                        canvas.height = 1123; 
-                        break;
-                    case "Letter": 
-                        canvas.width = 816; 
-                        canvas.height = 1056; 
-                        break;
-                    case "Legal": 
-                        canvas.width = 816; 
-                        canvas.height = 1344; 
-                        break;
-                }
-            }
-        }
-
-        // Draw canvas function
         async function drawCanvas(){
             const file1 = document.getElementById("file1").files[0];
             const file2 = document.getElementById("file2").files[0];
-            
             if(!file1 || !file2){
-                showMessage("দুইটি ফাইল বেছে নিন!", 'error');
+                alert("দুইটি ফাইল বেছে নিন!");
                 return;
             }
-
-            showLoading();
+            img1 = await loadImage(file1);
+            img2 = await loadImage(file2);
             
-            try {
-                img1 = await loadImage(file1);
-                img2 = await loadImage(file2);
-                
-                const paperSize = document.getElementById("paperSize").value;
-                setCanvasSize(paperSize);
-                
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "white";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                const cardWidth = parseFloat(document.getElementById("widthMM").value) * 3.78;
-                const cardHeight = parseFloat(document.getElementById("heightMM").value) * 3.78;
-                const gap = 90;
-                const x = (canvas.width - cardWidth) / 2;
-                const y1 = (canvas.height - (cardHeight * 2 + gap)) / 2;
-                const y2 = y1 + cardHeight + gap;
-
-                ctx.drawImage(img1, x, y1, cardWidth, cardHeight);
-                ctx.drawImage(img2, x, y2, cardWidth, cardHeight);
-                
-                showMessage("প্রিভিউ তৈরি হয়েছে ✅");
-                
-            } catch (error) {
-                showMessage("প্রিভিউ তৈরি করতে সমস্যা হয়েছে!", 'error');
-                console.error(error);
-            } finally {
-                hideLoading();
+            // Set canvas size based on paper - ORIGINAL CODE
+            const paper = document.getElementById("paperSize").value;
+            switch(paper){
+                case "A4": 
+                    canvas.width=794;
+                    canvas.height=1123;
+                    break;
+                case "Letter": 
+                    canvas.width=816;
+                    canvas.height=1056;
+                    break;
+                case "Legal": 
+                    canvas.width=816;
+                    canvas.height=1344;
+                    break;
             }
+            
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="white";
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
+            const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
+            const gap = 90;
+            const x = (canvas.width - cardWidth)/2;
+            const y1 = (canvas.height - (cardHeight*2 + gap))/2;
+            const y2 = y1 + cardHeight + gap;
+
+            ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
+            ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
+            
+            alert("প্রিভিউ তৈরি হয়েছে ✅");
         }
 
-        // Download output
         function downloadOutput(){
-            if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", 'error');
-                return;
-            }
-
             const type = document.getElementById("downloadType").value;
-            try {
-                if(type === "PDF"){
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF("p", "pt", [canvas.width, canvas.height]);
-                    pdf.addImage(canvas.toDataURL("image/jpeg"), "JPEG", 0, 0, canvas.width, canvas.height);
-                    pdf.save("ID_Arranged.pdf");
-                } else {
-                    const link = document.createElement("a");
-                    link.download = `ID_Arranged.${type.toLowerCase()}`;
-                    link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
-                    link.click();
-                }
-                showMessage("ডাউনলোড শুরু হয়েছে ✅");
-            } catch (error) {
-                showMessage("ডাউনলোড করতে সমস্যা হয়েছে!", 'error');
+            if(type==="PDF"){
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
+                pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
+                pdf.save("ID_Arranged.pdf");
+            } else {
+                const link = document.createElement("a");
+                link.download = `ID_Arranged.${type.toLowerCase()}`;
+                link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
+                link.click();
             }
         }
 
-        // Print canvas
         function printCanvas(){
-            if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", 'error');
-                return;
-            }
-
-            try {
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write(`
-                    <html>
-                        <head><title>Print ID Card</title></head>
-                        <body style="text-align: center; margin: 0; padding: 20px;">
-                            <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%; height: auto;">
-                        </body>
-                    </html>
-                `);
-                printWindow.document.close();
-                printWindow.print();
-            } catch (error) {
-                showMessage("প্রিন্ট করতে সমস্যা হয়েছে!", 'error');
-            }
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head><title>Print ID Card</title></head>
+                    <body style="text-align: center;">
+                        <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%;">
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
         }
 
-        // Share canvas
         async function shareCanvas(){
-            if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", 'error');
-                return;
-            }
-
-            try {
-                canvas.toBlob(async function(blob){
-                    const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
-                    if(navigator.canShare && navigator.canShare({ files: filesArray })){
-                        try {
-                            await navigator.share({
-                                files: filesArray,
-                                title: 'ID Card A4',
-                                text: 'Here is your arranged ID card!'
-                            });
-                            showMessage("শেয়ার সফল হয়েছে ✅");
-                        } catch(err) {
-                            showMessage("শেয়ার করা যায়নি: " + err, 'error');
-                        }
-                    } else {
-                        // Fallback for browsers that don't support sharing
-                        const link = document.createElement("a");
-                        link.download = "ID_Card.png";
-                        link.href = URL.createObjectURL(blob);
-                        link.click();
-                        showMessage("ইমেজ ডাউনলোড হয়েছে ✅");
+            canvas.toBlob(async function(blob){
+                const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
+                if(navigator.canShare && navigator.canShare({ files: filesArray })){
+                    try{
+                        await navigator.share({
+                            files: filesArray,
+                            title: 'ID Card A4',
+                            text: 'Here is your arranged ID card!'
+                        });
+                        alert("Shared successfully ✅");
+                    } catch(err){
+                        alert("Share failed: " + err);
                     }
-                });
-            } catch (error) {
-                showMessage("শেয়ার করতে সমস্যা হয়েছে!", 'error');
-            }
+                } else {
+                    alert("Your device/browser does not support direct file sharing!");
+                }
+            });
         }
 
         // Firebase Functions
         async function saveToFirestore() {
             if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", 'error');
+                alert("প্রথমে Preview তৈরি করুন!");
                 return;
             }
 
-            showLoading();
             const canvasDataURL = canvas.toDataURL('image/png');
             const cardId = 'card_' + Date.now();
             
@@ -589,19 +296,18 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
+                alert(`সফলভাবে সেভ হয়েছে! ✅\nআপনার ID: ${cardId}`);
+                
                 const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
-                showMessage(`সেভ হয়েছে! ID: ${cardId}\nলিংক: ${shareableLink}`);
+                alert(`শেয়ার করার লিংক:\n${shareableLink}`);
                 
             } catch (error) {
                 console.error("Error saving:", error);
-                showMessage("সেভ করতে সমস্যা হয়েছে!", 'error');
-            } finally {
-                hideLoading();
+                alert("সেভ করতে সমস্যা হয়েছে!");
             }
         }
 
         async function viewMyCards() {
-            showLoading();
             try {
                 const snapshot = await db.collection('idcards')
                     .orderBy('createdAt', 'desc')
@@ -613,7 +319,6 @@
                 
                 if (snapshot.empty) {
                     cardsList.innerHTML += '<p>No saved cards found.</p>';
-                    hideLoading();
                     return;
                 }
                 
@@ -626,11 +331,9 @@
                         <p><strong>ID:</strong> ${doc.id}</p>
                         <p><strong>Saved:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
                         <p><strong>Size:</strong> ${data.width}mm x ${data.height}mm</p>
-                        <div class="button-group">
-                            <button class="btn btn-info" onclick="loadCard('${doc.id}')">Load</button>
-                            <button class="btn" onclick="shareCard('${doc.id}')">Share</button>
-                            <button class="btn btn-danger" onclick="deleteCard('${doc.id}')">Delete</button>
-                        </div>
+                        <button class="btn" onclick="loadCard('${doc.id}')">Load This Card</button>
+                        <button class="btn" onclick="shareCard('${doc.id}')">Share</button>
+                        <button class="btn" onclick="deleteCard('${doc.id}')" style="background: #f44336; color: white;">Delete</button>
                     `;
                     
                     cardsList.appendChild(cardElement);
@@ -638,14 +341,11 @@
                 
             } catch (error) {
                 console.error("Error loading cards:", error);
-                showMessage("কার্ড লোড করতে সমস্যা হয়েছে!", 'error');
-            } finally {
-                hideLoading();
+                alert("কার্ড লোড করতে সমস্যা হয়েছে!");
             }
         }
 
         async function loadCard(cardId) {
-            showLoading();
             try {
                 const doc = await db.collection('idcards').doc(cardId).get();
                 
@@ -654,54 +354,58 @@
                     
                     const img = new Image();
                     img.onload = function() {
-                        setCanvasSize(data.paperSize);
+                        // Set canvas size based on saved paper size
+                        const paper = data.paperSize;
+                        switch(paper){
+                            case "A4": 
+                                canvas.width=794;
+                                canvas.height=1123;
+                                break;
+                            case "Letter": 
+                                canvas.width=816;
+                                canvas.height=1056;
+                                break;
+                            case "Legal": 
+                                canvas.width=816;
+                                canvas.height=1344;
+                                break;
+                        }
+                        
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        showMessage("কার্ড লোড হয়েছে ✅");
+                        alert("কার্ড লোড হয়েছে! ✅");
                     };
                     img.src = data.canvasImage;
                     
                 } else {
-                    showMessage("কার্ড খুঁজে পাওয়া যায়নি!", 'error');
+                    alert("কার্ড খুঁজে পাওয়া যায়নি!");
                 }
             } catch (error) {
                 console.error("Error loading card:", error);
-                showMessage("লোড করতে সমস্যা হয়েছে!", 'error');
-            } finally {
-                hideLoading();
+                alert("লোড করতে সমস্যা হয়েছে!");
             }
         }
 
         function shareCard(cardId) {
             const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
             
-            if (navigator.clipboard && navigator.clipboard.writeText) {
+            if (navigator.clipboard) {
                 navigator.clipboard.writeText(shareableLink);
-                showMessage("লিংক কপি হয়েছে! ✅");
+                alert("লিংক কপি হয়েছে! ✅\n\n" + shareableLink);
             } else {
-                // Fallback for older browsers
-                const tempInput = document.createElement("input");
-                tempInput.value = shareableLink;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand("copy");
-                document.body.removeChild(tempInput);
-                showMessage("লিংক কপি হয়েছে! ✅");
+                alert("শেয়ার করার লিংক:\n" + shareableLink);
             }
         }
 
         async function deleteCard(cardId) {
             if (confirm("আপনি কি এই কার্ড ডিলিট করতে চান?")) {
-                showLoading();
                 try {
                     await db.collection('idcards').doc(cardId).delete();
-                    showMessage("কার্ড ডিলিট হয়েছে ✅");
+                    alert("কার্ড ডিলিট হয়েছে! ✅");
                     viewMyCards();
                 } catch (error) {
                     console.error("Error deleting:", error);
-                    showMessage("ডিলিট করতে সমস্যা হয়েছে!", 'error');
-                } finally {
-                    hideLoading();
+                    alert("ডিলিট করতে সমস্যা হয়েছে!");
                 }
             }
         }
@@ -716,16 +420,7 @@
                     loadCard(cardId);
                 }, 1000);
             }
-            
-            // Set initial canvas size
-            setCanvasSize(document.getElementById("paperSize").value);
         };
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const paperSize = document.getElementById("paperSize").value;
-            setCanvasSize(paperSize);
-        });
     </script>
 </body>
 </html>
