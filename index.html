@@ -3,307 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced ID Card Tool - Professional Login</title>
+    <title>Advanced ID Card Tool with Login</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body { 
-            font-family: 'Arial', sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .container {
-            display: flex;
-            max-width: 1000px;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-        
-        .welcome-section {
-            flex: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .welcome-section h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-        
-        .welcome-section p {
-            font-size: 1.1em;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-        
-        .login-section {
-            flex: 1;
-            padding: 50px 40px;
-            background: white;
-        }
-        
-        .logo {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        
-        .form-container {
-            max-width: 350px;
-            margin: 0 auto;
-        }
-        
-        .form-title {
-            font-size: 2em;
-            color: #333;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-        
-        .form-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e1e1e1;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-        
-        .form-group input:focus {
-            border-color: #667eea;
-            background: white;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .password-container {
-            position: relative;
-        }
-        
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        
-        .toggle-password:hover {
-            color: #333;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 15px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 2px solid #e1e1e1;
-        }
-        
-        .btn-secondary:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .form-footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #666;
-        }
-        
-        .form-footer a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .form-footer a:hover {
-            text-decoration: underline;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin: 15px 0;
-            text-align: center;
-            font-weight: 500;
-        }
-        
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .feature-list {
-            list-style: none;
-            margin-top: 30px;
-        }
-        
-        .feature-list li {
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            font-size: 1em;
-        }
-        
-        .feature-list li::before {
-            content: "✓";
-            color: #4CAF50;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 1.2em;
-        }
-        
-        /* Main App Styles */
-        #mainApp {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
+            font-family: Arial; 
+            text-align: center; 
+            margin: 10px; 
             background: #f5f5f5;
         }
         
-        .app-header {
+        #a4canvas { 
+            width: 794px; 
+            height: 1123px; 
+            max-width: 100%;
+            border: 1px solid #999; 
+            background: white; 
+            margin: 10px auto;
+        }
+        
+        .btn, select, input { 
+            margin: 5px; 
+            padding: 8px 12px; 
+            font-size: 14px; 
+        }
+        
+        .preview-img { 
+            width: 120px; 
+            margin: 5px; 
+            border: 1px solid #ccc; 
+        }
+        
+        .card-item { 
+            border: 1px solid #ccc; 
+            margin: 8px; 
+            padding: 8px; 
+            background: white; 
+            border-radius: 5px; 
+        }
+
+        /* Login Form Styles */
+        #loginForm {
             background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 50px auto;
+        }
+        
+        #loginForm input {
+            width: 90%;
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        #loginForm button {
+            width: 95%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
         }
         
         .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            background: #e9f7ef;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
         }
         
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .welcome-section {
-                padding: 30px 20px;
-            }
-            
-            .login-section {
-                padding: 30px 20px;
-            }
-            
-            .welcome-section h1 {
-                font-size: 2em;
-            }
+        .hidden {
+            display: none;
         }
 
-        /* Additional Mobile Styles for Main App */
         @media (max-width: 768px) {
-            #a4canvas { 
-                width: 100% !important;
-                height: auto !important;
+            body {
+                margin: 5px;
             }
             
             .btn, select, input {
+                width: 90%;
+                max-width: 200px;
+                margin: 4px;
+                padding: 10px;
+            }
+            
+            #a4canvas {
                 width: 100%;
-                margin: 5px 0;
+                height: auto;
+            }
+            
+            .preview-img {
+                width: 100px;
+            }
+            
+            #loginForm {
+                margin: 20px auto;
+                padding: 15px;
             }
         }
     </style>
@@ -315,135 +116,81 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 </head>
 <body>
-    <!-- Professional Login Page -->
-    <div id="loginPage">
-        <div class="container">
-            <div class="welcome-section">
-                <div class="logo">🪪</div>
-                <h1>ID Card Pro</h1>
-                <p>Create, manage, and share professional ID cards with our advanced tool. Save your designs in the cloud and access them from any device.</p>
-                
-                <ul class="feature-list">
-                    <li>Cloud Storage & Sync</li>
-                    <li>Multiple Export Formats</li>
-                    <li>Shareable Links</li>
-                    <li>Mobile Friendly</li>
-                    <li>Professional Templates</li>
-                </ul>
-            </div>
-            
-            <div class="login-section">
-                <div class="form-container">
-                    <h2 class="form-title">Welcome Back</h2>
-                    <p class="form-subtitle">Sign in to your account to continue</p>
-                    
-                    <div id="loginMessage" class="message" style="display: none;"></div>
-                    
-                    <form id="loginForm" onsubmit="event.preventDefault(); login();">
-                        <div class="form-group">
-                            <label for="loginEmail">Email Address</label>
-                            <input type="email" id="loginEmail" placeholder="Enter your email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="loginPassword">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="loading" id="loginLoading">
-                            <div class="spinner"></div>
-                            <p>Signing in...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn" id="loginBtn">
-                            Sign In
-                        </button>
-                    </form>
-                    
-                    <div class="form-footer">
-                        <p>Don't have an account? <a href="#" onclick="showRegister(); return false;">Create one here</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Login Form -->
+    <div id="loginForm">
+        <h2>🔐 Login to ID Card Tool</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <button onclick="showRegister()" style="background: #28a745;">Register</button>
+        <p id="loginMessage"></p>
     </div>
 
-    <!-- Register Page -->
-    <div id="registerPage" style="display: none;">
-        <div class="container">
-            <div class="welcome-section">
-                <div class="logo">🚀</div>
-                <h1>Get Started</h1>
-                <p>Join thousands of users who create professional ID cards with our powerful tool. Start your journey today!</p>
-                
-                <ul class="feature-list">
-                    <li>Free Forever Plan</li>
-                    <li>Unlimited Projects</li>
-                    <li>Priority Support</li>
-                    <li>Regular Updates</li>
-                    <li>Secure Cloud Storage</li>
-                </ul>
-            </div>
-            
-            <div class="login-section">
-                <div class="form-container">
-                    <h2 class="form-title">Create Account</h2>
-                    <p class="form-subtitle">Join us and start creating amazing ID cards</p>
-                    
-                    <div id="registerMessage" class="message" style="display: none;"></div>
-                    
-                    <form id="registerForm" onsubmit="event.preventDefault(); register();">
-                        <div class="form-group">
-                            <label for="registerName">Full Name</label>
-                            <input type="text" id="registerName" placeholder="Enter your full name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="registerEmail">Email Address</label>
-                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="registerPassword">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="registerPassword" placeholder="Create a password (min 6 characters)" required minlength="6">
-                                <button type="button" class="toggle-password" onclick="togglePassword('registerPassword')">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="confirmPassword">Confirm Password</label>
-                            <div class="password-container">
-                                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="loading" id="registerLoading">
-                            <div class="spinner"></div>
-                            <p>Creating your account...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn" id="registerBtn">
-                            Create Account
-                        </button>
-                        
-                        <button type="button" class="btn btn-secondary" onclick="showLogin()">
-                            Back to Login
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <!-- Register Form -->
+    <div id="registerForm" class="hidden">
+        <h2>📝 Register New Account</h2>
+        <input type="text" id="registerName" placeholder="Full Name" required>
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Password (min 6 characters)" required>
+        <button onclick="register()" style="background: #28a745;">Register</button>
+        <button onclick="showLogin()">Back to Login</button>
+        <p id="registerMessage"></p>
     </div>
 
-    <!-- Main Application -->
-    <div id="mainApp">
-        <!-- Your existing main app content here -->
-        <!-- Copy all the main app content from your working version -->
+    <!-- Main App (Initially Hidden) -->
+    <div id="mainApp" class="hidden">
+        <!-- User Info -->
+        <div class="user-info">
+            Welcome, <span id="userName">User</span>! 
+            <button onclick="logout()" style="background: #dc3545; margin-left: 10px;">Logout</button>
+        </div>
+
+        <h1>🪪 Advanced Driving License ID Tool</h1>
+
+        <div>
+            <input type="file" id="file1" accept="image/*">
+            <input type="file" id="file2" accept="image/*">
+        </div>
+        
+        <div>
+            <img id="preview1" class="preview-img" src="" alt="Front Preview">
+            <img id="preview2" class="preview-img" src="" alt="Back Preview">
+        </div>
+
+        <div>
+            <label>Width (mm):</label>
+            <input type="number" id="widthMM" value="85" step="0.1">
+            
+            <label>Height (mm):</label>
+            <input type="number" id="heightMM" value="54" step="0.1">
+            
+            <label>Paper Size:</label>
+            <select id="paperSize">
+                <option value="A4">A4</option>
+                <option value="Letter">Letter</option>
+                <option value="Legal">Legal</option>
+            </select>
+            
+            <label>Download as:</label>
+            <select id="downloadType">
+                <option value="PDF">PDF</option>
+                <option value="JPG">JPG</option>
+                <option value="PNG">PNG</option>
+            </select>
+        </div>
+
+        <div>
+            <button class="btn" onclick="drawCanvas()">Preview & Arrange</button>
+            <button class="btn" onclick="downloadOutput()">Download</button>
+            <button class="btn" onclick="printCanvas()">Print</button>
+            <button class="btn" onclick="shareCanvas()">Share</button>
+            <button class="btn" onclick="saveToFirestore()" style="background: #4CAF50; color: white;">Save to Cloud</button>
+            <button class="btn" onclick="viewMyCards()" style="background: #2196F3; color: white;">My Saved Cards</button>
+        </div>
+
+        <canvas id="a4canvas"></canvas>
+
+        <div id="savedCardsList"></div>
     </div>
 
     <script>
@@ -463,245 +210,413 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // Canvas Elements
+        const canvas = document.getElementById("a4canvas");
+        const ctx = canvas.getContext("2d");
+        let img1 = null;
+        let img2 = null;
+
         // UI Elements
-        const loginPage = document.getElementById('loginPage');
-        const registerPage = document.getElementById('registerPage');
-        const mainApp = document.getElementById('mainApp');
-        const loginMessage = document.getElementById('loginMessage');
-        const registerMessage = document.getElementById('registerMessage');
-        const loginLoading = document.getElementById('loginLoading');
-        const registerLoading = document.getElementById('registerLoading');
-        const loginBtn = document.getElementById('loginBtn');
-        const registerBtn = document.getElementById('registerBtn');
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
+        const mainApp = document.getElementById("mainApp");
+        const loginMessage = document.getElementById("loginMessage");
+        const registerMessage = document.getElementById("registerMessage");
+        const userName = document.getElementById("userName");
 
-        // Password Toggle Function
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
-        }
-
-        // Show/Hide Loading
-        function showLoading(loadingElement, button) {
-            loadingElement.style.display = 'block';
-            button.disabled = true;
-            button.innerHTML = 'Please wait...';
-        }
-
-        function hideLoading(loadingElement, button, originalText) {
-            loadingElement.style.display = 'none';
-            button.disabled = false;
-            button.innerHTML = originalText;
-        }
-
-        // Show Message
-        function showMessage(element, message, type) {
-            element.textContent = message;
-            element.className = `message ${type}`;
-            element.style.display = 'block';
-            
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 5000);
-        }
-
-        // Navigation Functions
+        // Authentication Functions
         function showRegister() {
-            loginPage.style.display = 'none';
-            registerPage.style.display = 'block';
-            registerMessage.style.display = 'none';
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
         }
 
         function showLogin() {
-            registerPage.style.display = 'none';
-            loginPage.style.display = 'block';
-            loginMessage.style.display = 'none';
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
         }
 
-        function showMainApp() {
-            loginPage.style.display = 'none';
-            registerPage.style.display = 'none';
-            mainApp.style.display = 'block';
-        }
-
-        // Registration Function
-        async function register() {
-            const name = document.getElementById("registerName").value.trim();
-            const email = document.getElementById("registerEmail").value.trim();
+        function register() {
+            const name = document.getElementById("registerName").value;
+            const email = document.getElementById("registerEmail").value;
             const password = document.getElementById("registerPassword").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-
-            // Validation
-            if (!name || !email || !password || !confirmPassword) {
-                showMessage(registerMessage, "Please fill in all fields", "error");
-                return;
-            }
 
             if (password.length < 6) {
-                showMessage(registerMessage, "Password must be at least 6 characters", "error");
+                registerMessage.textContent = "Password must be at least 6 characters";
+                registerMessage.style.color = "red";
                 return;
             }
 
-            if (password !== confirmPassword) {
-                showMessage(registerMessage, "Passwords do not match", "error");
-                return;
-            }
-
-            showLoading(registerLoading, registerBtn);
-
-            try {
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                
-                // Save user profile
-                await db.collection('users').doc(userCredential.user.uid).set({
-                    name: name,
-                    email: email,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Save user name to Firestore
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        name: name,
+                        email: email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    registerMessage.textContent = "Registration successful!";
+                    registerMessage.style.color = "green";
+                    setTimeout(() => {
+                        showLogin();
+                    }, 2000);
+                })
+                .catch((error) => {
+                    registerMessage.textContent = "Error: " + error.message;
+                    registerMessage.style.color = "red";
                 });
-
-                // Update user profile
-                await userCredential.user.updateProfile({
-                    displayName: name
-                });
-
-                showMessage(registerMessage, "Account created successfully! Redirecting...", "success");
-                
-                setTimeout(() => {
-                    showMainApp();
-                    // Update UI with user info
-                    document.getElementById('userName').textContent = name;
-                    document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
-                }, 2000);
-
-            } catch (error) {
-                let errorMessage = "Registration failed. ";
-                
-                switch (error.code) {
-                    case 'auth/email-already-in-use':
-                        errorMessage += "Email is already registered.";
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage += "Invalid email address.";
-                        break;
-                    case 'auth/weak-password':
-                        errorMessage += "Password is too weak.";
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
-                
-                showMessage(registerMessage, errorMessage, "error");
-            } finally {
-                hideLoading(registerLoading, registerBtn, "Create Account");
-            }
         }
 
-        // Login Function
-        async function login() {
-            const email = document.getElementById("loginEmail").value.trim();
+        function login() {
+            const email = document.getElementById("loginEmail").value;
             const password = document.getElementById("loginPassword").value;
 
-            if (!email || !password) {
-                showMessage(loginMessage, "Please enter both email and password", "error");
-                return;
-            }
-
-            showLoading(loginLoading, loginBtn);
-
-            try {
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
-                
-                // Update last login
-                await db.collection('users').doc(userCredential.user.uid).update({
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // Get user data
-                const userDoc = await db.collection('users').doc(userCredential.user.uid).get();
-                const userData = userDoc.data();
-
-                showMessage(loginMessage, "Login successful! Redirecting...", "success");
-                
-                setTimeout(() => {
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Login successful
+                    loginMessage.textContent = "Login successful!";
+                    loginMessage.style.color = "green";
+                    
+                    // Get user data
+                    return db.collection('users').doc(userCredential.user.uid).get();
+                })
+                .then((doc) => {
+                    if (doc.exists) {
+                        userName.textContent = doc.data().name;
+                    }
                     showMainApp();
-                    // Update UI with user info
-                    document.getElementById('userName').textContent = userData.name;
-                    document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
-                }, 1500);
-
-            } catch (error) {
-                let errorMessage = "Login failed. ";
-                
-                switch (error.code) {
-                    case 'auth/user-not-found':
-                        errorMessage += "No account found with this email.";
-                        break;
-                    case 'auth/wrong-password':
-                        errorMessage += "Incorrect password.";
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage += "Invalid email address.";
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
-                
-                showMessage(loginMessage, errorMessage, "error");
-            } finally {
-                hideLoading(loginLoading, loginBtn, "Sign In");
-            }
+                })
+                .catch((error) => {
+                    loginMessage.textContent = "Error: " + error.message;
+                    loginMessage.style.color = "red";
+                });
         }
 
-        // Logout Function
         function logout() {
             auth.signOut().then(() => {
-                mainApp.style.display = 'none';
-                loginPage.style.display = 'block';
-                
-                // Clear forms
-                document.getElementById("loginForm").reset();
-                document.getElementById("registerForm").reset();
-                
-                showMessage(loginMessage, "You have been logged out successfully", "success");
+                showLoginForm();
             });
         }
 
-        // Check Auth State
+        function showMainApp() {
+            loginForm.classList.add('hidden');
+            registerForm.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+        }
+
+        function showLoginForm() {
+            mainApp.classList.add('hidden');
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            
+            // Clear forms
+            document.getElementById("loginEmail").value = "";
+            document.getElementById("loginPassword").value = "";
+            document.getElementById("registerName").value = "";
+            document.getElementById("registerEmail").value = "";
+            document.getElementById("registerPassword").value = "";
+            loginMessage.textContent = "";
+            registerMessage.textContent = "";
+        }
+
+        // Check if user is already logged in
         auth.onAuthStateChanged((user) => {
             if (user) {
                 // User is signed in
                 db.collection('users').doc(user.uid).get().then((doc) => {
                     if (doc.exists) {
-                        const userData = doc.data();
-                        document.getElementById('userName').textContent = userData.name;
-                        document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
+                        userName.textContent = doc.data().name;
                     }
                     showMainApp();
                 });
             } else {
                 // User is signed out
-                loginPage.style.display = 'block';
-                registerPage.style.display = 'none';
-                mainApp.style.display = 'none';
+                showLoginForm();
             }
         });
 
-        // Enter key support
-        document.getElementById('loginForm').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
+        // Existing ID Card Tool Functions (Same as before)
+        document.getElementById("file1").addEventListener("change", function(e){
+            if(e.target.files[0]){
+                const reader = new FileReader();
+                reader.onload = () => document.getElementById("preview1").src = reader.result;
+                reader.readAsDataURL(e.target.files[0]);
             }
         });
 
-        document.getElementById('registerForm').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                register();
+        document.getElementById("file2").addEventListener("change", function(e){
+            if(e.target.files[0]){
+                const reader = new FileReader();
+                reader.onload = () => document.getElementById("preview2").src = reader.result;
+                reader.readAsDataURL(e.target.files[0]);
             }
         });
 
-        // Remember to copy all your existing ID Card Tool functions here
-        // (drawCanvas, downloadOutput, saveToFirestore, etc.)
+        async function loadImage(file){
+            return new Promise(resolve=>{
+                const reader = new FileReader();
+                reader.onload = ()=>{
+                    const img = new Image();
+                    img.onload = ()=>resolve(img);
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function drawCanvas(){
+            const file1 = document.getElementById("file1").files[0];
+            const file2 = document.getElementById("file2").files[0];
+            if(!file1 || !file2){
+                alert("দুইটি ফাইল বেছে নিন!");
+                return;
+            }
+            img1 = await loadImage(file1);
+            img2 = await loadImage(file2);
+            
+            const paper = document.getElementById("paperSize").value;
+            switch(paper){
+                case "A4": 
+                    canvas.width=794;
+                    canvas.height=1123;
+                    break;
+                case "Letter": 
+                    canvas.width=816;
+                    canvas.height=1056;
+                    break;
+                case "Legal": 
+                    canvas.width=816;
+                    canvas.height=1344;
+                    break;
+            }
+            
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="white";
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
+            const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
+            const gap = 90;
+            const x = (canvas.width - cardWidth)/2;
+            const y1 = (canvas.height - (cardHeight*2 + gap))/2;
+            const y2 = y1 + cardHeight + gap;
+
+            ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
+            ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
+            
+            alert("প্রিভিউ তৈরি হয়েছে ✅");
+        }
+
+        function downloadOutput(){
+            const type = document.getElementById("downloadType").value;
+            if(type==="PDF"){
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
+                pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
+                pdf.save("ID_Arranged.pdf");
+            } else {
+                const link = document.createElement("a");
+                link.download = `ID_Arranged.${type.toLowerCase()}`;
+                link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
+                link.click();
+            }
+        }
+
+        function printCanvas(){
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head><title>Print ID Card</title></head>
+                    <body style="text-align: center;">
+                        <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%;">
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        async function shareCanvas(){
+            canvas.toBlob(async function(blob){
+                const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
+                if(navigator.canShare && navigator.canShare({ files: filesArray })){
+                    try{
+                        await navigator.share({
+                            files: filesArray,
+                            title: 'ID Card A4',
+                            text: 'Here is your arranged ID card!'
+                        });
+                        alert("Shared successfully ✅");
+                    } catch(err){
+                        alert("Share failed: " + err);
+                    }
+                } else {
+                    alert("Your device/browser does not support direct file sharing!");
+                }
+            });
+        }
+
+        // Modified Firebase Functions to include user ID
+        async function saveToFirestore() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Please login first!");
+                return;
+            }
+
+            if (!canvas.width) {
+                alert("প্রথমে Preview তৈরি করুন!");
+                return;
+            }
+
+            const canvasDataURL = canvas.toDataURL('image/png');
+            const cardId = 'card_' + Date.now();
+            
+            try {
+                await db.collection('idcards').doc(cardId).set({
+                    canvasImage: canvasDataURL,
+                    image1: document.getElementById("preview1").src,
+                    image2: document.getElementById("preview2").src,
+                    width: document.getElementById("widthMM").value,
+                    height: document.getElementById("heightMM").value,
+                    paperSize: document.getElementById("paperSize").value,
+                    userId: user.uid, // Store user ID
+                    userName: userName.textContent,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                alert(`সফলভাবে সেভ হয়েছে! ✅\nআপনার ID: ${cardId}`);
+                
+                const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
+                alert(`শেয়ার করার লিংক:\n${shareableLink}`);
+                
+            } catch (error) {
+                console.error("Error saving:", error);
+                alert("সেভ করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        async function viewMyCards() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Please login first!");
+                return;
+            }
+
+            try {
+                const snapshot = await db.collection('idcards')
+                    .where("userId", "==", user.uid) // Only show user's cards
+                    .orderBy('createdAt', 'desc')
+                    .limit(10)
+                    .get();
+                
+                const cardsList = document.getElementById('savedCardsList');
+                cardsList.innerHTML = '<h3>My Saved Cards:</h3>';
+                
+                if (snapshot.empty) {
+                    cardsList.innerHTML += '<p>No saved cards found.</p>';
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'card-item';
+                    
+                    cardElement.innerHTML = `
+                        <p><strong>ID:</strong> ${doc.id}</p>
+                        <p><strong>Saved:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
+                        <p><strong>Size:</strong> ${data.width}mm x ${data.height}mm</p>
+                        <button class="btn" onclick="loadCard('${doc.id}')">Load This Card</button>
+                        <button class="btn" onclick="shareCard('${doc.id}')">Share</button>
+                        <button class="btn" onclick="deleteCard('${doc.id}')" style="background: #f44336; color: white;">Delete</button>
+                    `;
+                    
+                    cardsList.appendChild(cardElement);
+                });
+                
+            } catch (error) {
+                console.error("Error loading cards:", error);
+                alert("কার্ড লোড করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        async function loadCard(cardId) {
+            try {
+                const doc = await db.collection('idcards').doc(cardId).get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        const paper = data.paperSize;
+                        switch(paper){
+                            case "A4": 
+                                canvas.width=794;
+                                canvas.height=1123;
+                                break;
+                            case "Letter": 
+                                canvas.width=816;
+                                canvas.height=1056;
+                                break;
+                            case "Legal": 
+                                canvas.width=816;
+                                canvas.height=1344;
+                                break;
+                        }
+                        
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        alert("কার্ড লোড হয়েছে! ✅");
+                    };
+                    img.src = data.canvasImage;
+                    
+                } else {
+                    alert("কার্ড খুঁজে পাওয়া যায়নি!");
+                }
+            } catch (error) {
+                console.error("Error loading card:", error);
+                alert("লোড করতে সমস্যা হয়েছে!");
+            }
+        }
+
+        function shareCard(cardId) {
+            const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareableLink);
+                alert("লিংক কপি হয়েছে! ✅\n\n" + shareableLink);
+            } else {
+                alert("শেয়ার করার লিংক:\n" + shareableLink);
+            }
+        }
+
+        async function deleteCard(cardId) {
+            if (confirm("আপনি কি এই কার্ড ডিলিট করতে চান?")) {
+                try {
+                    await db.collection('idcards').doc(cardId).delete();
+                    alert("কার্ড ডিলিট হয়েছে! ✅");
+                    viewMyCards();
+                } catch (error) {
+                    console.error("Error deleting:", error);
+                    alert("ডিলিট করতে সমস্যা হয়েছে!");
+                }
+            }
+        }
+
+        // Load card from URL when page loads
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cardId = urlParams.get('id');
+            
+            if (cardId) {
+                setTimeout(() => {
+                    loadCard(cardId);
+                }, 1000);
+            }
+        };
     </script>
 </body>
 </html>
