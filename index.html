@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced ID Card Tool - Professional Login</title>
+    <title>ID Card Tool - Professional</title>
     <style>
         * {
             margin: 0;
@@ -21,7 +21,12 @@
             padding: 20px;
         }
         
-        .container {
+        /* Login Page Styles */
+        #loginPage {
+            width: 100%;
+        }
+        
+        .login-container {
             display: flex;
             max-width: 1000px;
             width: 100%;
@@ -29,6 +34,7 @@
             border-radius: 20px;
             box-shadow: 0 15px 30px rgba(0,0,0,0.2);
             overflow: hidden;
+            margin: 0 auto;
         }
         
         .welcome-section {
@@ -41,18 +47,6 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-        }
-        
-        .welcome-section h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-        
-        .welcome-section p {
-            font-size: 1.1em;
-            opacity: 0.9;
-            line-height: 1.6;
         }
         
         .login-section {
@@ -128,10 +122,6 @@
             font-size: 18px;
         }
         
-        .toggle-password:hover {
-            color: #333;
-        }
-        
         .btn {
             width: 100%;
             padding: 15px;
@@ -157,12 +147,6 @@
             border: 2px solid #e1e1e1;
         }
         
-        .btn-secondary:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
         .form-footer {
             text-align: center;
             margin-top: 30px;
@@ -173,10 +157,6 @@
             color: #667eea;
             text-decoration: none;
             font-weight: 500;
-        }
-        
-        .form-footer a:hover {
-            text-decoration: underline;
         }
         
         .loading {
@@ -430,7 +410,7 @@
         
         /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
+            .login-container {
                 flex-direction: column;
             }
             
@@ -440,14 +420,6 @@
             
             .login-section {
                 padding: 30px 20px;
-            }
-            
-            .welcome-section h1 {
-                font-size: 2em;
-            }
-            
-            .tool-title {
-                font-size: 2em;
             }
             
             #a4canvas {
@@ -474,140 +446,62 @@
                 width: 100%;
                 max-width: 200px;
             }
-            
-            .card-actions {
-                flex-direction: column;
-            }
         }
     </style>
-    <!-- jsPDF Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <!-- Professional Login Page -->
+    <!-- Login Page -->
     <div id="loginPage">
-        <div class="container">
+        <div class="login-container">
             <div class="welcome-section">
                 <div class="logo">🪪</div>
                 <h1>ID Card Pro</h1>
-                <p>Create, manage, and share professional ID cards with our advanced tool. Save your designs in the cloud and access them from any device.</p>
-                
+                <p>Create professional ID cards with our advanced tool</p>
                 <ul class="feature-list">
-                    <li>Cloud Storage & Sync</li>
+                    <li>Cloud Storage</li>
                     <li>Multiple Export Formats</li>
                     <li>Shareable Links</li>
                     <li>Mobile Friendly</li>
-                    <li>Professional Templates</li>
                 </ul>
             </div>
             
             <div class="login-section">
                 <div class="form-container">
-                    <h2 class="form-title">Welcome Back</h2>
-                    <p class="form-subtitle">Sign in to your account to continue</p>
+                    <h2 class="form-title">Welcome</h2>
+                    <p class="form-subtitle">Enter your details to continue</p>
                     
                     <div id="loginMessage" class="message" style="display: none;"></div>
                     
-                    <form id="loginForm" onsubmit="event.preventDefault(); login();">
+                    <form id="loginForm">
                         <div class="form-group">
-                            <label for="loginEmail">Email Address</label>
-                            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                            <label for="userName">Your Name</label>
+                            <input type="text" id="userName" placeholder="Enter your name" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="loginPassword">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button>
-                            </div>
+                            <label for="userEmail">Email Address</label>
+                            <input type="email" id="userEmail" placeholder="Enter your email" required>
                         </div>
                         
                         <div class="loading" id="loginLoading">
                             <div class="spinner"></div>
-                            <p>Signing in...</p>
+                            <p>Loading...</p>
                         </div>
                         
-                        <button type="submit" class="btn" id="loginBtn">
-                            Sign In
+                        <button type="button" class="btn" onclick="login()">
+                            Start Creating ID Cards
                         </button>
                     </form>
                     
                     <div class="form-footer">
-                        <p>Don't have an account? <a href="#" onclick="showRegister(); return false;">Create one here</a></p>
+                        <p>No password required - just enter your name and email</p>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Register Page -->
-    <div id="registerPage" style="display: none;">
-        <div class="container">
-            <div class="welcome-section">
-                <div class="logo">🚀</div>
-                <h1>Get Started</h1>
-                <p>Join thousands of users who create professional ID cards with our powerful tool. Start your journey today!</p>
-                
-                <ul class="feature-list">
-                    <li>Free Forever Plan</li>
-                    <li>Unlimited Projects</li>
-                    <li>Priority Support</li>
-                    <li>Regular Updates</li>
-                    <li>Secure Cloud Storage</li>
-                </ul>
-            </div>
-            
-            <div class="login-section">
-                <div class="form-container">
-                    <h2 class="form-title">Create Account</h2>
-                    <p class="form-subtitle">Join us and start creating amazing ID cards</p>
-                    
-                    <div id="registerMessage" class="message" style="display: none;"></div>
-                    
-                    <form id="registerForm" onsubmit="event.preventDefault(); register();">
-                        <div class="form-group">
-                            <label for="registerName">Full Name</label>
-                            <input type="text" id="registerName" placeholder="Enter your full name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="registerEmail">Email Address</label>
-                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="registerPassword">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="registerPassword" placeholder="Create a password (min 6 characters)" required minlength="6">
-                                <button type="button" class="toggle-password" onclick="togglePassword('registerPassword')">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="confirmPassword">Confirm Password</label>
-                            <div class="password-container">
-                                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="loading" id="registerLoading">
-                            <div class="spinner"></div>
-                            <p>Creating your account...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn" id="registerBtn">
-                            Create Account
-                        </button>
-                        
-                        <button type="button" class="btn btn-secondary" onclick="showLogin()">
-                            Back to Login
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -619,19 +513,19 @@
             <h2>ID Card Pro</h2>
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">U</div>
-                <span id="userName">User</span>
+                <span id="displayUserName">User</span>
                 <button class="action-btn" onclick="logout()" style="background: #dc3545; color: white; margin-left: 15px;">Logout</button>
             </div>
         </div>
 
         <div class="tool-container">
-            <h1 class="tool-title">🪪 Advanced Driving License ID Tool</h1>
+            <h1 class="tool-title">🪪 Advanced ID Card Tool</h1>
 
             <div class="upload-section">
                 <h3>Upload Images</h3>
                 <div class="control-group">
-                    <input type="file" id="file1" accept="image/*" style="padding: 10px;">
-                    <input type="file" id="file2" accept="image/*" style="padding: 10px;">
+                    <input type="file" id="file1" accept="image/*">
+                    <input type="file" id="file2" accept="image/*">
                 </div>
             </div>
             
@@ -702,7 +596,6 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const auth = firebase.auth();
 
         // Canvas Elements
         const canvas = document.getElementById("a4canvas");
@@ -712,36 +605,64 @@
 
         // UI Elements
         const loginPage = document.getElementById('loginPage');
-        const registerPage = document.getElementById('registerPage');
         const mainApp = document.getElementById('mainApp');
         const loginMessage = document.getElementById('loginMessage');
-        const registerMessage = document.getElementById('registerMessage');
         const loginLoading = document.getElementById('loginLoading');
-        const registerLoading = document.getElementById('registerLoading');
-        const loginBtn = document.getElementById('loginBtn');
-        const registerBtn = document.getElementById('registerBtn');
 
-        // Password Toggle Function
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
+        // Simple Login System (No Authentication Required)
+        function login() {
+            const name = document.getElementById("userName").value.trim();
+            const email = document.getElementById("userEmail").value.trim();
+
+            if (!name || !email) {
+                showMessage(loginMessage, "Please enter both name and email", "error");
+                return;
+            }
+
+            showLoading(loginLoading);
+
+            // Save user info to localStorage
+            localStorage.setItem('currentUser', JSON.stringify({
+                name: name,
+                email: email,
+                loginTime: new Date().toISOString()
+            }));
+
+            // Update UI
+            document.getElementById('displayUserName').textContent = name;
+            document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+
+            showMessage(loginMessage, "Welcome! Redirecting...", "success");
+            
+            setTimeout(() => {
+                showMainApp();
+            }, 1500);
         }
 
-        // Show/Hide Loading
-        function showLoading(loadingElement, button) {
+        function logout() {
+            localStorage.removeItem('currentUser');
+            showLoginPage();
+        }
+
+        function showMainApp() {
+            loginPage.style.display = 'none';
+            mainApp.style.display = 'block';
+        }
+
+        function showLoginPage() {
+            mainApp.style.display = 'none';
+            loginPage.style.display = 'block';
+            document.getElementById("loginForm").reset();
+        }
+
+        function showLoading(loadingElement) {
             loadingElement.style.display = 'block';
-            button.disabled = true;
-            button.innerHTML = 'Please wait...';
         }
 
-        function hideLoading(loadingElement, button, originalText) {
+        function hideLoading(loadingElement) {
             loadingElement.style.display = 'none';
-            button.disabled = false;
-            button.innerHTML = originalText;
         }
 
-        // Show Message
         function showMessage(element, message, type) {
             element.textContent = message;
             element.className = `message ${type}`;
@@ -749,205 +670,52 @@
             
             setTimeout(() => {
                 element.style.display = 'none';
-            }, 5000);
+            }, 4000);
         }
 
-        // Navigation Functions
-        function showRegister() {
-            loginPage.style.display = 'none';
-            registerPage.style.display = 'block';
-            registerMessage.style.display = 'none';
-        }
-
-        function showLogin() {
-            registerPage.style.display = 'none';
-            loginPage.style.display = 'block';
-            loginMessage.style.display = 'none';
-        }
-
-        function showMainApp() {
-            loginPage.style.display = 'none';
-            registerPage.style.display = 'none';
-            mainApp.style.display = 'block';
-        }
-
-        // Registration Function
-        async function register() {
-            const name = document.getElementById("registerName").value.trim();
-            const email = document.getElementById("registerEmail").value.trim();
-            const password = document.getElementById("registerPassword").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-
-            // Validation
-            if (!name || !email || !password || !confirmPassword) {
-                showMessage(registerMessage, "Please fill in all fields", "error");
-                return;
-            }
-
-            if (password.length < 6) {
-                showMessage(registerMessage, "Password must be at least 6 characters", "error");
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showMessage(registerMessage, "Passwords do not match", "error");
-                return;
-            }
-
-            showLoading(registerLoading, registerBtn);
-
-            try {
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                
-                // Save user profile
-                await db.collection('users').doc(userCredential.user.uid).set({
-                    name: name,
-                    email: email,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // Update user profile
-                await userCredential.user.updateProfile({
-                    displayName: name
-                });
-
-                showMessage(registerMessage, "Account created successfully! Redirecting...", "success");
-                
-                setTimeout(() => {
-                    showMainApp();
-                    // Update UI with user info
-                    document.getElementById('userName').textContent = name;
-                    document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
-                }, 2000);
-
-            } catch (error) {
-                let errorMessage = "Registration failed. ";
-                
-                switch (error.code) {
-                    case 'auth/email-already-in-use':
-                        errorMessage += "Email is already registered.";
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage += "Invalid email address.";
-                        break;
-                    case 'auth/weak-password':
-                        errorMessage += "Password is too weak.";
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
-                
-                showMessage(registerMessage, errorMessage, "error");
-            } finally {
-                hideLoading(registerLoading, registerBtn, "Create Account");
-            }
-        }
-
-        // Login Function
-        async function login() {
-            const email = document.getElementById("loginEmail").value.trim();
-            const password = document.getElementById("loginPassword").value;
-
-            if (!email || !password) {
-                showMessage(loginMessage, "Please enter both email and password", "error");
-                return;
-            }
-
-            showLoading(loginLoading, loginBtn);
-
-            try {
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
-                
-                // Update last login
-                await db.collection('users').doc(userCredential.user.uid).update({
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // Get user data
-                const userDoc = await db.collection('users').doc(userCredential.user.uid).get();
-                const userData = userDoc.data();
-
-                showMessage(loginMessage, "Login successful! Redirecting...", "success");
-                
-                setTimeout(() => {
-                    showMainApp();
-                    // Update UI with user info
-                    document.getElementById('userName').textContent = userData.name;
-                    document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
-                }, 1500);
-
-            } catch (error) {
-                let errorMessage = "Login failed. ";
-                
-                switch (error.code) {
-                    case 'auth/user-not-found':
-                        errorMessage += "No account found with this email.";
-                        break;
-                    case 'auth/wrong-password':
-                        errorMessage += "Incorrect password.";
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage += "Invalid email address.";
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
-                
-                showMessage(loginMessage, errorMessage, "error");
-            } finally {
-                hideLoading(loginLoading, loginBtn, "Sign In");
-            }
-        }
-
-        // Logout Function
-        function logout() {
-            auth.signOut().then(() => {
-                mainApp.style.display = 'none';
-                loginPage.style.display = 'block';
-                
-                // Clear forms
-                document.getElementById("loginForm").reset();
-                document.getElementById("registerForm").reset();
-                
-                showMessage(loginMessage, "You have been logged out successfully", "success");
-            });
-        }
-
-        // Check Auth State - এই ফাংশনটি লগইন পেজ দেখাবে বা main app
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                db.collection('users').doc(user.uid).get().then((doc) => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        document.getElementById('userName').textContent = userData.name;
-                        document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
-                    }
-                    showMainApp();
-                });
+        // Check if user is already logged in
+        window.onload = function() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                document.getElementById('displayUserName').textContent = userData.name;
+                document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
+                showMainApp();
             } else {
-                // User is signed out - লগইন পেজ দেখাবে
-                loginPage.style.display = 'block';
-                registerPage.style.display = 'none';
-                mainApp.style.display = 'none';
+                showLoginPage();
             }
-        });
 
-        // Enter key support
-        document.getElementById('loginForm').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
+            // Load card from URL if any
+            const urlParams = new URLSearchParams(window.location.search);
+            const cardId = urlParams.get('id');
+            if (cardId) {
+                setTimeout(() => {
+                    loadCard(cardId);
+                }, 1000);
             }
-        });
 
-        document.getElementById('registerForm').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                register();
-            }
-        });
+            // Set initial canvas size
+            setCanvasSize("A4");
+        };
 
         // ID Card Tool Functions
+        function setCanvasSize(paper) {
+            switch(paper) {
+                case "A4": 
+                    canvas.width = 794;
+                    canvas.height = 1123;
+                    break;
+                case "Letter": 
+                    canvas.width = 816;
+                    canvas.height = 1056;
+                    break;
+                case "Legal": 
+                    canvas.width = 816;
+                    canvas.height = 1344;
+                    break;
+            }
+        }
+
         document.getElementById("file1").addEventListener("change", function(e){
             if(e.target.files[0]){
                 const reader = new FileReader();
@@ -986,104 +754,126 @@
             const file1 = document.getElementById("file1").files[0];
             const file2 = document.getElementById("file2").files[0];
             if(!file1 || !file2){
-                alert("দুইটি ফাইল বেছে নিন!");
+                alert("Please select both files!");
                 return;
             }
-            img1 = await loadImage(file1);
-            img2 = await loadImage(file2);
-            
-            const paper = document.getElementById("paperSize").value;
-            switch(paper){
-                case "A4": 
-                    canvas.width=794;
-                    canvas.height=1123;
-                    break;
-                case "Letter": 
-                    canvas.width=816;
-                    canvas.height=1056;
-                    break;
-                case "Legal": 
-                    canvas.width=816;
-                    canvas.height=1344;
-                    break;
+
+            try {
+                img1 = await loadImage(file1);
+                img2 = await loadImage(file2);
+                
+                const paper = document.getElementById("paperSize").value;
+                setCanvasSize(paper);
+                
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle="white";
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+
+                const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
+                const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
+                const gap = 90;
+                const x = (canvas.width - cardWidth)/2;
+                const y1 = (canvas.height - (cardHeight*2 + gap))/2;
+                const y2 = y1 + cardHeight + gap;
+
+                ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
+                ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
+                
+                alert("Preview created successfully! ✅");
+                
+            } catch (error) {
+                alert("Error creating preview!");
+                console.error(error);
             }
-            
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle="white";
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-
-            const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
-            const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
-            const gap = 90;
-            const x = (canvas.width - cardWidth)/2;
-            const y1 = (canvas.height - (cardHeight*2 + gap))/2;
-            const y2 = y1 + cardHeight + gap;
-
-            ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
-            ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
-            
-            alert("প্রিভিউ তৈরি হয়েছে ✅");
         }
 
         function downloadOutput(){
+            if (!canvas.width) {
+                alert("Please create preview first!");
+                return;
+            }
+
             const type = document.getElementById("downloadType").value;
-            if(type==="PDF"){
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
-                pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
-                pdf.save("ID_Arranged.pdf");
-            } else {
-                const link = document.createElement("a");
-                link.download = `ID_Arranged.${type.toLowerCase()}`;
-                link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
-                link.click();
+            try {
+                if(type==="PDF"){
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
+                    pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
+                    pdf.save("ID_Arranged.pdf");
+                } else {
+                    const link = document.createElement("a");
+                    link.download = `ID_Arranged.${type.toLowerCase()}`;
+                    link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
+                    link.click();
+                }
+                alert("Download started! ✅");
+            } catch (error) {
+                alert("Download error!");
             }
         }
 
         function printCanvas(){
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head><title>Print ID Card</title></head>
-                    <body style="text-align: center;">
-                        <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%;">
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
+            if (!canvas.width) {
+                alert("Please create preview first!");
+                return;
+            }
+
+            try {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                        <head><title>Print ID Card</title></head>
+                        <body style="text-align: center;">
+                            <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%;">
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            } catch (error) {
+                alert("Print error!");
+            }
         }
 
         async function shareCanvas(){
-            canvas.toBlob(async function(blob){
-                const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
-                if(navigator.canShare && navigator.canShare({ files: filesArray })){
-                    try{
-                        await navigator.share({
-                            files: filesArray,
-                            title: 'ID Card A4',
-                            text: 'Here is your arranged ID card!'
-                        });
-                        alert("Shared successfully ✅");
-                    } catch(err){
-                        alert("Share failed: " + err);
+            if (!canvas.width) {
+                alert("Please create preview first!");
+                return;
+            }
+
+            try {
+                canvas.toBlob(async function(blob){
+                    const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
+                    if(navigator.canShare && navigator.canShare({ files: filesArray })){
+                        try{
+                            await navigator.share({
+                                files: filesArray,
+                                title: 'ID Card A4',
+                                text: 'Here is your arranged ID card!'
+                            });
+                            alert("Shared successfully ✅");
+                        } catch(err){
+                            alert("Share failed: " + err);
+                        }
+                    } else {
+                        alert("Your device/browser does not support direct file sharing!");
                     }
-                } else {
-                    alert("Your device/browser does not support direct file sharing!");
-                }
-            });
+                });
+            } catch (error) {
+                alert("Share error!");
+            }
         }
 
-        // Firebase Functions
+        // Firebase Functions - WORKING VERSION
         async function saveToFirestore() {
-            const user = auth.currentUser;
-            if (!user) {
+            const userData = JSON.parse(localStorage.getItem('currentUser'));
+            if (!userData) {
                 alert("Please login first!");
                 return;
             }
 
             if (!canvas.width) {
-                alert("প্রথমে Preview তৈরি করুন!");
+                alert("Please create preview first!");
                 return;
             }
 
@@ -1098,32 +888,32 @@
                     width: document.getElementById("widthMM").value,
                     height: document.getElementById("heightMM").value,
                     paperSize: document.getElementById("paperSize").value,
-                    userId: user.uid,
-                    userName: document.getElementById('userName').textContent,
+                    userName: userData.name,
+                    userEmail: userData.email,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
-                alert(`সফলভাবে সেভ হয়েছে! ✅\nআপনার ID: ${cardId}`);
+                alert(`Saved successfully! ✅\nYour ID: ${cardId}`);
                 
                 const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
-                alert(`শেয়ার করার লিংক:\n${shareableLink}`);
+                alert(`Shareable Link:\n${shareableLink}`);
                 
             } catch (error) {
                 console.error("Error saving:", error);
-                alert("সেভ করতে সমস্যা হয়েছে!");
+                alert("Save error!");
             }
         }
 
         async function viewMyCards() {
-            const user = auth.currentUser;
-            if (!user) {
+            const userData = JSON.parse(localStorage.getItem('currentUser'));
+            if (!userData) {
                 alert("Please login first!");
                 return;
             }
 
             try {
                 const snapshot = await db.collection('idcards')
-                    .where("userId", "==", user.uid)
+                    .where("userEmail", "==", userData.email)
                     .orderBy('createdAt', 'desc')
                     .limit(10)
                     .get();
@@ -1157,10 +947,11 @@
                 
             } catch (error) {
                 console.error("Error loading cards:", error);
-                alert("কার্ড লোড করতে সমস্যা হয়েছে!");
+                alert("Error loading cards!");
             }
         }
 
+        // FIXED: কার্ড লোড ফাংশন
         async function loadCard(cardId) {
             try {
                 const doc = await db.collection('idcards').doc(cardId).get();
@@ -1168,36 +959,35 @@
                 if (doc.exists) {
                     const data = doc.data();
                     
+                    // Canvas সাইজ সেট করুন
+                    const paper = data.paperSize || "A4";
+                    setCanvasSize(paper);
+                    
+                    // ইমেজ লোড করুন
                     const img = new Image();
                     img.onload = function() {
-                        const paper = data.paperSize;
-                        switch(paper){
-                            case "A4": 
-                                canvas.width=794;
-                                canvas.height=1123;
-                                break;
-                            case "Letter": 
-                                canvas.width=816;
-                                canvas.height=1056;
-                                break;
-                            case "Legal": 
-                                canvas.width=816;
-                                canvas.height=1344;
-                                break;
-                        }
-                        
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        alert("কার্ড লোড হয়েছে! ✅");
+                        alert("Card loaded successfully! ✅");
                     };
+                    
+                    img.onerror = function() {
+                        alert("Error loading image!");
+                    };
+                    
                     img.src = data.canvasImage;
                     
+                    // Form values সেট করুন
+                    if(data.width) document.getElementById("widthMM").value = data.width;
+                    if(data.height) document.getElementById("heightMM").value = data.height;
+                    if(data.paperSize) document.getElementById("paperSize").value = data.paperSize;
+                    
                 } else {
-                    alert("কার্ড খুঁজে পাওয়া যায়নি!");
+                    alert("Card not found!");
                 }
             } catch (error) {
                 console.error("Error loading card:", error);
-                alert("লোড করতে সমস্যা হয়েছে!");
+                alert("Load error!");
             }
         }
 
@@ -1206,36 +996,24 @@
             
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(shareableLink);
-                alert("লিংক কপি হয়েছে! ✅\n\n" + shareableLink);
+                alert("Link copied! ✅\n\n" + shareableLink);
             } else {
-                alert("শেয়ার করার লিংক:\n" + shareableLink);
+                alert("Shareable Link:\n" + shareableLink);
             }
         }
 
         async function deleteCard(cardId) {
-            if (confirm("আপনি কি এই কার্ড ডিলিট করতে চান?")) {
+            if (confirm("Are you sure you want to delete this card?")) {
                 try {
                     await db.collection('idcards').doc(cardId).delete();
-                    alert("কার্ড ডিলিট হয়েছে! ✅");
+                    alert("Card deleted successfully! ✅");
                     viewMyCards();
                 } catch (error) {
                     console.error("Error deleting:", error);
-                    alert("ডিলিট করতে সমস্যা হয়েছে!");
+                    alert("Delete error!");
                 }
             }
         }
-
-        // Load card from URL when page loads
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const cardId = urlParams.get('id');
-            
-            if (cardId) {
-                setTimeout(() => {
-                    loadCard(cardId);
-                }, 1000);
-            }
-        };
     </script>
 </body>
 </html>
