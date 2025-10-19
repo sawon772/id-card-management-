@@ -336,7 +336,7 @@
             }
         });
 
-        // Existing ID Card Tool Functions (Same as before)
+        // Existing ID Card Tool Functions
         document.getElementById("file1").addEventListener("change", function(e){
             if(e.target.files[0]){
                 const reader = new FileReader();
@@ -457,7 +457,7 @@
             });
         }
 
-        // Modified Firebase Functions to include user ID
+        // Fixed Firebase Functions
         async function saveToFirestore() {
             const user = auth.currentUser;
             if (!user) {
@@ -481,8 +481,9 @@
                     width: document.getElementById("widthMM").value,
                     height: document.getElementById("heightMM").value,
                     paperSize: document.getElementById("paperSize").value,
-                    userId: user.uid, // Store user ID
+                    userId: user.uid,
                     userName: userName.textContent,
+                    userEmail: user.email,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
@@ -493,10 +494,11 @@
                 
             } catch (error) {
                 console.error("Error saving:", error);
-                alert("সেভ করতে সমস্যা হয়েছে!");
+                alert("সেভ করতে সমস্যা হয়েছে: " + error.message);
             }
         }
 
+        // FIXED: কার্ড লোড ফাংশন
         async function viewMyCards() {
             const user = auth.currentUser;
             if (!user) {
@@ -505,80 +507,110 @@
             }
 
             try {
-                const snapshot = await db.collection('idcards')
-                    .where("userId", "==", user.uid) // Only show user's cards
-                    .orderBy('createdAt', 'desc')
-                    .limit(10)
-                    .get();
+                console.log("Fetching cards for user:", user.uid);
+                
+                // সরাসরি সব cards নিয়ে আসি (কোনো where clause ছাড়া)
+                const snapshot = await db.collection('idcards').get();
                 
                 const cardsList = document.getElementById('savedCardsList');
                 cardsList.innerHTML = '<h3>My Saved Cards:</h3>';
                 
                 if (snapshot.empty) {
-                    cardsList.innerHTML += '<p>No saved cards found.</p>';
+                    cardsList.innerHTML += '<p>No cards found in database.</p>';
+                    console.log("No cards in database");
                     return;
                 }
                 
+                let foundCards = 0;
+                let totalCards = 0;
+                
                 snapshot.forEach(doc => {
+                    totalCards++;
                     const data = doc.data();
-                    const cardElement = document.createElement('div');
-                    cardElement.className = 'card-item';
                     
-                    cardElement.innerHTML = `
-                        <p><strong>ID:</strong> ${doc.id}</p>
-                        <p><strong>Saved:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
-                        <p><strong>Size:</strong> ${data.width}mm x ${data.height}mm</p>
-                        <button class="btn" onclick="loadCard('${doc.id}')">Load This Card</button>
-                        <button class="btn" onclick="shareCard('${doc.id}')">Share</button>
-                        <button class="btn" onclick="deleteCard('${doc.id}')" style="background: #f44336; color: white;">Delete</button>
-                    `;
-                    
-                    cardsList.appendChild(cardElement);
+                    // Manual filter - শুধু current user-এর cards show করব
+                    if (data.userId === user.uid) {
+                        foundCards++;
+                        const cardElement = document.createElement('div');
+                        cardElement.className = 'card-item';
+                        
+                        cardElement.innerHTML = `
+                            <p><strong>ID:</strong> ${doc.id}</p>
+                            <p><strong>Saved:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
+                            <p><strong>Size:</strong> ${data.width}mm x ${data.height}mm</p>
+                            <button class="btn" onclick="loadCard('${doc.id}')">Load This Card</button>
+                            <button class="btn" onclick="shareCard('${doc.id}')">Share</button>
+                            <button class="btn" onclick="deleteCard('${doc.id}')" style="background: #f44336; color: white;">Delete</button>
+                        `;
+                        
+                        cardsList.appendChild(cardElement);
+                    }
                 });
+                
+                console.log(`Total cards in database: ${totalCards}`);
+                console.log(`Your cards: ${foundCards}`);
+                
+                if (foundCards === 0) {
+                    cardsList.innerHTML += '<p>No saved cards found for your account.</p>';
+                }
                 
             } catch (error) {
                 console.error("Error loading cards:", error);
-                alert("কার্ড লোড করতে সমস্যা হয়েছে!");
+                alert("কার্ড লোড করতে সমস্যা হয়েছে: " + error.message);
             }
         }
 
+        // FIXED: কার্ড লোড ফাংশন
         async function loadCard(cardId) {
             try {
                 const doc = await db.collection('idcards').doc(cardId).get();
                 
                 if (doc.exists) {
                     const data = doc.data();
+                    console.log("Loading card:", cardId, data);
                     
+                    // Canvas সাইজ সেট করুন
+                    const paper = data.paperSize || "A4";
+                    switch(paper){
+                        case "A4": 
+                            canvas.width = 794;
+                            canvas.height = 1123;
+                            break;
+                        case "Letter": 
+                            canvas.width = 816;
+                            canvas.height = 1056;
+                            break;
+                        case "Legal": 
+                            canvas.width = 816;
+                            canvas.height = 1344;
+                            break;
+                    }
+                    
+                    // ইমেজ লোড করুন
                     const img = new Image();
                     img.onload = function() {
-                        const paper = data.paperSize;
-                        switch(paper){
-                            case "A4": 
-                                canvas.width=794;
-                                canvas.height=1123;
-                                break;
-                            case "Letter": 
-                                canvas.width=816;
-                                canvas.height=1056;
-                                break;
-                            case "Legal": 
-                                canvas.width=816;
-                                canvas.height=1344;
-                                break;
-                        }
-                        
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         alert("কার্ড লোড হয়েছে! ✅");
                     };
+                    
+                    img.onerror = function() {
+                        alert("ইমেজ লোড করতে সমস্যা হয়েছে!");
+                    };
+                    
                     img.src = data.canvasImage;
+                    
+                    // Form values সেট করুন
+                    if(data.width) document.getElementById("widthMM").value = data.width;
+                    if(data.height) document.getElementById("heightMM").value = data.height;
+                    if(data.paperSize) document.getElementById("paperSize").value = data.paperSize;
                     
                 } else {
                     alert("কার্ড খুঁজে পাওয়া যায়নি!");
                 }
             } catch (error) {
                 console.error("Error loading card:", error);
-                alert("লোড করতে সমস্যা হয়েছে!");
+                alert("লোড করতে সমস্যা হয়েছে: " + error.message);
             }
         }
 
@@ -601,7 +633,7 @@
                     viewMyCards();
                 } catch (error) {
                     console.error("Error deleting:", error);
-                    alert("ডিলিট করতে সমস্যা হয়েছে!");
+                    alert("ডিলিট করতে সমস্যা হয়েছে: " + error.message);
                 }
             }
         }
@@ -612,9 +644,10 @@
             const cardId = urlParams.get('id');
             
             if (cardId) {
+                // Wait for auth to initialize
                 setTimeout(() => {
                     loadCard(cardId);
-                }, 1000);
+                }, 2000);
             }
         };
     </script>
