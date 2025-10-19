@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced ID Card Tool</title>
+    <title>Advanced ID Card Tool - Professional Login</title>
     <style>
         * {
             margin: 0;
@@ -15,45 +15,286 @@
             font-family: 'Arial', sans-serif; 
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
         }
         
-        .app-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
             background: white;
             border-radius: 20px;
             box-shadow: 0 15px 30px rgba(0,0,0,0.2);
             overflow: hidden;
         }
         
-        .app-header {
+        .welcome-section {
+            flex: 1;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
         
-        .app-header h1 {
+        .welcome-section h1 {
             font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .welcome-section p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .login-section {
+            flex: 1;
+            padding: 50px 40px;
+            background: white;
+        }
+        
+        .logo {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .form-container {
+            max-width: 350px;
+            margin: 0 auto;
+        }
+        
+        .form-title {
+            font-size: 2em;
+            color: #333;
             margin-bottom: 10px;
             font-weight: 300;
         }
         
-        .app-header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+        .form-subtitle {
+            color: #666;
+            margin-bottom: 30px;
         }
         
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .form-group input:focus {
+            border-color: #667eea;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .toggle-password:hover {
+            color: #333;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e1e1e1;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+        }
+        
+        .form-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .feature-list li {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+        }
+        
+        .feature-list li::before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        /* Main App Styles */
+        #mainApp {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+        
+        .app-header {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* ID Card Tool Styles */
         .tool-container {
-            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .tool-title {
+            text-align: center;
+            color: #333;
+            margin: 20px 0;
+            font-size: 2.5em;
         }
         
         .upload-section {
-            background: #f8f9fa;
+            background: white;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .preview-section {
@@ -66,16 +307,18 @@
         .preview-img { 
             width: 150px; 
             height: 100px;
+            margin: 5px; 
             border: 2px solid #ddd; 
             border-radius: 8px;
             object-fit: cover;
         }
         
         .controls-section {
-            background: #f8f9fa;
+            background: white;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .control-group {
@@ -162,10 +405,11 @@
         }
         
         .saved-cards {
-            background: #f8f9fa;
+            background: white;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .card-item { 
@@ -184,51 +428,26 @@
             flex-wrap: wrap;
         }
         
-        .loading {
-            text-align: center;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin: 15px 0;
-            text-align: center;
-            font-weight: 500;
-        }
-        
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
-            .tool-container {
-                padding: 15px;
+            .container {
+                flex-direction: column;
+            }
+            
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .login-section {
+                padding: 30px 20px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2em;
+            }
+            
+            .tool-title {
+                font-size: 2em;
             }
             
             #a4canvas {
@@ -266,15 +485,148 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 </head>
 <body>
-    <div class="app-container">
+    <!-- Professional Login Page -->
+    <div id="loginPage">
+        <div class="container">
+            <div class="welcome-section">
+                <div class="logo">🪪</div>
+                <h1>ID Card Pro</h1>
+                <p>Create, manage, and share professional ID cards with our advanced tool. Save your designs in the cloud and access them from any device.</p>
+                
+                <ul class="feature-list">
+                    <li>Cloud Storage & Sync</li>
+                    <li>Multiple Export Formats</li>
+                    <li>Shareable Links</li>
+                    <li>Mobile Friendly</li>
+                    <li>Professional Templates</li>
+                </ul>
+            </div>
+            
+            <div class="login-section">
+                <div class="form-container">
+                    <h2 class="form-title">Welcome Back</h2>
+                    <p class="form-subtitle">Sign in to your account to continue</p>
+                    
+                    <div id="loginMessage" class="message" style="display: none;"></div>
+                    
+                    <form id="loginForm" onsubmit="event.preventDefault(); login();">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <div class="password-container">
+                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button>
+                            </div>
+                        </div>
+                        
+                        <div class="loading" id="loginLoading">
+                            <div class="spinner"></div>
+                            <p>Signing in...</p>
+                        </div>
+                        
+                        <button type="submit" class="btn" id="loginBtn">
+                            Sign In
+                        </button>
+                    </form>
+                    
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" onclick="showRegister(); return false;">Create one here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="registerPage" style="display: none;">
+        <div class="container">
+            <div class="welcome-section">
+                <div class="logo">🚀</div>
+                <h1>Get Started</h1>
+                <p>Join thousands of users who create professional ID cards with our powerful tool. Start your journey today!</p>
+                
+                <ul class="feature-list">
+                    <li>Free Forever Plan</li>
+                    <li>Unlimited Projects</li>
+                    <li>Priority Support</li>
+                    <li>Regular Updates</li>
+                    <li>Secure Cloud Storage</li>
+                </ul>
+            </div>
+            
+            <div class="login-section">
+                <div class="form-container">
+                    <h2 class="form-title">Create Account</h2>
+                    <p class="form-subtitle">Join us and start creating amazing ID cards</p>
+                    
+                    <div id="registerMessage" class="message" style="display: none;"></div>
+                    
+                    <form id="registerForm" onsubmit="event.preventDefault(); register();">
+                        <div class="form-group">
+                            <label for="registerName">Full Name</label>
+                            <input type="text" id="registerName" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerEmail">Email Address</label>
+                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerPassword">Password</label>
+                            <div class="password-container">
+                                <input type="password" id="registerPassword" placeholder="Create a password (min 6 characters)" required minlength="6">
+                                <button type="button" class="toggle-password" onclick="togglePassword('registerPassword')">👁️</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="password-container">
+                                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</button>
+                            </div>
+                        </div>
+                        
+                        <div class="loading" id="registerLoading">
+                            <div class="spinner"></div>
+                            <p>Creating your account...</p>
+                        </div>
+                        
+                        <button type="submit" class="btn" id="registerBtn">
+                            Create Account
+                        </button>
+                        
+                        <button type="button" class="btn btn-secondary" onclick="showLogin()">
+                            Back to Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp">
         <div class="app-header">
-            <h1>🪪 Advanced ID Card Tool</h1>
-            <p>Create, manage, and share professional ID cards with our advanced tool</p>
+            <h2>ID Card Pro</h2>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName">User</span>
+                <button class="action-btn" onclick="logout()" style="background: #dc3545; color: white; margin-left: 15px;">Logout</button>
+            </div>
         </div>
 
         <div class="tool-container">
+            <h1 class="tool-title">🪪 Advanced Driving License ID Tool</h1>
+
             <div class="upload-section">
                 <h3>Upload Images</h3>
                 <div class="control-group">
@@ -327,13 +679,6 @@
                 <button class="action-btn info" onclick="viewMyCards()">My Saved Cards</button>
             </div>
 
-            <div class="loading" id="mainLoading">
-                <div class="spinner"></div>
-                <p>Loading...</p>
-            </div>
-
-            <div id="message" class="message" style="display: none;"></div>
-
             <canvas id="a4canvas"></canvas>
 
             <div class="saved-cards">
@@ -357,6 +702,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
         // Canvas Elements
         const canvas = document.getElementById("a4canvas");
@@ -365,30 +711,243 @@
         let img2 = null;
 
         // UI Elements
-        const messageElement = document.getElementById("message");
-        const loadingElement = document.getElementById("mainLoading");
+        const loginPage = document.getElementById('loginPage');
+        const registerPage = document.getElementById('registerPage');
+        const mainApp = document.getElementById('mainApp');
+        const loginMessage = document.getElementById('loginMessage');
+        const registerMessage = document.getElementById('registerMessage');
+        const loginLoading = document.getElementById('loginLoading');
+        const registerLoading = document.getElementById('registerLoading');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
 
-        // Show/Hide Loading
-        function showLoading() {
-            loadingElement.style.display = 'block';
+        // Password Toggle Function
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
         }
 
-        function hideLoading() {
+        // Show/Hide Loading
+        function showLoading(loadingElement, button) {
+            loadingElement.style.display = 'block';
+            button.disabled = true;
+            button.innerHTML = 'Please wait...';
+        }
+
+        function hideLoading(loadingElement, button, originalText) {
             loadingElement.style.display = 'none';
+            button.disabled = false;
+            button.innerHTML = originalText;
         }
 
         // Show Message
-        function showMessage(message, type) {
-            messageElement.textContent = message;
-            messageElement.className = `message ${type}`;
-            messageElement.style.display = 'block';
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `message ${type}`;
+            element.style.display = 'block';
             
             setTimeout(() => {
-                messageElement.style.display = 'none';
+                element.style.display = 'none';
             }, 5000);
         }
 
-        // File Upload and Preview
+        // Navigation Functions
+        function showRegister() {
+            loginPage.style.display = 'none';
+            registerPage.style.display = 'block';
+            registerMessage.style.display = 'none';
+        }
+
+        function showLogin() {
+            registerPage.style.display = 'none';
+            loginPage.style.display = 'block';
+            loginMessage.style.display = 'none';
+        }
+
+        function showMainApp() {
+            loginPage.style.display = 'none';
+            registerPage.style.display = 'none';
+            mainApp.style.display = 'block';
+        }
+
+        // Registration Function
+        async function register() {
+            const name = document.getElementById("registerName").value.trim();
+            const email = document.getElementById("registerEmail").value.trim();
+            const password = document.getElementById("registerPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            // Validation
+            if (!name || !email || !password || !confirmPassword) {
+                showMessage(registerMessage, "Please fill in all fields", "error");
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage(registerMessage, "Password must be at least 6 characters", "error");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage(registerMessage, "Passwords do not match", "error");
+                return;
+            }
+
+            showLoading(registerLoading, registerBtn);
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Save user profile
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Update user profile
+                await userCredential.user.updateProfile({
+                    displayName: name
+                });
+
+                showMessage(registerMessage, "Account created successfully! Redirecting...", "success");
+                
+                setTimeout(() => {
+                    showMainApp();
+                    // Update UI with user info
+                    document.getElementById('userName').textContent = name;
+                    document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+                }, 2000);
+
+            } catch (error) {
+                let errorMessage = "Registration failed. ";
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage += "Email is already registered.";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage += "Invalid email address.";
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage += "Password is too weak.";
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                
+                showMessage(registerMessage, errorMessage, "error");
+            } finally {
+                hideLoading(registerLoading, registerBtn, "Create Account");
+            }
+        }
+
+        // Login Function
+        async function login() {
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value;
+
+            if (!email || !password) {
+                showMessage(loginMessage, "Please enter both email and password", "error");
+                return;
+            }
+
+            showLoading(loginLoading, loginBtn);
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                
+                // Update last login
+                await db.collection('users').doc(userCredential.user.uid).update({
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Get user data
+                const userDoc = await db.collection('users').doc(userCredential.user.uid).get();
+                const userData = userDoc.data();
+
+                showMessage(loginMessage, "Login successful! Redirecting...", "success");
+                
+                setTimeout(() => {
+                    showMainApp();
+                    // Update UI with user info
+                    document.getElementById('userName').textContent = userData.name;
+                    document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
+                }, 1500);
+
+            } catch (error) {
+                let errorMessage = "Login failed. ";
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage += "No account found with this email.";
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage += "Incorrect password.";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage += "Invalid email address.";
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                
+                showMessage(loginMessage, errorMessage, "error");
+            } finally {
+                hideLoading(loginLoading, loginBtn, "Sign In");
+            }
+        }
+
+        // Logout Function
+        function logout() {
+            auth.signOut().then(() => {
+                mainApp.style.display = 'none';
+                loginPage.style.display = 'block';
+                
+                // Clear forms
+                document.getElementById("loginForm").reset();
+                document.getElementById("registerForm").reset();
+                
+                showMessage(loginMessage, "You have been logged out successfully", "success");
+            });
+        }
+
+        // Check Auth State - এই ফাংশনটি লগইন পেজ দেখাবে বা main app
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                db.collection('users').doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        document.getElementById('userName').textContent = userData.name;
+                        document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
+                    }
+                    showMainApp();
+                });
+            } else {
+                // User is signed out - লগইন পেজ দেখাবে
+                loginPage.style.display = 'block';
+                registerPage.style.display = 'none';
+                mainApp.style.display = 'none';
+            }
+        });
+
+        // Enter key support
+        document.getElementById('loginForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                register();
+            }
+        });
+
+        // ID Card Tool Functions
         document.getElementById("file1").addEventListener("change", function(e){
             if(e.target.files[0]){
                 const reader = new FileReader();
@@ -427,146 +986,106 @@
             const file1 = document.getElementById("file1").files[0];
             const file2 = document.getElementById("file2").files[0];
             if(!file1 || !file2){
-                showMessage("দুইটি ফাইল বেছে নিন!", "error");
+                alert("দুইটি ফাইল বেছে নিন!");
                 return;
             }
-
-            showLoading();
+            img1 = await loadImage(file1);
+            img2 = await loadImage(file2);
             
-            try {
-                img1 = await loadImage(file1);
-                img2 = await loadImage(file2);
-                
-                const paper = document.getElementById("paperSize").value;
-                switch(paper){
-                    case "A4": 
-                        canvas.width=794;
-                        canvas.height=1123;
-                        break;
-                    case "Letter": 
-                        canvas.width=816;
-                        canvas.height=1056;
-                        break;
-                    case "Legal": 
-                        canvas.width=816;
-                        canvas.height=1344;
-                        break;
-                }
-                
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.fillStyle="white";
-                ctx.fillRect(0,0,canvas.width,canvas.height);
-
-                const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
-                const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
-                const gap = 90;
-                const x = (canvas.width - cardWidth)/2;
-                const y1 = (canvas.height - (cardHeight*2 + gap))/2;
-                const y2 = y1 + cardHeight + gap;
-
-                ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
-                ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
-                
-                showMessage("প্রিভিউ তৈরি হয়েছে ✅", "success");
-                
-            } catch (error) {
-                showMessage("প্রিভিউ তৈরি করতে সমস্যা হয়েছে!", "error");
-                console.error(error);
-            } finally {
-                hideLoading();
+            const paper = document.getElementById("paperSize").value;
+            switch(paper){
+                case "A4": 
+                    canvas.width=794;
+                    canvas.height=1123;
+                    break;
+                case "Letter": 
+                    canvas.width=816;
+                    canvas.height=1056;
+                    break;
+                case "Legal": 
+                    canvas.width=816;
+                    canvas.height=1344;
+                    break;
             }
+            
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="white";
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
+            const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
+            const gap = 90;
+            const x = (canvas.width - cardWidth)/2;
+            const y1 = (canvas.height - (cardHeight*2 + gap))/2;
+            const y2 = y1 + cardHeight + gap;
+
+            ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
+            ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
+            
+            alert("প্রিভিউ তৈরি হয়েছে ✅");
         }
 
         function downloadOutput(){
-            if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", "error");
-                return;
-            }
-
             const type = document.getElementById("downloadType").value;
-            try {
-                if(type==="PDF"){
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
-                    pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
-                    pdf.save("ID_Arranged.pdf");
-                } else {
-                    const link = document.createElement("a");
-                    link.download = `ID_Arranged.${type.toLowerCase()}`;
-                    link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
-                    link.click();
-                }
-                showMessage("ডাউনলোড শুরু হয়েছে ✅", "success");
-            } catch (error) {
-                showMessage("ডাউনলোড করতে সমস্যা হয়েছে!", "error");
+            if(type==="PDF"){
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
+                pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
+                pdf.save("ID_Arranged.pdf");
+            } else {
+                const link = document.createElement("a");
+                link.download = `ID_Arranged.${type.toLowerCase()}`;
+                link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
+                link.click();
             }
         }
 
         function printCanvas(){
-            if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", "error");
-                return;
-            }
-
-            try {
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write(`
-                    <html>
-                        <head><title>Print ID Card</title></head>
-                        <body style="text-align: center; margin: 0; padding: 20px;">
-                            <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%; height: auto;">
-                        </body>
-                    </html>
-                `);
-                printWindow.document.close();
-                printWindow.print();
-            } catch (error) {
-                showMessage("প্রিন্ট করতে সমস্যা হয়েছে!", "error");
-            }
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head><title>Print ID Card</title></head>
+                    <body style="text-align: center;">
+                        <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%;">
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
         }
 
         async function shareCanvas(){
-            if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", "error");
-                return;
-            }
-
-            try {
-                canvas.toBlob(async function(blob){
-                    const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
-                    if(navigator.canShare && navigator.canShare({ files: filesArray })){
-                        try{
-                            await navigator.share({
-                                files: filesArray,
-                                title: 'ID Card A4',
-                                text: 'Here is your arranged ID card!'
-                            });
-                            showMessage("শেয়ার সফল হয়েছে ✅", "success");
-                        } catch(err){
-                            showMessage("শেয়ার করা যায়নি: " + err, "error");
-                        }
-                    } else {
-                        // Fallback for browsers that don't support sharing
-                        const link = document.createElement("a");
-                        link.download = "ID_Card.png";
-                        link.href = URL.createObjectURL(blob);
-                        link.click();
-                        showMessage("ইমেজ ডাউনলোড হয়েছে ✅", "success");
+            canvas.toBlob(async function(blob){
+                const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
+                if(navigator.canShare && navigator.canShare({ files: filesArray })){
+                    try{
+                        await navigator.share({
+                            files: filesArray,
+                            title: 'ID Card A4',
+                            text: 'Here is your arranged ID card!'
+                        });
+                        alert("Shared successfully ✅");
+                    } catch(err){
+                        alert("Share failed: " + err);
                     }
-                });
-            } catch (error) {
-                showMessage("শেয়ার করতে সমস্যা হয়েছে!", "error");
-            }
+                } else {
+                    alert("Your device/browser does not support direct file sharing!");
+                }
+            });
         }
 
-        // Firebase Functions - Simple Version (No Authentication)
+        // Firebase Functions
         async function saveToFirestore() {
-            if (!canvas.width) {
-                showMessage("প্রথমে Preview তৈরি করুন!", "error");
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Please login first!");
                 return;
             }
 
-            showLoading();
+            if (!canvas.width) {
+                alert("প্রথমে Preview তৈরি করুন!");
+                return;
+            }
 
             const canvasDataURL = canvas.toDataURL('image/png');
             const cardId = 'card_' + Date.now();
@@ -579,34 +1098,41 @@
                     width: document.getElementById("widthMM").value,
                     height: document.getElementById("heightMM").value,
                     paperSize: document.getElementById("paperSize").value,
+                    userId: user.uid,
+                    userName: document.getElementById('userName').textContent,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
+                alert(`সফলভাবে সেভ হয়েছে! ✅\nআপনার ID: ${cardId}`);
+                
                 const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
-                showMessage(`সেভ হয়েছে! ID: ${cardId}\nশেয়ার লিংক: ${shareableLink}`, "success");
+                alert(`শেয়ার করার লিংক:\n${shareableLink}`);
                 
             } catch (error) {
                 console.error("Error saving:", error);
-                showMessage("সেভ করতে সমস্যা হয়েছে!", "error");
-            } finally {
-                hideLoading();
+                alert("সেভ করতে সমস্যা হয়েছে!");
             }
         }
 
         async function viewMyCards() {
-            showLoading();
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Please login first!");
+                return;
+            }
+
             try {
                 const snapshot = await db.collection('idcards')
+                    .where("userId", "==", user.uid)
                     .orderBy('createdAt', 'desc')
-                    .limit(20)
+                    .limit(10)
                     .get();
                 
                 const cardsList = document.getElementById('savedCardsList');
-                cardsList.innerHTML = '<h3>সব সেভ করা কার্ড:</h3>';
+                cardsList.innerHTML = '<h3>My Saved Cards:</h3>';
                 
                 if (snapshot.empty) {
-                    cardsList.innerHTML += '<p>কোনো সেভ করা কার্ড পাওয়া যায়নি।</p>';
-                    hideLoading();
+                    cardsList.innerHTML += '<p>No saved cards found.</p>';
                     return;
                 }
                 
@@ -617,12 +1143,12 @@
                     
                     cardElement.innerHTML = `
                         <p><strong>ID:</strong> ${doc.id}</p>
-                        <p><strong>সেভ করা হয়েছে:</strong> ${data.createdAt?.toDate().toLocaleString('bn-BD') || 'Unknown'}</p>
-                        <p><strong>সাইজ:</strong> ${data.width}mm x ${data.height}mm</p>
+                        <p><strong>Saved:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
+                        <p><strong>Size:</strong> ${data.width}mm x ${data.height}mm</p>
                         <div class="card-actions">
-                            <button class="action-btn info" onclick="loadCard('${doc.id}')">এই কার্ড লোড করুন</button>
-                            <button class="action-btn primary" onclick="shareCard('${doc.id}')">শেয়ার করুন</button>
-                            <button class="action-btn" onclick="deleteCard('${doc.id}')" style="background: #dc3545; color: white;">ডিলিট করুন</button>
+                            <button class="action-btn info" onclick="loadCard('${doc.id}')">Load This Card</button>
+                            <button class="action-btn primary" onclick="shareCard('${doc.id}')">Share</button>
+                            <button class="action-btn" onclick="deleteCard('${doc.id}')" style="background: #dc3545; color: white;">Delete</button>
                         </div>
                     `;
                     
@@ -631,101 +1157,70 @@
                 
             } catch (error) {
                 console.error("Error loading cards:", error);
-                showMessage("কার্ড লোড করতে সমস্যা হয়েছে!", "error");
-            } finally {
-                hideLoading();
+                alert("কার্ড লোড করতে সমস্যা হয়েছে!");
             }
         }
 
         async function loadCard(cardId) {
-            showLoading();
             try {
                 const doc = await db.collection('idcards').doc(cardId).get();
                 
                 if (doc.exists) {
                     const data = doc.data();
                     
-                    // Set canvas size first
-                    const paper = data.paperSize;
-                    switch(paper){
-                        case "A4": 
-                            canvas.width=794;
-                            canvas.height=1123;
-                            break;
-                        case "Letter": 
-                            canvas.width=816;
-                            canvas.height=1056;
-                            break;
-                        case "Legal": 
-                            canvas.width=816;
-                            canvas.height=1344;
-                            break;
-                    }
-                    
-                    // Load the image
                     const img = new Image();
                     img.onload = function() {
+                        const paper = data.paperSize;
+                        switch(paper){
+                            case "A4": 
+                                canvas.width=794;
+                                canvas.height=1123;
+                                break;
+                            case "Letter": 
+                                canvas.width=816;
+                                canvas.height=1056;
+                                break;
+                            case "Legal": 
+                                canvas.width=816;
+                                canvas.height=1344;
+                                break;
+                        }
+                        
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        showMessage("কার্ড লোড হয়েছে! ✅", "success");
-                        hideLoading();
+                        alert("কার্ড লোড হয়েছে! ✅");
                     };
-                    
-                    img.onerror = function() {
-                        showMessage("ইমেজ লোড করতে সমস্যা হয়েছে!", "error");
-                        hideLoading();
-                    };
-                    
                     img.src = data.canvasImage;
                     
-                    // Set the form values
-                    document.getElementById("widthMM").value = data.width;
-                    document.getElementById("heightMM").value = data.height;
-                    document.getElementById("paperSize").value = data.paperSize;
-                    
                 } else {
-                    showMessage("কার্ড খুঁজে পাওয়া যায়নি!", "error");
-                    hideLoading();
+                    alert("কার্ড খুঁজে পাওয়া যায়নি!");
                 }
             } catch (error) {
                 console.error("Error loading card:", error);
-                showMessage("লোড করতে সমস্যা হয়েছে!", "error");
-                hideLoading();
+                alert("লোড করতে সমস্যা হয়েছে!");
             }
         }
 
         function shareCard(cardId) {
             const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
             
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(shareableLink).then(() => {
-                    showMessage("লিংক কপি হয়েছে! ✅", "success");
-                }).catch(() => {
-                    showMessage("লিংক: " + shareableLink, "success");
-                });
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareableLink);
+                alert("লিংক কপি হয়েছে! ✅\n\n" + shareableLink);
             } else {
-                // Fallback for older browsers
-                const tempInput = document.createElement("input");
-                tempInput.value = shareableLink;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand("copy");
-                document.body.removeChild(tempInput);
-                showMessage("লিংক কপি হয়েছে! ✅", "success");
+                alert("শেয়ার করার লিংক:\n" + shareableLink);
             }
         }
 
         async function deleteCard(cardId) {
             if (confirm("আপনি কি এই কার্ড ডিলিট করতে চান?")) {
-                showLoading();
                 try {
                     await db.collection('idcards').doc(cardId).delete();
-                    showMessage("কার্ড ডিলিট হয়েছে! ✅", "success");
+                    alert("কার্ড ডিলিট হয়েছে! ✅");
                     viewMyCards();
                 } catch (error) {
                     console.error("Error deleting:", error);
-                    showMessage("ডিলিট করতে সমস্যা হয়েছে!", "error");
-                    hideLoading();
+                    alert("ডিলিট করতে সমস্যা হয়েছে!");
                 }
             }
         }
@@ -736,7 +1231,6 @@
             const cardId = urlParams.get('id');
             
             if (cardId) {
-                showLoading();
                 setTimeout(() => {
                     loadCard(cardId);
                 }, 1000);
