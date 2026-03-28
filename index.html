@@ -2,1855 +2,1341 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ID Card Pro - Professional ID Card Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>ID Card Pro - Professional ID Card Designer</title>
     <style>
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a6fd8;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --border: #e2e8f0;
-            --shadow: 0 10px 25px rgba(0,0,0,0.1);
-            --radius: 12px;
-        }
-
+        /* All previous styles remain exactly the same */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #ec489a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --dark: #0f172a;
+            --gray-900: #111827;
+            --gray-800: #1f2937;
+            --gray-700: #374151;
+            --gray-600: #4b5563;
+            --gray-500: #6b7280;
+            --gray-400: #9ca3af;
+            --gray-300: #d1d5db;
+            --gray-200: #e5e7eb;
+            --gray-100: #f3f4f6;
+            --gray-50: #f9fafb;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(145deg, #f5f3ff 0%, #ede9fe 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            line-height: 1.6;
+            color: var(--gray-900);
         }
 
         /* Login Container */
-        .auth-container {
-            display: flex;
-            max-width: 1000px;
-            width: 100%;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            min-height: 600px;
-        }
+        .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-card { max-width: 1100px; width: 100%; background: white; border-radius: var(--radius-xl); overflow: hidden; display: flex; flex-wrap: wrap; box-shadow: var(--shadow-xl); }
+        .auth-hero { flex: 1; min-width: 280px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 48px 32px; color: white; position: relative; overflow: hidden; }
+        .auth-hero .logo { font-size: 3rem; margin-bottom: 24px; }
+        .auth-hero h1 { font-size: 2rem; margin-bottom: 12px; font-weight: 700; }
+        .auth-hero p { font-size: 1rem; opacity: 0.9; margin-bottom: 32px; line-height: 1.5; }
+        .feature-list { list-style: none; margin-top: 24px; }
+        .feature-list li { margin: 12px 0; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        .feature-list li::before { content: "✓"; width: 20px; height: 20px; background: rgba(255,255,255,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+        .auth-form { flex: 1; min-width: 320px; padding: 48px 40px; background: white; }
+        .form-header { margin-bottom: 32px; }
+        .form-header h2 { font-size: 1.75rem; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+        .form-header p { color: var(--gray-500); font-size: 0.9rem; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.85rem; color: var(--gray-700); }
+        .input-wrapper { position: relative; }
+        .input-wrapper input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); font-size: 1rem; transition: all 0.2s; background: var(--gray-50); font-family: inherit; }
+        .input-wrapper input:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+        .toggle-password { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem; opacity: 0.6; }
+        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: var(--radius-md); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .btn-secondary { width: 100%; padding: 14px; background: var(--gray-100); color: var(--gray-700); border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; margin-top: 12px; }
+        .form-footer { text-align: center; margin-top: 24px; font-size: 0.85rem; color: var(--gray-500); }
+        .form-footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        .message { padding: 12px; border-radius: var(--radius-md); margin-bottom: 20px; font-size: 0.85rem; text-align: center; }
+        .message.success { background: #d1fae5; color: #065f46; }
+        .message.error { background: #fee2e2; color: #991b1b; }
+
+        /* Main App */
+        #mainApp { display: none; min-height: 100vh; background: var(--gray-50); }
+        .app-header { background: white; padding: 0 16px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray-200); backdrop-filter: blur(10px); background: rgba(255,255,255,0.95); }
+        .app-logo { display: flex; align-items: center; gap: 8px; }
+        .app-logo span { font-size: 1.5rem; }
+        .app-logo h1 { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .user-section { display: flex; align-items: center; gap: 12px; position: relative; }
+        .user-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+        .user-name { font-weight: 500; color: var(--gray-700); display: none; }
+        .settings-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; transition: background 0.2s; }
+        .settings-btn:hover { background: var(--gray-100); }
+        .settings-dropdown { position: absolute; top: 100%; right: 0; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); padding: 8px 0; min-width: 160px; display: none; z-index: 1000; }
+        .settings-dropdown.show { display: block; }
+        .dropdown-item { padding: 10px 16px; display: flex; align-items: center; gap: 8px; width: 100%; border: none; background: none; cursor: pointer; font-size: 0.8rem; }
+        .dropdown-item:hover { background: var(--gray-100); }
+
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+        .tool-header { text-align: center; margin-bottom: 20px; }
+        .tool-header h1 { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 4px; }
+        .tool-header p { color: var(--gray-500); font-size: 0.8rem; }
+
+        .card { background: white; border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); }
+        .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .card-header h3 { font-size: 1rem; font-weight: 600; color: var(--gray-800); }
+
+        .mode-selector { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .mode-btn { flex: 1; min-width: 90px; padding: 10px 6px; background: white; border: 2px solid var(--gray-200); border-radius: var(--radius-md); font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .mode-btn span:first-child { font-size: 1.2rem; }
+        .mode-btn.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-color: transparent; }
+        .mode-btn.id-card-active { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+
+        .upload-grid { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .upload-btn { flex: 1; min-width: 140px; text-align: center; }
+        .upload-btn input { display: none; }
+        .upload-label { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; background: var(--gray-50); border: 2px dashed var(--gray-300); border-radius: var(--radius-lg); cursor: pointer; transition: all 0.2s; }
+        .upload-label:hover { border-color: var(--primary); background: white; }
+        .upload-label span:first-child { font-size: 1.5rem; }
+        .upload-label span:last-child { font-weight: 500; font-size: 0.8rem; color: var(--gray-600); }
+
+        .preview-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .preview-item { text-align: center; position: relative; cursor: pointer; }
+        .preview-img { width: 120px; height: 90px; object-fit: cover; border-radius: var(--radius-md); border: 2px solid var(--gray-200); transition: all 0.2s; }
+        .preview-img.selected { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+        .preview-img.both-selected { border-color: var(--success); }
+        .preview-label { display: block; margin-top: 4px; font-size: 0.65rem; font-weight: 500; color: var(--gray-500); }
+        .remove-btn { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; background: var(--danger); color: white; border: none; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 10; box-shadow: var(--shadow-sm); }
+        .remove-btn:hover { transform: scale(1.1); background: #dc2626; }
+        .preview-item:hover .remove-btn { display: flex; }
+
+        .side-selector { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+        .side-btn { flex: 1; min-width: 80px; padding: 10px 12px; background: white; border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .side-btn.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-color: transparent; }
+        .side-btn.both-active { background: linear-gradient(135deg, var(--success), var(--info)); color: white; }
+
+        .control-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+        .control-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 8px 4px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .control-card:hover { border-color: var(--primary); transform: translateY(-1px); }
+        .control-icon { font-size: 1.2rem; margin-bottom: 4px; }
+        .control-name { font-size: 0.6rem; font-weight: 500; color: var(--gray-600); margin-bottom: 2px; }
+        .control-value { font-size: 0.55rem; font-weight: 600; color: var(--primary); background: var(--gray-100); padding: 2px 4px; border-radius: 20px; display: inline-block; }
+
+        .expanded-panel { background: white; border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow-lg); display: none; animation: slideUp 0.2s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .expanded-panel.show { display: block; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-200); }
+        .panel-title { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 600; }
+        .close-panel { width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
+        .slider-container { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .slider-container input { flex: 1; height: 4px; border-radius: 2px; background: var(--gray-200); -webkit-appearance: none; }
+        .slider-container input::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; }
+        .step-btn { width: 44px; height: 44px; background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: var(--radius-md); font-size: 1.2rem; font-weight: 600; cursor: pointer; }
+        .step-btn:active { transform: scale(0.95); }
+        .value-badge { background: var(--primary-light); color: white; padding: 6px 16px; border-radius: 40px; font-weight: 600; font-size: 0.9rem; }
+        .panel-actions { display: flex; gap: 10px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--gray-200); }
+
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0; }
+        .action-btn { padding: 12px; border: none; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.75rem; }
+        .action-btn.primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+        .action-btn.success { background: var(--success); color: white; }
+        .action-btn.info { background: var(--info); color: white; }
+        .action-btn.warning { background: var(--warning); color: white; }
+        .action-btn:active { transform: scale(0.98); }
+
+        .canvas-wrapper { background: var(--gray-200); border-radius: var(--radius-lg); padding: 12px; text-align: center; overflow-x: auto; }
+        #a4canvas { max-width: 100%; height: auto; border-radius: var(--radius-md); box-shadow: var(--shadow-md); }
+
+        .badge { position: fixed; bottom: 10px; padding: 4px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: 500; color: white; z-index: 1000; }
+        .quality-badge { right: 10px; background: var(--success); }
+        .realtime-badge { left: 10px; background: var(--info); }
+
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
+        .modal.show { display: flex; }
+        .modal-content { background: white; border-radius: var(--radius-lg); padding: 20px; max-width: 350px; width: 90%; }
+
+        /* Crop Overlay */
+        .crop-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; }
+        .crop-container { background: white; border-radius: 24px; max-width: 95vw; max-height: 90vh; width: 90%; height: 85%; overflow: hidden; display: flex; flex-direction: column; }
+        .crop-canvas-wrapper { overflow: auto; background: #1e1e2f; display: flex; align-items: center; justify-content: center; flex: 1; padding: 20px; }
+        .crop-canvas { display: block; cursor: crosshair; max-width: 100%; max-height: 100%; width: auto; height: auto; }
+        .rotation-controls { padding: 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
+        .rotate-btn { width: 48px; height: 48px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; }
+        .rotate-btn:hover { background: var(--primary); color: white; }
+        .rotate-value { background: var(--primary-light); color: white; padding: 8px 16px; border-radius: 40px; font-weight: 600; font-size: 0.9rem; min-width: 70px; text-align: center; }
+        .corner-toggle { padding: 8px 16px; background: #f1f5f9; border-radius: 40px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid #e2e8f0; font-size: 0.8rem; font-weight: 500; }
+        .corner-toggle.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .aspect-presets { padding: 10px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .aspect-btn { padding: 6px 14px; background: white; border: 1px solid #e5e7eb; border-radius: 30px; font-size: 0.75rem; cursor: pointer; }
+        .aspect-btn.active { background: var(--primary); color: white; }
+        .crop-toolbar { padding: 12px 16px; background: white; border-top: 1px solid #e5e7eb; display: flex; gap: 12px; justify-content: flex-end; }
+        .crop-btn { padding: 10px 24px; border: none; border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+        .crop-btn.primary { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; }
+        .crop-btn.secondary { background: #f3f4f6; color: #374151; }
 
-        .welcome-section {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 50px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .welcome-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(45deg);
-        }
-
-        .logo {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .welcome-section h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-            position: relative;
-            z-index: 2;
-        }
-
-        .welcome-section p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .feature-list {
-            list-style: none;
-            margin-top: 30px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .feature-list li {
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            font-size: 1rem;
-            justify-content: center;
-        }
-
-        .feature-list li::before {
-            content: "✓";
-            color: var(--success);
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-
-        .auth-section {
-            flex: 1;
-            padding: 50px 40px;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .form-title {
-            font-size: 2rem;
-            color: var(--dark);
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .form-subtitle {
-            color: var(--gray);
-            margin-bottom: 30px;
-            font-size: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--dark);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: var(--light);
-            font-family: inherit;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            background: white;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .password-container {
-            position: relative;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--gray);
-            cursor: pointer;
-            font-size: 18px;
-            transition: color 0.3s ease;
-        }
-
-        .toggle-password:hover {
-            color: var(--dark);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 15px;
-            font-family: inherit;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: var(--light);
-            color: var(--dark);
-            border: 2px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 30px;
-            color: var(--gray);
-        }
-
-        .form-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .form-footer a:hover {
-            color: var(--secondary);
-            text-decoration: underline;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin: 15px 0;
-            text-align: center;
-            font-weight: 500;
-            border: 1px solid transparent;
-        }
-
-        .message.success {
-            background: #d1fae5;
-            color: #065f46;
-            border-color: #a7f3d0;
-        }
-
-        .message.error {
-            background: #fee2e2;
-            color: #991b1b;
-            border-color: #fecaca;
-        }
-
-        .message.info {
-            background: #dbeafe;
-            color: #1e40af;
-            border-color: #bfdbfe;
-        }
-
-        /* Main App Styles */
-        #mainApp {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-            background: var(--light);
-        }
-
-        .app-header {
-            background: white;
-            padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-        }
-
-        .app-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .app-brand .logo {
-            font-size: 2rem;
-            margin: 0;
-        }
-
-        .app-brand h1 {
-            font-size: 1.5rem;
-            color: var(--dark);
-            font-weight: 700;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .settings-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-            transition: color 0.3s ease;
-            padding: 8px;
-            border-radius: 50%;
-        }
-
-        .settings-btn:hover {
-            color: var(--primary);
-            background: var(--light);
-        }
-
-        .settings-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 10px 0;
-            min-width: 200px;
-            display: none;
-            z-index: 1000;
-        }
-
-        .settings-dropdown.show {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--dark);
-            transition: background 0.3s ease;
-            border: none;
-            background: none;
-            width: 100%;
-            font-family: inherit;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .dropdown-item:hover {
-            background: var(--light);
-        }
-
-        .dropdown-item i {
-            font-size: 1.1rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Tool Styles */
-        .tool-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        .tool-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .tool-title {
-            font-size: 2.5rem;
-            color: var(--dark);
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .tool-subtitle {
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .card h3 {
-            color: var(--dark);
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .upload-section .control-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .file-input {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-input input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-input-label {
-            display: inline-block;
-            padding: 12px 24px;
-            background: var(--light);
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            min-width: 150px;
-        }
-
-        .file-input-label:hover {
-            border-color: var(--primary);
-            background: white;
-        }
-
-        .preview-section {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 30px 0;
-        }
-
-        .preview-img {
-            width: 180px;
-            height: 120px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .preview-img:hover {
-            transform: scale(1.05);
-        }
-
-        .control-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .control-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .control-item label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--dark);
-            font-size: 0.9rem;
-        }
-
-        .control-item input, .control-item select {
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: var(--light);
-        }
-
-        .control-item input:focus, .control-item select:focus {
-            border-color: var(--primary);
-            background: white;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        .action-btn {
-            padding: 15px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .action-btn:hover::before {
-            left: 100%;
-        }
-
-        .action-btn.primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-        }
-
-        .action-btn.success {
-            background: var(--success);
-            color: white;
-        }
-
-        .action-btn.info {
-            background: var(--info);
-            color: white;
-        }
-
-        .action-btn.warning {
-            background: var(--warning);
-            color: white;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        #a4canvas {
-            width: 794px;
-            height: 1123px;
-            max-width: 100%;
-            border: 2px solid var(--border);
-            background: white;
-            margin: 30px auto;
-            display: block;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-
-        .saved-cards .card-item {
-            border: 1px solid var(--border);
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .card-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .card-actions .btn {
-            width: auto;
-            margin: 0;
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            color: var(--dark);
-            font-weight: 600;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-            transition: color 0.3s ease;
-        }
-
-        .close-modal:hover {
-            color: var(--danger);
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .auth-container {
-                flex-direction: column;
-                min-height: auto;
-            }
-
-            .welcome-section {
-                padding: 30px 20px;
-            }
-
-            .auth-section {
-                padding: 30px 20px;
-            }
-
-            .app-header {
-                padding: 0 15px;
-            }
-
-            .user-name {
-                display: none;
-            }
-
-            .tool-container {
-                padding: 20px 15px;
-            }
-
-            .tool-title {
-                font-size: 2rem;
-            }
-
-            #a4canvas {
-                width: 100% !important;
-                height: auto !important;
-            }
-
-            .control-group {
-                grid-template-columns: 1fr;
-            }
-
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-
-            .preview-section {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .preview-img {
-                width: 100%;
-                max-width: 200px;
-            }
-        }
-
-        /* Settings Page Styles */
-        .settings-page {
-            display: none;
-        }
-
-        .settings-page.active {
-            display: block;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .settings-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .settings-card h3 {
-            color: var(--dark);
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            .control-grid { grid-template-columns: repeat(4, 1fr); }
+            .mode-btn { min-width: 75px; padding: 8px 4px; font-size: 0.65rem; }
+            .preview-img { width: 100px; height: 75px; }
+            .action-grid { grid-template-columns: repeat(2, 1fr); }
+            .rotate-btn { width: 40px; height: 40px; font-size: 0.9rem; }
         }
     </style>
-    <!-- jsPDF Library -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 </head>
 <body>
-    <!-- Login Page -->
+    <!-- Login and register pages same as before (kept short for brevity) -->
     <div id="loginPage">
         <div class="auth-container">
-            <div class="welcome-section">
-                <div class="logo">🪪</div>
-                <h1>ID Card Pro</h1>
-                <p>Create professional ID cards with our advanced cloud-based tool</p>
-                <ul class="feature-list">
-                    <li>Secure Cloud Storage</li>
-                    <li>Multiple Export Formats</li>
-                    <li>Shareable Links</li>
-                    <li>Mobile Friendly</li>
-                    <li>Professional Templates</li>
-                </ul>
-            </div>
-            
-            <div class="auth-section">
-                <div class="form-container">
-                    <h2 class="form-title">Welcome Back</h2>
-                    <p class="form-subtitle">Sign in to your account to continue</p>
-                    
+            <div class="auth-card">
+                <div class="auth-hero">
+                    <div class="logo">🪪</div>
+                    <h1>ID Card Pro</h1>
+                    <p>Create professional ID cards with ease</p>
+                    <ul class="feature-list">
+                        <li>Cloud Storage</li><li>Multiple Formats</li><li>Real-time Preview</li><li>360° Rotation & Crop</li>
+                    </ul>
+                </div>
+                <div class="auth-form">
+                    <div class="form-header"><h2>Welcome back</h2><p>Sign in to continue</p></div>
                     <div id="loginMessage" class="message" style="display: none;"></div>
-                    
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="loginEmail">Email Address</label>
-                            <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="loginPassword">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="form-footer">
-                            <a href="#" onclick="showForgotPassword(); return false;">Forgot your password?</a>
-                        </div>
-                        
-                        <div class="loading" id="loginLoading">
-                            <div class="spinner"></div>
-                            <p>Signing in...</p>
-                        </div>
-                        
-                        <button type="button" class="btn" onclick="login()">
-                            Sign In
-                        </button>
-                    </form>
-                    
-                    <div class="form-footer">
-                        <p>Don't have an account? <a href="#" onclick="showRegister(); return false;">Create one here</a></p>
-                    </div>
+                    <div class="input-group"><label>Email</label><div class="input-wrapper"><input type="email" id="loginEmail" placeholder="your@email.com"></div></div>
+                    <div class="input-group"><label>Password</label><div class="input-wrapper"><input type="password" id="loginPassword" placeholder="••••••••"><button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">👁️</button></div></div>
+                    <div class="form-footer"><a href="#" onclick="showForgotPassword(); return false;">Forgot password?</a></div>
+                    <button class="btn-primary" onclick="login()">Sign In</button>
+                    <div class="form-footer"><p>No account? <a href="#" onclick="showRegister(); return false;">Create one</a></p></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Register Page -->
     <div id="registerPage" style="display: none;">
         <div class="auth-container">
-            <div class="welcome-section">
-                <div class="logo">🚀</div>
-                <h1>Get Started</h1>
-                <p>Join thousands of professionals creating amazing ID cards</p>
-                <ul class="feature-list">
-                    <li>Free Forever Plan</li>
-                    <li>Unlimited Projects</li>
-                    <li>Priority Support</li>
-                    <li>Regular Updates</li>
-                    <li>Secure Storage</li>
-                </ul>
-            </div>
-            
-            <div class="auth-section">
-                <div class="form-container">
-                    <h2 class="form-title">Create Account</h2>
-                    <p class="form-subtitle">Join us and start creating amazing ID cards</p>
-                    
+            <div class="auth-card">
+                <div class="auth-hero"><div class="logo">🚀</div><h1>Get Started</h1><p>Join thousands of creators</p><ul class="feature-list"><li>Free forever</li><li>Unlimited projects</li><li>Priority support</li></ul></div>
+                <div class="auth-form">
+                    <div class="form-header"><h2>Create account</h2><p>Start creating amazing ID cards</p></div>
                     <div id="registerMessage" class="message" style="display: none;"></div>
-                    
-                    <form id="registerForm">
-                        <div class="form-group">
-                            <label for="registerName">Full Name</label>
-                            <input type="text" id="registerName" class="form-control" placeholder="Enter your full name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="registerEmail">Email Address</label>
-                            <input type="email" id="registerEmail" class="form-control" placeholder="Enter your email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="registerPassword">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="registerPassword" class="form-control" placeholder="Create a password (min 6 characters)" required minlength="6">
-                                <button type="button" class="toggle-password" onclick="togglePassword('registerPassword')">👁️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="loading" id="registerLoading">
-                            <div class="spinner"></div>
-                            <p>Creating your account...</p>
-                        </div>
-                        
-                        <button type="button" class="btn" onclick="register()">
-                            Create Account
-                        </button>
-                        
-                        <button type="button" class="btn btn-secondary" onclick="showLogin()">
-                            Back to Login
-                        </button>
-                    </form>
+                    <div class="input-group"><label>Full Name</label><div class="input-wrapper"><input type="text" id="registerName" placeholder="John Doe"></div></div>
+                    <div class="input-group"><label>Email</label><div class="input-wrapper"><input type="email" id="registerEmail" placeholder="your@email.com"></div></div>
+                    <div class="input-group"><label>Password</label><div class="input-wrapper"><input type="password" id="registerPassword" placeholder="••••••••"><button type="button" class="toggle-password" onclick="togglePassword('registerPassword')">👁️</button></div></div>
+                    <button class="btn-primary" onclick="register()">Create Account</button>
+                    <button class="btn-secondary" onclick="showLogin()">Back to Login</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Application -->
     <div id="mainApp">
-        <div class="app-header">
-            <div class="app-brand">
-                <div class="logo">🪪</div>
-                <h1>ID Card Pro</h1>
-            </div>
-            
-            <div class="user-menu">
-                <div class="user-info">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <span class="user-name" id="userName">User</span>
-                </div>
+        <header class="app-header">
+            <div class="app-logo"><span>🪪</span><h1>ID Card Pro</h1></div>
+            <div class="user-section">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span class="user-name" id="userName">User</span>
                 <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
-                
                 <div class="settings-dropdown" id="settingsDropdown">
-                    <button class="dropdown-item" onclick="showSettingsPage()">
-                        <span>👤</span> Account Settings
-                    </button>
-                    <button class="dropdown-item" onclick="showChangePassword()">
-                        <span>🔒</span> Change Password
-                    </button>
-                    <button class="dropdown-item" onclick="logout()">
-                        <span>🚪</span> Logout
-                    </button>
+                    <button class="dropdown-item" onclick="showSettingsPage()">👤 Account Settings</button>
+                    <button class="dropdown-item" onclick="showChangePassword()">🔒 Change Password</button>
+                    <button class="dropdown-item" onclick="logout()">🚪 Logout</button>
                 </div>
             </div>
+        </header>
+
+        <div class="main-container" id="mainToolPage">
+            <div class="tool-header"><h1>ID Card Designer</h1><p>Upload, crop, rotate, adjust, and create professional ID cards</p></div>
+
+            <div class="mode-selector">
+                <button class="mode-btn" id="modeIdCard" onclick="setMode('idcard')"><span>🪪</span><span>ID Card</span></button>
+                <button class="mode-btn" id="modeA4" onclick="setMode('a4')"><span>📄</span><span>A4 Mode</span></button>
+                <button class="mode-btn" id="modeLegal" onclick="setMode('legal')"><span>📃</span><span>Legal Mode</span></button>
+                <button class="mode-btn" id="modeSingle" onclick="setMode('single')"><span>🖼️</span><span>Single Card</span></button>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span>📁</span><h3>Upload Images</h3></div>
+                <div class="upload-grid">
+                    <div class="upload-btn"><input type="file" id="file1" accept="image/*"><label class="upload-label" for="file1"><span>🖼️</span><span>Front Side</span></label></div>
+                    <div class="upload-btn"><input type="file" id="file2" accept="image/*"><label class="upload-label" for="file2"><span>🔄</span><span>Back Side</span></label></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span>👁️</span><h3>Preview</h3></div>
+                <div class="preview-grid">
+                    <div class="preview-item" onclick="selectSide('front')">
+                        <img id="preview1" class="preview-img" src="" alt="Front" style="display: none;">
+                        <button class="remove-btn" onclick="removeImage('front'); event.stopPropagation();">✕</button>
+                        <span class="preview-label">Front Side</span>
+                    </div>
+                    <div class="preview-item" onclick="selectSide('back')">
+                        <img id="preview2" class="preview-img" src="" alt="Back" style="display: none;">
+                        <button class="remove-btn" onclick="removeImage('back'); event.stopPropagation();">✕</button>
+                        <span class="preview-label">Back Side</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-selector">
+                <button class="side-btn" id="frontSideBtn" onclick="selectSide('front')">🎨 Front</button>
+                <button class="side-btn" id="backSideBtn" onclick="selectSide('back')">🎨 Back</button>
+                <button class="side-btn" id="bothSideBtn" onclick="selectSide('both')">🎯 Both</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span>⚙️</span><h3>Adjustments</h3></div>
+                <div class="control-grid" id="controlGrid"></div>
+            </div>
+
+            <div class="expanded-panel" id="expandedPanel">
+                <div class="panel-header"><div class="panel-title"><span id="panelIcon">☀️</span><span id="panelLabel">Brightness</span></div><button class="close-panel" onclick="closeExpandedPanel()">×</button></div>
+                <div id="expandedContent"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span>📏</span><h3>Card Settings</h3></div>
+                <div class="settings-grid">
+                    <div class="input-group"><label>Width (mm)</label><input type="number" id="widthMM" value="85" step="0.1" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"></div>
+                    <div class="input-group"><label>Height (mm)</label><input type="number" id="heightMM" value="54" step="0.1" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"></div>
+                    <div class="input-group"><label>Paper Size</label><select id="paperSize" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"><option value="A4">A4</option><option value="Letter">Letter</option><option value="Legal">Legal</option></select></div>
+                    <div class="input-group"><label>Download Format</label><select id="downloadType" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"><option value="PDF">PDF</option><option value="JPG">JPG</option><option value="PNG">PNG</option></select></div>
+                    <div class="input-group"><label>Quality</label><div style="display:flex; gap:8px;"><label><input type="radio" name="quality" value="high" checked> High</label><label><input type="radio" name="quality" value="veryhigh"> Very High</label><label><input type="radio" name="quality" value="ultra"> Ultra</label></div></div>
+                </div>
+            </div>
+
+            <div class="action-grid">
+                <button class="action-btn success" onclick="downloadOutput()">💾 Download</button>
+                <button class="action-btn info" onclick="printCanvas()">🖨️ Print</button>
+                <button class="action-btn warning" onclick="shareCanvas()">📤 Share</button>
+                <button class="action-btn primary" onclick="saveToFirestore()">☁️ Save</button>
+                <button class="action-btn info" onclick="viewMyCards()">📂 My Cards</button>
+            </div>
+
+            <div class="canvas-wrapper"><canvas id="a4canvas"></canvas></div>
+
+            <div class="card" id="savedCardsSection" style="display: none;"><div class="card-header"><span>📚</span><h3>My Saved Cards</h3></div><div id="savedCardsList"></div></div>
         </div>
 
-        <!-- Main Tool Page -->
-        <div class="tool-container" id="mainToolPage">
-            <div class="tool-header">
-                <h1 class="tool-title">Advanced ID Card Tool</h1>
-                <p class="tool-subtitle">Create professional ID cards with ease</p>
+        <div class="main-container settings-page" id="settingsPage" style="display: none;">
+            <button class="side-btn" onclick="showMainToolPage()" style="margin-bottom: 12px;">← Back to Designer</button>
+            <div class="card"><div class="card-header"><span>👤</span><h3>Profile Information</h3></div>
+                <div class="input-group"><label>Full Name</label><input type="text" id="profileName" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"></div>
+                <div class="input-group"><label>Email</label><input type="email" id="profileEmail" readonly style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200); background:var(--gray-100);"></div>
+                <button class="btn-primary" onclick="updateProfile()">Update Profile</button>
             </div>
-
-            <div class="card upload-section">
-                <h3>📁 Upload Images</h3>
-                <div class="control-group">
-                    <div class="file-input">
-                        <input type="file" id="file1" accept="image/*">
-                        <label class="file-input-label" for="file1">Front Side</label>
-                    </div>
-                    <div class="file-input">
-                        <input type="file" id="file2" accept="image/*">
-                        <label class="file-input-label" for="file2">Back Side</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="preview-section">
-                <img id="preview1" class="preview-img" src="" alt="Front Preview" style="display: none;">
-                <img id="preview2" class="preview-img" src="" alt="Back Preview" style="display: none;">
-            </div>
-
-            <div class="card controls-section">
-                <h3>⚙️ Card Settings</h3>
-                <div class="control-group">
-                    <div class="control-item">
-                        <label>Width (mm)</label>
-                        <input type="number" id="widthMM" value="85" step="0.1">
-                    </div>
-                    <div class="control-item">
-                        <label>Height (mm)</label>
-                        <input type="number" id="heightMM" value="54" step="0.1">
-                    </div>
-                    <div class="control-item">
-                        <label>Paper Size</label>
-                        <select id="paperSize">
-                            <option value="A4">A4</option>
-                            <option value="Letter">Letter</option>
-                            <option value="Legal">Legal</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Download Format</label>
-                        <select id="downloadType">
-                            <option value="PDF">PDF</option>
-                            <option value="JPG">JPG</option>
-                            <option value="PNG">PNG</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="action-buttons">
-                <button class="action-btn primary" onclick="drawCanvas()">
-                    <span>👁️</span> Preview & Arrange
-                </button>
-                <button class="action-btn success" onclick="downloadOutput()">
-                    <span>💾</span> Download
-                </button>
-                <button class="action-btn info" onclick="printCanvas()">
-                    <span>🖨️</span> Print
-                </button>
-                <button class="action-btn warning" onclick="shareCanvas()">
-                    <span>📤</span> Share
-                </button>
-                <button class="action-btn primary" onclick="saveToFirestore()">
-                    <span>☁️</span> Save to Cloud
-                </button>
-                <button class="action-btn info" onclick="viewMyCards()">
-                    <span>📂</span> My Saved Cards
-                </button>
-            </div>
-
-            <canvas id="a4canvas"></canvas>
-
-            <div class="card saved-cards">
-                <div id="savedCardsList"></div>
-            </div>
-        </div>
-
-        <!-- Settings Page -->
-        <div class="tool-container settings-page" id="settingsPage">
-            <button class="back-btn" onclick="showMainToolPage()">
-                ← Back to Tool
-            </button>
-            
-            <div class="tool-header">
-                <h1 class="tool-title">Account Settings</h1>
-                <p class="tool-subtitle">Manage your account preferences and security</p>
-            </div>
-
-            <div class="settings-grid">
-                <div class="settings-card">
-                    <h3>👤 Profile Information</h3>
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="profileName" class="form-control" value="User Name">
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="profileEmail" class="form-control" value="user@example.com" readonly>
-                    </div>
-                    <button class="btn" onclick="updateProfile()" style="margin-top: 15px;">
-                        Update Profile
-                    </button>
-                </div>
-
-                <div class="settings-card">
-                    <h3>🔒 Change Password</h3>
-                    <div class="form-group">
-                        <label>Current Password</label>
-                        <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password">
-                    </div>
-                    <div class="form-group">
-                        <label>New Password</label>
-                        <input type="password" id="newPassword" class="form-control" placeholder="Enter new password">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm New Password</label>
-                        <input type="password" id="confirmNewPassword" class="form-control" placeholder="Confirm new password">
-                    </div>
-                    <button class="btn" onclick="changePassword()" style="margin-top: 15px;">
-                        Change Password
-                    </button>
-                </div>
+            <div class="card"><div class="card-header"><span>🔒</span><h3>Change Password</h3></div>
+                <div class="input-group"><label>Current Password</label><input type="password" id="currentPassword" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"></div>
+                <div class="input-group"><label>New Password</label><input type="password" id="newPassword" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"></div>
+                <div class="input-group"><label>Confirm Password</label><input type="password" id="confirmNewPassword" style="width:100%; padding:10px; border-radius:var(--radius-md); border:1px solid var(--gray-200);"></div>
+                <button class="btn-primary" onclick="changePassword()">Change Password</button>
             </div>
         </div>
     </div>
 
-    <!-- Forgot Password Modal -->
-    <div class="modal" id="forgotPasswordModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Reset Password</h3>
-                <button class="close-modal" onclick="closeForgotPassword()">×</button>
-            </div>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="resetEmail" class="form-control" placeholder="Enter your email address">
-            </div>
-            <div id="forgotPasswordMessage" class="message" style="display: none;"></div>
-            <button class="btn" onclick="sendPasswordResetEmail()" style="margin-top: 20px;">
-                Send Reset Link
-            </button>
-        </div>
-    </div>
+    <div class="modal" id="forgotPasswordModal"><div class="modal-content"><h3>Reset Password</h3><input type="email" id="resetEmail" placeholder="Enter your email" style="width:100%; padding:10px; margin-bottom:16px;"><button class="btn-primary" onclick="sendPasswordResetEmail()">Send Reset Link</button><button class="btn-secondary" onclick="closeForgotPassword()">Cancel</button></div></div>
+
+    <div class="badge quality-badge" id="qualityBadge">✨ High Quality</div>
+    <div class="badge realtime-badge" id="realtimeBadge">⚡ Real-time</div>
 
     <script>
-        // Firebase Configuration
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyB_jVIj6vnpjRowsysZg79oH3iPFEX40Ow",
             authDomain: "idcardtool.firebaseapp.com",
             projectId: "idcardtool",
             storageBucket: "idcardtool.firebasestorage.app",
             messagingSenderId: "542300187907",
-            appId: "1:542300187907:web:227d6f48edc5ca110d0d36",
-            measurementId: "G-9XP8EHP686"
+            appId: "1:542300187907:web:227d6f48edc5ca110d0d36"
         };
-
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // Canvas Elements
+        // Canvas
         const canvas = document.getElementById("a4canvas");
         const ctx = canvas.getContext("2d");
-        let img1 = null;
-        let img2 = null;
+        let originalImg1 = null, originalImg2 = null;
+        let selectedSide = 'front';
+        let currentMode = 'idcard';
+        
+        let frontAdjustments = { brightness: 0, contrast: 0, saturation: 0, exposure: 0, sharpness: 0, temperature: 0, tint: 0, blur: 0 };
+        let backAdjustments = { brightness: 0, contrast: 0, saturation: 0, exposure: 0, sharpness: 0, temperature: 0, tint: 0, blur: 0 };
+        let currentAdjustments = frontAdjustments;
 
-        // UI Elements
-        const loginPage = document.getElementById('loginPage');
-        const registerPage = document.getElementById('registerPage');
-        const mainApp = document.getElementById('mainApp');
-        const mainToolPage = document.getElementById('mainToolPage');
-        const settingsPage = document.getElementById('settingsPage');
-        const loginMessage = document.getElementById('loginMessage');
-        const registerMessage = document.getElementById('registerMessage');
-        const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
-        const loginLoading = document.getElementById('loginLoading');
-        const registerLoading = document.getElementById('registerLoading');
-        const settingsDropdown = document.getElementById('settingsDropdown');
-        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const controls = [
+            { id: 'brightness', label: 'Brightness', icon: '☀️', min: -100, max: 100, step: 1, unit: '' },
+            { id: 'contrast', label: 'Contrast', icon: '🎨', min: -100, max: 100, step: 1, unit: '' },
+            { id: 'saturation', label: 'Saturation', icon: '🌈', min: -100, max: 100, step: 1, unit: '' },
+            { id: 'exposure', label: 'Exposure', icon: '⚫', min: -50, max: 50, step: 1, unit: '' },
+            { id: 'sharpness', label: 'Sharpness', icon: '🔍', min: 0, max: 100, step: 1, unit: '' },
+            { id: 'temperature', label: 'Temperature', icon: '🌡️', min: -100, max: 100, step: 1, unit: '' },
+            { id: 'tint', label: 'Tint', icon: '💜', min: -100, max: 100, step: 1, unit: '' },
+            { id: 'blur', label: 'Blur', icon: '🖼️', min: 0, max: 20, step: 0.5, unit: 'px' },
+            { id: 'crop', label: 'Crop', icon: '✂️', isSpecial: true }
+        ];
 
-        // Password Toggle Function
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
-        }
-
-        // Settings Dropdown
-        function toggleSettings() {
-            settingsDropdown.classList.toggle('show');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.user-menu')) {
-                settingsDropdown.classList.remove('show');
+        function removeImage(side) {
+            if (side === 'front') {
+                originalImg1 = null;
+                document.getElementById('preview1').style.display = 'none';
+                document.getElementById('preview1').src = '';
+                document.getElementById('preview1').classList.remove('selected', 'both-selected');
+            } else {
+                originalImg2 = null;
+                document.getElementById('preview2').style.display = 'none';
+                document.getElementById('preview2').src = '';
+                document.getElementById('preview2').classList.remove('selected', 'both-selected');
             }
-        });
-
-        // Page Navigation
-        function showMainToolPage() {
-            settingsPage.classList.remove('active');
-            mainToolPage.style.display = 'block';
+            updateRealTimePreview();
         }
 
-        function showSettingsPage() {
-            mainToolPage.style.display = 'none';
-            settingsPage.classList.add('active');
-            settingsDropdown.classList.remove('show');
+        function setMode(mode) {
+            currentMode = mode;
+            const btnIdCard = document.getElementById('modeIdCard');
+            const btnA4 = document.getElementById('modeA4');
+            const btnLegal = document.getElementById('modeLegal');
+            const btnSingle = document.getElementById('modeSingle');
             
-            // Load user data
-            const user = auth.currentUser;
-            if (user) {
-                document.getElementById('profileName').value = user.displayName || 'User Name';
-                document.getElementById('profileEmail').value = user.email;
-            }
-        }
-
-        // Show/Hide Loading
-        function showLoading(loadingElement) {
-            loadingElement.style.display = 'block';
-        }
-
-        function hideLoading(loadingElement) {
-            loadingElement.style.display = 'none';
-        }
-
-        // Show Message
-        function showMessage(element, message, type) {
-            element.textContent = message;
-            element.className = `message ${type}`;
-            element.style.display = 'block';
+            btnIdCard.classList.remove('active', 'id-card-active');
+            btnA4.classList.remove('active', 'id-card-active');
+            btnLegal.classList.remove('active', 'id-card-active');
+            btnSingle.classList.remove('active', 'id-card-active');
             
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 5000);
-        }
-
-        // Navigation Functions
-        function showRegister() {
-            loginPage.style.display = 'none';
-            registerPage.style.display = 'block';
-            registerMessage.style.display = 'none';
-        }
-
-        function showLogin() {
-            registerPage.style.display = 'none';
-            loginPage.style.display = 'block';
-            loginMessage.style.display = 'none';
-        }
-
-        function showForgotPassword() {
-            forgotPasswordModal.classList.add('show');
-        }
-
-        function closeForgotPassword() {
-            forgotPasswordModal.classList.remove('show');
-        }
-
-        function showMainApp() {
-            loginPage.style.display = 'none';
-            registerPage.style.display = 'none';
-            mainApp.style.display = 'block';
-            showMainToolPage();
-        }
-
-        function showLoginForm() {
-            mainApp.style.display = 'none';
-            registerPage.style.display = 'none';
-            loginPage.style.display = 'block';
-            
-            // Clear forms
-            document.getElementById("loginForm").reset();
-            document.getElementById("registerForm").reset();
-            loginMessage.textContent = "";
-            registerMessage.textContent = "";
-        }
-
-        // Authentication Functions
-        function register() {
-            const name = document.getElementById("registerName").value.trim();
-            const email = document.getElementById("registerEmail").value.trim();
-            const password = document.getElementById("registerPassword").value;
-
-            if (!name || !email || !password) {
-                showMessage(registerMessage, "Please fill in all fields", "error");
-                return;
+            if (mode === 'idcard') {
+                btnIdCard.classList.add('id-card-active');
+                document.getElementById('widthMM').value = '85';
+                document.getElementById('heightMM').value = '54';
+                document.getElementById('paperSize').value = 'A4';
+            } else if (mode === 'a4') {
+                btnA4.classList.add('active');
+                document.getElementById('paperSize').value = 'A4';
+            } else if (mode === 'legal') {
+                btnLegal.classList.add('active');
+                document.getElementById('paperSize').value = 'Legal';
+            } else if (mode === 'single') {
+                btnSingle.classList.add('active');
+                document.getElementById('widthMM').value = '85';
+                document.getElementById('heightMM').value = '54';
+                document.getElementById('paperSize').value = 'A4';
             }
-
-            if (password.length < 6) {
-                showMessage(registerMessage, "Password must be at least 6 characters", "error");
-                return;
-            }
-
-            showLoading(registerLoading);
-
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Save user name to Firestore
-                    return db.collection('users').doc(userCredential.user.uid).set({
-                        name: name,
-                        email: email,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                })
-                .then(() => {
-                    showMessage(registerMessage, "Registration successful! Redirecting...", "success");
-                    setTimeout(() => {
-                        showLogin();
-                    }, 2000);
-                })
-                .catch((error) => {
-                    let errorMessage = "Registration failed. ";
-                    
-                    switch (error.code) {
-                        case 'auth/email-already-in-use':
-                            errorMessage += "Email is already registered.";
-                            break;
-                        case 'auth/invalid-email':
-                            errorMessage += "Invalid email address.";
-                            break;
-                        case 'auth/weak-password':
-                            errorMessage += "Password is too weak.";
-                            break;
-                        default:
-                            errorMessage += error.message;
-                    }
-                    
-                    showMessage(registerMessage, errorMessage, "error");
-                })
-                .finally(() => {
-                    hideLoading(registerLoading);
-                });
+            updateRealTimePreview();
         }
 
-        function login() {
-            const email = document.getElementById("loginEmail").value.trim();
-            const password = document.getElementById("loginPassword").value;
-
-            if (!email || !password) {
-                showMessage(loginMessage, "Please enter both email and password", "error");
-                return;
-            }
-
-            showLoading(loginLoading);
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Get user data
-                    return db.collection('users').doc(userCredential.user.uid).get();
-                })
-                .then((doc) => {
-                    if (doc.exists) {
-                        document.getElementById('userName').textContent = doc.data().name;
-                        document.getElementById('userAvatar').textContent = doc.data().name.charAt(0).toUpperCase();
-                    }
-                    showMessage(loginMessage, "Login successful! Redirecting...", "success");
-                    setTimeout(() => {
-                        showMainApp();
-                    }, 1500);
-                })
-                .catch((error) => {
-                    let errorMessage = "Login failed. ";
-                    
-                    switch (error.code) {
-                        case 'auth/user-not-found':
-                            errorMessage += "No account found with this email.";
-                            break;
-                        case 'auth/wrong-password':
-                            errorMessage += "Incorrect password.";
-                            break;
-                        case 'auth/invalid-email':
-                            errorMessage += "Invalid email address.";
-                            break;
-                        default:
-                            errorMessage += error.message;
-                    }
-                    
-                    showMessage(loginMessage, errorMessage, "error");
-                })
-                .finally(() => {
-                    hideLoading(loginLoading);
-                });
-        }
-
-        function logout() {
-            auth.signOut().then(() => {
-                showLoginForm();
-                showMessage(loginMessage, "You have been logged out successfully", "success");
+        function generateControlGrid() {
+            const grid = document.getElementById('controlGrid');
+            grid.innerHTML = '';
+            controls.forEach(control => {
+                const btn = document.createElement('div');
+                btn.className = 'control-card';
+                if (control.isSpecial) {
+                    btn.onclick = () => {
+                        if (selectedSide === 'both') { alert('Please select Front or Back side first to crop!'); return; }
+                        if ((selectedSide === 'front' && !originalImg1) || (selectedSide === 'back' && !originalImg2)) { alert('Please upload an image first!'); return; }
+                        openCropTool(selectedSide);
+                    };
+                    btn.innerHTML = `<div class="control-icon">${control.icon}</div><div class="control-name">${control.label}</div><div class="control-value">Adjust</div>`;
+                } else {
+                    const val = getCurrentValue(control.id);
+                    btn.onclick = () => openExpandedPanel(control.id);
+                    btn.innerHTML = `<div class="control-icon">${control.icon}</div><div class="control-name">${control.label}</div><div class="control-value">${val}${control.unit}</div>`;
+                }
+                grid.appendChild(btn);
             });
         }
 
-        // Password Reset Function
-        function sendPasswordResetEmail() {
-            const email = document.getElementById("resetEmail").value.trim();
-
-            if (!email) {
-                showMessage(forgotPasswordMessage, "Please enter your email address", "error");
-                return;
-            }
-
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    showMessage(forgotPasswordMessage, "Password reset email sent! Check your inbox.", "success");
-                    setTimeout(() => {
-                        closeForgotPassword();
-                        showLogin();
-                    }, 3000);
-                })
-                .catch((error) => {
-                    showMessage(forgotPasswordMessage, "Error: " + error.message, "error");
-                });
+        function getCurrentValue(id) {
+            if (selectedSide === 'both') return frontAdjustments[id] || 0;
+            return currentAdjustments[id] || 0;
         }
 
-        // Change Password Function
-        function changePassword() {
-            const currentPassword = document.getElementById("currentPassword").value;
-            const newPassword = document.getElementById("newPassword").value;
-            const confirmNewPassword = document.getElementById("confirmNewPassword").value;
-            const user = auth.currentUser;
-
-            if (!user) {
-                alert("Please login first!");
-                return;
-            }
-
-            if (!currentPassword || !newPassword || !confirmNewPassword) {
-                alert("Please fill in all password fields");
-                return;
-            }
-
-            if (newPassword.length < 6) {
-                alert("New password must be at least 6 characters");
-                return;
-            }
-
-            if (newPassword !== confirmNewPassword) {
-                alert("New passwords do not match");
-                return;
-            }
-
-            // Reauthenticate user
-            const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
-            
-            user.reauthenticateWithCredential(credential)
-                .then(() => {
-                    return user.updatePassword(newPassword);
-                })
-                .then(() => {
-                    alert("Password changed successfully!");
-                    document.getElementById("currentPassword").value = "";
-                    document.getElementById("newPassword").value = "";
-                    document.getElementById("confirmNewPassword").value = "";
-                })
-                .catch((error) => {
-                    alert("Error changing password: " + error.message);
-                });
-        }
-
-        // Update Profile Function
-        function updateProfile() {
-            const user = auth.currentUser;
-            const newName = document.getElementById("profileName").value.trim();
-
-            if (!user) {
-                alert("Please login first!");
-                return;
-            }
-
-            if (!newName) {
-                alert("Please enter a name");
-                return;
-            }
-
-            user.updateProfile({
-                displayName: newName
-            })
-            .then(() => {
-                // Update Firestore
-                return db.collection('users').doc(user.uid).update({
-                    name: newName
-                });
-            })
-            .then(() => {
-                document.getElementById('userName').textContent = newName;
-                document.getElementById('userAvatar').textContent = newName.charAt(0).toUpperCase();
-                alert("Profile updated successfully!");
-            })
-            .catch((error) => {
-                alert("Error updating profile: " + error.message);
+        function updateControlValues() {
+            const cards = document.querySelectorAll('.control-card');
+            controls.forEach((control, idx) => {
+                if (cards[idx] && !control.isSpecial) {
+                    const val = getCurrentValue(control.id);
+                    cards[idx].querySelector('.control-value').textContent = val + control.unit;
+                }
             });
         }
 
-        // Check if user is already logged in
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                db.collection('users').doc(user.uid).get().then((doc) => {
-                    if (doc.exists) {
-                        document.getElementById('userName').textContent = doc.data().name;
-                        document.getElementById('userAvatar').textContent = doc.data().name.charAt(0).toUpperCase();
+        function openExpandedPanel(controlId) {
+            const control = controls.find(c => c.id === controlId);
+            const panel = document.getElementById('expandedPanel');
+            document.getElementById('panelIcon').textContent = control.icon;
+            document.getElementById('panelLabel').textContent = control.label;
+            const currentVal = getCurrentValue(controlId);
+            document.getElementById('expandedContent').innerHTML = `
+                <div class="slider-container">
+                    <button class="step-btn" onclick="adjustValue('${controlId}', -${control.step})">−</button>
+                    <input type="range" id="expSlider" min="${control.min}" max="${control.max}" step="${control.step}" value="${currentVal}" oninput="updateFromSlider('${controlId}', this.value)">
+                    <button class="step-btn" onclick="adjustValue('${controlId}', ${control.step})">+</button>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 12px;">
+                    <span style="color: var(--gray-500); font-size:0.75rem;">${control.min}</span>
+                    <span class="value-badge" id="expVal" style="font-size:0.8rem;">${currentVal}${control.unit}</span>
+                    <span style="color: var(--gray-500); font-size:0.75rem;">${control.max}</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="side-btn" style="flex:1;" onclick="resetSingle('${controlId}')">Reset</button>
+                    <button class="btn-primary" style="flex:1;" onclick="closeExpandedPanel()">Done</button>
+                </div>
+            `;
+            panel.classList.add('show');
+        }
+
+        function updateFromSlider(id, val) {
+            const num = parseFloat(val);
+            const control = controls.find(c => c.id === id);
+            document.getElementById('expVal').textContent = num + (control ? control.unit : '');
+            updateValue(id, num);
+        }
+
+        function adjustValue(id, delta) {
+            const slider = document.getElementById('expSlider');
+            if (slider) {
+                let newVal = parseFloat(slider.value) + delta;
+                newVal = Math.min(parseFloat(slider.max), Math.max(parseFloat(slider.min), newVal));
+                slider.value = newVal;
+                updateFromSlider(id, newVal);
+            }
+        }
+
+        function resetSingle(id) {
+            updateValue(id, 0);
+            const slider = document.getElementById('expSlider');
+            if (slider) slider.value = 0;
+            document.getElementById('expVal').textContent = '0' + (controls.find(c => c.id === id)?.unit || '');
+        }
+
+        function closeExpandedPanel() { document.getElementById('expandedPanel').classList.remove('show'); }
+
+        function updateValue(id, val) {
+            if (selectedSide === 'both') {
+                frontAdjustments[id] = val;
+                backAdjustments[id] = val;
+                if (originalImg1) updatePreview('front');
+                if (originalImg2) updatePreview('back');
+            } else {
+                currentAdjustments[id] = val;
+                updatePreview(selectedSide);
+            }
+            updateControlValues();
+            updateRealTimePreview();
+        }
+
+        function updatePreview(side) {
+            const img = side === 'front' ? originalImg1 : originalImg2;
+            const adj = side === 'front' ? frontAdjustments : backAdjustments;
+            const preview = document.getElementById(side === 'front' ? 'preview1' : 'preview2');
+            if (img) {
+                const adjusted = applyAdjustments(img, adj);
+                preview.src = adjusted.toDataURL();
+                preview.style.display = 'block';
+            }
+        }
+
+        function applyAdjustments(img, adj) {
+            if (!img) return null;
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const pixels = data.data;
+            
+            for (let i = 0; i < pixels.length; i += 4) {
+                let r = pixels[i], g = pixels[i+1], b = pixels[i+2];
+                if (adj.brightness) { r += adj.brightness * 2.55; g += adj.brightness * 2.55; b += adj.brightness * 2.55; }
+                if (adj.contrast) { const f = (259 * (adj.contrast + 255)) / (255 * (259 - adj.contrast)); r = f * (r - 128) + 128; g = f * (g - 128) + 128; b = f * (b - 128) + 128; }
+                if (adj.exposure) { const exp = Math.pow(2, adj.exposure / 50); r *= exp; g *= exp; b *= exp; }
+                if (adj.temperature) { r += adj.temperature * 1.5; b -= adj.temperature * 1.5; }
+                if (adj.tint) { g += adj.tint * 0.8; b += adj.tint * 0.5; }
+                if (adj.saturation) { const gray = 0.2989 * r + 0.5870 * g + 0.1140 * b; const sat = 1 + (adj.saturation / 100); r = gray + (r - gray) * sat; g = gray + (g - gray) * sat; b = gray + (b - gray) * sat; }
+                pixels[i] = Math.min(255, Math.max(0, r)); pixels[i+1] = Math.min(255, Math.max(0, g)); pixels[i+2] = Math.min(255, Math.max(0, b));
+            }
+            ctx.putImageData(data, 0, 0);
+            if (adj.sharpness > 0) {
+                const sharp = document.createElement('canvas');
+                sharp.width = canvas.width; sharp.height = canvas.height;
+                const sCtx = sharp.getContext('2d');
+                sCtx.drawImage(canvas, 0, 0);
+                const sData = sCtx.getImageData(0, 0, sharp.width, sharp.height);
+                const str = adj.sharpness / 100;
+                for (let i = 0; i < sData.data.length; i += 4) {
+                    for (let j = 0; j < 3; j++) { sData.data[i+j] = Math.min(255, Math.max(0, sData.data[i+j] + (sData.data[i+j] - 128) * str)); }
+                }
+                sCtx.putImageData(sData, 0, 0);
+                return sharp;
+            }
+            if (adj.blur > 0) {
+                const blur = document.createElement('canvas');
+                blur.width = canvas.width; blur.height = canvas.height;
+                const bCtx = blur.getContext('2d');
+                bCtx.filter = `blur(${adj.blur}px)`;
+                bCtx.drawImage(canvas, 0, 0);
+                return blur;
+            }
+            return canvas;
+        }
+
+        function selectSide(side) {
+            selectedSide = side;
+            const frontBtn = document.getElementById('frontSideBtn');
+            const backBtn = document.getElementById('backSideBtn');
+            const bothBtn = document.getElementById('bothSideBtn');
+            const p1 = document.getElementById('preview1');
+            const p2 = document.getElementById('preview2');
+            frontBtn.classList.remove('active', 'both-active');
+            backBtn.classList.remove('active', 'both-active');
+            bothBtn.classList.remove('active', 'both-active');
+            p1.classList.remove('selected', 'both-selected');
+            p2.classList.remove('selected', 'both-selected');
+            if (side === 'front') { frontBtn.classList.add('active'); currentAdjustments = frontAdjustments; p1.classList.add('selected'); }
+            else if (side === 'back') { backBtn.classList.add('active'); currentAdjustments = backAdjustments; p2.classList.add('selected'); }
+            else { bothBtn.classList.add('both-active'); p1.classList.add('both-selected'); p2.classList.add('both-selected'); currentAdjustments = frontAdjustments; }
+            updateControlValues();
+            updateRealTimePreview();
+        }
+
+        function getScale() {
+            const q = document.querySelector('input[name="quality"]:checked').value;
+            return q === 'veryhigh' ? 2 : q === 'ultra' ? 4 : 1;
+        }
+
+        function updateRealTimePreview() {
+            const scale = getScale();
+            const paper = document.getElementById('paperSize').value;
+            let bw, bh;
+            if (paper === 'A4') { bw = 794; bh = 1123; }
+            else if (paper === 'Letter') { bw = 816; bh = 1056; }
+            else { bw = 816; bh = 1344; }
+            
+            let cardWidth = parseFloat(document.getElementById('widthMM').value);
+            let cardHeight = parseFloat(document.getElementById('heightMM').value);
+            const margin = 12.7;
+            
+            if (currentMode === 'a4' || currentMode === 'legal') {
+                const paperWidthMM = paper === 'A4' ? 210 : (paper === 'Letter' ? 215.9 : 215.9);
+                const paperHeightMM = paper === 'A4' ? 297 : (paper === 'Letter' ? 279.4 : 355.6);
+                cardWidth = paperWidthMM - (margin * 2);
+                cardHeight = paperHeightMM - (margin * 2);
+                document.getElementById('widthMM').value = cardWidth.toFixed(1);
+                document.getElementById('heightMM').value = cardHeight.toFixed(1);
+            }
+            
+            canvas.width = bw * scale;
+            canvas.height = bh * scale;
+            canvas.style.width = `${bw}px`;
+            canvas.style.height = `${bh}px`;
+            
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const mmPx = scale * 3.78;
+            const cw = cardWidth * mmPx;
+            const ch = cardHeight * mmPx;
+            
+            const hasFront = originalImg1 !== null;
+            const hasBack = originalImg2 !== null;
+            
+            if (currentMode === 'single' || (!hasBack && hasFront) || (!hasFront && hasBack)) {
+                const img = hasFront ? originalImg1 : originalImg2;
+                const adj = hasFront ? frontAdjustments : backAdjustments;
+                if (img) {
+                    const x = (canvas.width - cw) / 2;
+                    const y = (canvas.height - ch) / 2;
+                    const adjustedImg = applyAdjustments(img, adj);
+                    const imgObj = new Image();
+                    imgObj.onload = () => { ctx.drawImage(imgObj, x, y, cw, ch); };
+                    imgObj.src = adjustedImg.toDataURL();
+                }
+            } else if (hasFront && hasBack) {
+                const gap = 90 * scale;
+                const x = (canvas.width - cw) / 2;
+                const y1 = (canvas.height - (ch * 2 + gap)) / 2;
+                const y2 = y1 + ch + gap;
+                
+                const img1 = applyAdjustments(originalImg1, frontAdjustments);
+                const img2 = applyAdjustments(originalImg2, backAdjustments);
+                const i1 = new Image(), i2 = new Image();
+                let loaded = 0;
+                const draw = () => {
+                    if (loaded === 2) {
+                        ctx.drawImage(i1, x, y1, cw, ch);
+                        ctx.drawImage(i2, x, y2, cw, ch);
+                        ctx.strokeStyle = '#e2e8f0';
+                        ctx.lineWidth = 2 * scale;
+                        ctx.strokeRect(x, y1, cw, ch);
+                        ctx.strokeRect(x, y2, cw, ch);
                     }
-                    showMainApp();
+                };
+                i1.onload = () => { loaded++; draw(); };
+                i2.onload = () => { loaded++; draw(); };
+                i1.src = img1.toDataURL();
+                i2.src = img2.toDataURL();
+            }
+        }
+
+        // ==================== CROP FUNCTIONS - WITH TRANSPARENT OVERLAY ====================
+        let cropState = {
+            active: false,
+            side: null,
+            img: null,
+            canvas: null,
+            ctx: null,
+            startPoint: null,
+            endPoint: null,
+            rotation: 0,
+            cornerMode: false,
+            corners: { tl: { x: 0, y: 0 }, tr: { x: 0, y: 0 }, bl: { x: 0, y: 0 }, br: { x: 0, y: 0 } },
+            isDragging: false,
+            isResizing: false,
+            resizeHandle: null,
+            dragStart: null,
+            aspectRatio: null,
+            displayWidth: 0,
+            displayHeight: 0
+        };
+
+        function openCropTool(side) {
+            const img = side === 'front' ? originalImg1 : originalImg2;
+            if (!img) { alert('No image to crop!'); return; }
+            
+            cropState.active = true;
+            cropState.side = side;
+            cropState.img = img;
+            cropState.rotation = 0;
+            cropState.cornerMode = false;
+            cropState.aspectRatio = null;
+            
+            // Calculate display size to fit in container
+            const containerWidth = Math.min(window.innerWidth * 0.85, 900);
+            const containerHeight = Math.min(window.innerHeight * 0.7, 600);
+            
+            let displayWidth = img.width;
+            let displayHeight = img.height;
+            
+            const widthRatio = containerWidth / displayWidth;
+            const heightRatio = containerHeight / displayHeight;
+            const scale = Math.min(widthRatio, heightRatio, 1);
+            
+            displayWidth = displayWidth * scale;
+            displayHeight = displayHeight * scale;
+            
+            cropState.displayWidth = displayWidth;
+            cropState.displayHeight = displayHeight;
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'crop-overlay';
+            overlay.id = 'cropOverlay';
+            overlay.innerHTML = `
+                <div class="crop-container">
+                    <div class="rotation-controls">
+                        <button class="rotate-btn" id="cropRotateM15">↺ -15°</button>
+                        <button class="rotate-btn" id="cropRotateM1">↺ -1°</button>
+                        <span class="rotate-value" id="cropAngleDisplay">0°</span>
+                        <button class="rotate-btn" id="cropRotateP1">↻ +1°</button>
+                        <button class="rotate-btn" id="cropRotateP15">↻ +15°</button>
+                        <button class="rotate-btn" id="cropRotate90">↻ 90°</button>
+                        <div class="corner-toggle" id="cropCornerToggle">
+                            <input type="checkbox" id="cropCornerCheckbox"><span>✧ Corner Mode</span>
+                        </div>
+                        <button class="rotate-btn" id="cropResetRotate" style="background:#fee2e2;">⟳ Reset</button>
+                    </div>
+                    <div class="aspect-presets" id="cropAspectPresets">
+                        <button class="aspect-btn" data-ratio="free">Free</button>
+                        <button class="aspect-btn" data-ratio="1:1">1:1</button>
+                        <button class="aspect-btn" data-ratio="4:3">4:3</button>
+                        <button class="aspect-btn" data-ratio="16:9">16:9</button>
+                        <button class="aspect-btn" data-ratio="85:54">ID Card</button>
+                    </div>
+                    <div class="crop-canvas-wrapper">
+                        <canvas id="cropCanvas" class="crop-canvas" width="${displayWidth}" height="${displayHeight}"></canvas>
+                    </div>
+                    <div class="crop-toolbar">
+                        <button class="crop-btn secondary" id="cropCancelBtn">Cancel</button>
+                        <button class="crop-btn primary" id="cropApplyBtn">Apply Crop</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            overlay.style.display = 'flex';
+            
+            cropState.canvas = document.getElementById('cropCanvas');
+            cropState.ctx = cropState.canvas.getContext('2d');
+            
+            // Set initial crop area (80% of displayed image)
+            const cropWidth = displayWidth * 0.8;
+            const cropHeight = displayHeight * 0.8;
+            cropState.startPoint = { x: (displayWidth - cropWidth) / 2, y: (displayHeight - cropHeight) / 2 };
+            cropState.endPoint = { x: cropState.startPoint.x + cropWidth, y: cropState.startPoint.y + cropHeight };
+            updateCorners();
+            drawCropImage();
+            setupCropEvents();
+            
+            // Setup event listeners
+            document.getElementById('cropRotateM15').onclick = () => rotateCropImage(-15);
+            document.getElementById('cropRotateM1').onclick = () => rotateCropImage(-1);
+            document.getElementById('cropRotateP1').onclick = () => rotateCropImage(1);
+            document.getElementById('cropRotateP15').onclick = () => rotateCropImage(15);
+            document.getElementById('cropRotate90').onclick = () => rotateCropImage(90);
+            document.getElementById('cropResetRotate').onclick = () => { cropState.rotation = 0; updateAngleDisplay(); drawCropImage(); };
+            document.getElementById('cropCornerToggle').onclick = toggleCropCornerMode;
+            document.getElementById('cropCancelBtn').onclick = closeCropTool;
+            document.getElementById('cropApplyBtn').onclick = applyCrop;
+            
+            document.querySelectorAll('#cropAspectPresets .aspect-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const ratio = btn.getAttribute('data-ratio');
+                    if (ratio === 'free') setCropAspectRatio(null);
+                    else if (ratio === '1:1') setCropAspectRatio(1);
+                    else if (ratio === '4:3') setCropAspectRatio(4/3);
+                    else if (ratio === '16:9') setCropAspectRatio(16/9);
+                    else if (ratio === '85:54') setCropAspectRatio(85/54);
+                    document.querySelectorAll('#cropAspectPresets .aspect-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+            });
+        }
+        
+        function updateCorners() {
+            cropState.corners = {
+                tl: { x: cropState.startPoint.x, y: cropState.startPoint.y },
+                tr: { x: cropState.endPoint.x, y: cropState.startPoint.y },
+                bl: { x: cropState.startPoint.x, y: cropState.endPoint.y },
+                br: { x: cropState.endPoint.x, y: cropState.endPoint.y }
+            };
+        }
+        
+        function updateAngleDisplay() {
+            const display = document.getElementById('cropAngleDisplay');
+            if (display) display.textContent = cropState.rotation + '°';
+        }
+        
+        function rotateCropImage(deg) {
+            cropState.rotation += deg;
+            cropState.rotation = ((cropState.rotation % 360) + 360) % 360;
+            updateAngleDisplay();
+            drawCropImage();
+        }
+        
+        function toggleCropCornerMode() {
+            cropState.cornerMode = !cropState.cornerMode;
+            const toggle = document.getElementById('cropCornerToggle');
+            const checkbox = document.getElementById('cropCornerCheckbox');
+            if (cropState.cornerMode) {
+                toggle.classList.add('active');
+                checkbox.checked = true;
+            } else {
+                toggle.classList.remove('active');
+                checkbox.checked = false;
+            }
+            drawCropImage();
+        }
+        
+        function setCropAspectRatio(ratio) {
+            cropState.aspectRatio = ratio;
+            if (ratio && cropState.startPoint && cropState.endPoint && !cropState.cornerMode) {
+                const currentWidth = cropState.endPoint.x - cropState.startPoint.x;
+                let newWidth = currentWidth;
+                let newHeight = newWidth / ratio;
+                
+                if (newHeight > cropState.displayHeight) {
+                    newHeight = cropState.displayHeight;
+                    newWidth = newHeight * ratio;
+                }
+                if (newWidth > cropState.displayWidth) {
+                    newWidth = cropState.displayWidth;
+                    newHeight = newWidth / ratio;
+                }
+                
+                const centerX = (cropState.startPoint.x + cropState.endPoint.x) / 2;
+                const centerY = (cropState.startPoint.y + cropState.endPoint.y) / 2;
+                cropState.startPoint.x = Math.max(0, Math.min(cropState.displayWidth - newWidth, centerX - newWidth / 2));
+                cropState.startPoint.y = Math.max(0, Math.min(cropState.displayHeight - newHeight, centerY - newHeight / 2));
+                cropState.endPoint.x = cropState.startPoint.x + newWidth;
+                cropState.endPoint.y = cropState.startPoint.y + newHeight;
+                updateCorners();
+                drawCropImage();
+            }
+        }
+        
+        function drawCropImage() {
+            if (!cropState.ctx || !cropState.canvas) return;
+            const ctx = cropState.ctx;
+            const canvas = cropState.canvas;
+            
+            // Draw the image scaled to fit the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(cropState.rotation * Math.PI / 180);
+            ctx.drawImage(cropState.img, 0, 0, cropState.img.width, cropState.img.height,
+                          -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+            ctx.restore();
+            
+            // Draw a light overlay outside the crop rectangle (transparent inside)
+            ctx.fillStyle = 'rgba(0,0,0,0.3)'; // Light semi-transparent
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(cropState.startPoint.x, cropState.startPoint.y,
+                          cropState.endPoint.x - cropState.startPoint.x,
+                          cropState.endPoint.y - cropState.startPoint.y);
+            
+            // Draw crop rectangle border with glow effect
+            ctx.shadowBlur = 0; // reset
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 3;
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 4;
+            ctx.strokeRect(cropState.startPoint.x, cropState.startPoint.y,
+                           cropState.endPoint.x - cropState.startPoint.x,
+                           cropState.endPoint.y - cropState.startPoint.y);
+            ctx.shadowBlur = 0;
+            
+            if (cropState.cornerMode) {
+                // Draw dashed border for corner mode
+                ctx.strokeStyle = '#ff6b6b';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([8, 8]);
+                ctx.strokeRect(cropState.startPoint.x, cropState.startPoint.y,
+                               cropState.endPoint.x - cropState.startPoint.x,
+                               cropState.endPoint.y - cropState.startPoint.y);
+                ctx.setLineDash([]);
+                
+                const points = ['tl', 'tr', 'bl', 'br'];
+                points.forEach(p => {
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.beginPath();
+                    ctx.arc(cropState.corners[p].x, cropState.corners[p].y, 10, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.arc(cropState.corners[p].x, cropState.corners[p].y, 5, 0, 2 * Math.PI);
+                    ctx.fill();
                 });
             } else {
-                // User is signed out
-                showLoginForm();
+                // Draw resize handles (8 points)
+                const handles = [
+                    { x: cropState.startPoint.x, y: cropState.startPoint.y },
+                    { x: (cropState.startPoint.x + cropState.endPoint.x) / 2, y: cropState.startPoint.y },
+                    { x: cropState.endPoint.x, y: cropState.startPoint.y },
+                    { x: cropState.endPoint.x, y: (cropState.startPoint.y + cropState.endPoint.y) / 2 },
+                    { x: cropState.endPoint.x, y: cropState.endPoint.y },
+                    { x: (cropState.startPoint.x + cropState.endPoint.x) / 2, y: cropState.endPoint.y },
+                    { x: cropState.startPoint.x, y: cropState.endPoint.y },
+                    { x: cropState.startPoint.x, y: (cropState.startPoint.y + cropState.endPoint.y) / 2 }
+                ];
+                handles.forEach(h => {
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(h.x, h.y, 8, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = '#6366f1';
+                    ctx.beginPath();
+                    ctx.arc(h.x, h.y, 5, 0, 2 * Math.PI);
+                    ctx.fill();
+                });
             }
-        });
-
-        // ID Card Tool Functions (Same as before)
-        document.getElementById("file1").addEventListener("change", function(e){
-            if(e.target.files[0]){
-                const reader = new FileReader();
-                reader.onload = () => {
-                    document.getElementById("preview1").src = reader.result;
-                    document.getElementById("preview1").style.display = 'block';
-                };
-                reader.readAsDataURL(e.target.files[0]);
+        }
+        
+        function setupCropEvents() {
+            let mouseDown = false;
+            let dragStartPoint = null;
+            let startCorners = null;
+            
+            const getMousePos = (e) => {
+                const rect = cropState.canvas.getBoundingClientRect();
+                const scaleX = cropState.canvas.width / rect.width;
+                const scaleY = cropState.canvas.height / rect.height;
+                let clientX, clientY;
+                if (e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                else { clientX = e.clientX; clientY = e.clientY; }
+                return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+            };
+            
+            const getCornerAtPos = (x, y) => {
+                const corners = ['tl', 'tr', 'bl', 'br'];
+                for (let c of corners) {
+                    const dx = x - cropState.corners[c].x;
+                    const dy = y - cropState.corners[c].y;
+                    if (Math.sqrt(dx*dx + dy*dy) < 15) return c;
+                }
+                return null;
+            };
+            
+            const getHandleAtPos = (x, y) => {
+                const handles = [
+                    { pos: 'nw', x: cropState.startPoint.x, y: cropState.startPoint.y },
+                    { pos: 'n', x: (cropState.startPoint.x + cropState.endPoint.x) / 2, y: cropState.startPoint.y },
+                    { pos: 'ne', x: cropState.endPoint.x, y: cropState.startPoint.y },
+                    { pos: 'e', x: cropState.endPoint.x, y: (cropState.startPoint.y + cropState.endPoint.y) / 2 },
+                    { pos: 'se', x: cropState.endPoint.x, y: cropState.endPoint.y },
+                    { pos: 's', x: (cropState.startPoint.x + cropState.endPoint.x) / 2, y: cropState.endPoint.y },
+                    { pos: 'sw', x: cropState.startPoint.x, y: cropState.endPoint.y },
+                    { pos: 'w', x: cropState.startPoint.x, y: (cropState.startPoint.y + cropState.endPoint.y) / 2 }
+                ];
+                for (let h of handles) {
+                    const dx = x - h.x, dy = y - h.y;
+                    if (Math.sqrt(dx*dx + dy*dy) < 12) return h.pos;
+                }
+                return null;
+            };
+            
+            const onMouseDown = (e) => {
+                e.preventDefault();
+                const pos = getMousePos(e);
+                mouseDown = true;
+                
+                if (cropState.cornerMode) {
+                    const corner = getCornerAtPos(pos.x, pos.y);
+                    if (corner) {
+                        cropState.isResizing = true;
+                        cropState.resizeHandle = corner;
+                        dragStartPoint = { x: pos.x, y: pos.y };
+                        startCorners = { ...cropState.corners };
+                        return;
+                    }
+                    if (pos.x >= Math.min(cropState.corners.tl.x, cropState.corners.tr.x) && pos.x <= Math.max(cropState.corners.tr.x, cropState.corners.br.x) &&
+                        pos.y >= Math.min(cropState.corners.tl.y, cropState.corners.bl.y) && pos.y <= Math.max(cropState.corners.bl.y, cropState.corners.br.y)) {
+                        cropState.isDragging = true;
+                        cropState.dragStart = { x: pos.x - (cropState.corners.tl.x + cropState.corners.tr.x) / 2, y: pos.y - (cropState.corners.tl.y + cropState.corners.bl.y) / 2 };
+                        startCorners = { ...cropState.corners };
+                        return;
+                    }
+                } else {
+                    const handle = getHandleAtPos(pos.x, pos.y);
+                    if (handle) {
+                        cropState.isResizing = true;
+                        cropState.resizeHandle = handle;
+                        dragStartPoint = { x: pos.x, y: pos.y };
+                        return;
+                    }
+                    if (pos.x >= cropState.startPoint.x && pos.x <= cropState.endPoint.x && pos.y >= cropState.startPoint.y && pos.y <= cropState.endPoint.y) {
+                        cropState.isDragging = true;
+                        cropState.dragStart = { x: pos.x - cropState.startPoint.x, y: pos.y - cropState.startPoint.y };
+                        return;
+                    }
+                }
+            };
+            
+            const onMouseMove = (e) => {
+                if (!mouseDown) return;
+                e.preventDefault();
+                const pos = getMousePos(e);
+                
+                if (cropState.cornerMode && cropState.isResizing && cropState.resizeHandle) {
+                    let newX = Math.min(Math.max(0, pos.x), cropState.displayWidth);
+                    let newY = Math.min(Math.max(0, pos.y), cropState.displayHeight);
+                    cropState.corners[cropState.resizeHandle] = { x: newX, y: newY };
+                    if (cropState.resizeHandle === 'tl') { cropState.startPoint = { x: newX, y: newY }; cropState.endPoint = { x: cropState.corners.br.x, y: cropState.corners.br.y }; }
+                    if (cropState.resizeHandle === 'tr') { cropState.startPoint = { x: cropState.corners.tl.x, y: newY }; cropState.endPoint = { x: newX, y: cropState.corners.br.y }; }
+                    if (cropState.resizeHandle === 'bl') { cropState.startPoint = { x: newX, y: cropState.corners.tl.y }; cropState.endPoint = { x: cropState.corners.br.x, y: newY }; }
+                    if (cropState.resizeHandle === 'br') { cropState.startPoint = { x: cropState.corners.tl.x, y: cropState.corners.tl.y }; cropState.endPoint = { x: newX, y: newY }; }
+                    drawCropImage();
+                } else if (cropState.cornerMode && cropState.isDragging && startCorners) {
+                    const deltaX = pos.x - dragStartPoint.x;
+                    const deltaY = pos.y - dragStartPoint.y;
+                    const newCorners = {
+                        tl: { x: startCorners.tl.x + deltaX, y: startCorners.tl.y + deltaY },
+                        tr: { x: startCorners.tr.x + deltaX, y: startCorners.tr.y + deltaY },
+                        bl: { x: startCorners.bl.x + deltaX, y: startCorners.bl.y + deltaY },
+                        br: { x: startCorners.br.x + deltaX, y: startCorners.br.y + deltaY }
+                    };
+                    const minX = Math.min(newCorners.tl.x, newCorners.tr.x, newCorners.bl.x, newCorners.br.x);
+                    const minY = Math.min(newCorners.tl.y, newCorners.tr.y, newCorners.bl.y, newCorners.br.y);
+                    const maxX = Math.max(newCorners.tl.x, newCorners.tr.x, newCorners.bl.x, newCorners.br.x);
+                    const maxY = Math.max(newCorners.tl.y, newCorners.tr.y, newCorners.bl.y, newCorners.br.y);
+                    if (minX >= 0 && minY >= 0 && maxX <= cropState.displayWidth && maxY <= cropState.displayHeight) {
+                        cropState.corners = newCorners;
+                        cropState.startPoint = { x: minX, y: minY };
+                        cropState.endPoint = { x: maxX, y: maxY };
+                        drawCropImage();
+                    }
+                } else if (!cropState.cornerMode && cropState.isResizing && cropState.resizeHandle) {
+                    let newStart = { ...cropState.startPoint };
+                    let newEnd = { ...cropState.endPoint };
+                    switch(cropState.resizeHandle) {
+                        case 'nw': newStart.x = Math.min(cropState.endPoint.x - 10, Math.max(0, pos.x)); newStart.y = Math.min(cropState.endPoint.y - 10, Math.max(0, pos.y)); break;
+                        case 'n': newStart.y = Math.min(cropState.endPoint.y - 10, Math.max(0, pos.y)); break;
+                        case 'ne': newEnd.x = Math.max(cropState.startPoint.x + 10, Math.min(cropState.displayWidth, pos.x)); newStart.y = Math.min(cropState.endPoint.y - 10, Math.max(0, pos.y)); break;
+                        case 'e': newEnd.x = Math.max(cropState.startPoint.x + 10, Math.min(cropState.displayWidth, pos.x)); break;
+                        case 'se': newEnd.x = Math.max(cropState.startPoint.x + 10, Math.min(cropState.displayWidth, pos.x)); newEnd.y = Math.max(cropState.startPoint.y + 10, Math.min(cropState.displayHeight, pos.y)); break;
+                        case 's': newEnd.y = Math.max(cropState.startPoint.y + 10, Math.min(cropState.displayHeight, pos.y)); break;
+                        case 'sw': newStart.x = Math.min(cropState.endPoint.x - 10, Math.max(0, pos.x)); newEnd.y = Math.max(cropState.startPoint.y + 10, Math.min(cropState.displayHeight, pos.y)); break;
+                        case 'w': newStart.x = Math.min(cropState.endPoint.x - 10, Math.max(0, pos.x)); break;
+                    }
+                    if (cropState.aspectRatio) {
+                        const width = newEnd.x - newStart.x;
+                        const targetHeight = width / cropState.aspectRatio;
+                        if (targetHeight <= cropState.displayHeight) {
+                            newEnd.y = newStart.y + targetHeight;
+                        }
+                    }
+                    cropState.startPoint = newStart;
+                    cropState.endPoint = newEnd;
+                    updateCorners();
+                    drawCropImage();
+                } else if (!cropState.cornerMode && cropState.isDragging && cropState.dragStart) {
+                    let newX = pos.x - cropState.dragStart.x;
+                    let newY = pos.y - cropState.dragStart.y;
+                    const width = cropState.endPoint.x - cropState.startPoint.x;
+                    const height = cropState.endPoint.y - cropState.startPoint.y;
+                    newX = Math.max(0, Math.min(cropState.displayWidth - width, newX));
+                    newY = Math.max(0, Math.min(cropState.displayHeight - height, newY));
+                    cropState.startPoint.x = newX;
+                    cropState.startPoint.y = newY;
+                    cropState.endPoint.x = newX + width;
+                    cropState.endPoint.y = newY + height;
+                    updateCorners();
+                    drawCropImage();
+                }
+            };
+            
+            const onMouseUp = () => {
+                cropState.isDragging = false;
+                cropState.isResizing = false;
+                cropState.resizeHandle = null;
+                cropState.dragStart = null;
+                dragStartPoint = null;
+                startCorners = null;
+                mouseDown = false;
+            };
+            
+            cropState.canvas.addEventListener('mousedown', onMouseDown);
+            cropState.canvas.addEventListener('mousemove', onMouseMove);
+            cropState.canvas.addEventListener('mouseup', onMouseUp);
+            cropState.canvas.addEventListener('touchstart', onMouseDown);
+            cropState.canvas.addEventListener('touchmove', onMouseMove);
+            cropState.canvas.addEventListener('touchend', onMouseUp);
+        }
+        
+        function applyCrop() {
+            if (!cropState.img) return;
+            
+            // Convert display coordinates to original image coordinates
+            const scaleX = cropState.img.width / cropState.displayWidth;
+            const scaleY = cropState.img.height / cropState.displayHeight;
+            
+            let cropX, cropY, cropW, cropH;
+            if (cropState.cornerMode) {
+                const minX = Math.min(cropState.corners.tl.x, cropState.corners.tr.x, cropState.corners.bl.x, cropState.corners.br.x);
+                const minY = Math.min(cropState.corners.tl.y, cropState.corners.tr.y, cropState.corners.bl.y, cropState.corners.br.y);
+                const maxX = Math.max(cropState.corners.tl.x, cropState.corners.tr.x, cropState.corners.bl.x, cropState.corners.br.x);
+                const maxY = Math.max(cropState.corners.tl.y, cropState.corners.tr.y, cropState.corners.bl.y, cropState.corners.br.y);
+                cropX = minX * scaleX;
+                cropY = minY * scaleY;
+                cropW = (maxX - minX) * scaleX;
+                cropH = (maxY - minY) * scaleY;
+            } else {
+                cropX = cropState.startPoint.x * scaleX;
+                cropY = cropState.startPoint.y * scaleY;
+                cropW = (cropState.endPoint.x - cropState.startPoint.x) * scaleX;
+                cropH = (cropState.endPoint.y - cropState.startPoint.y) * scaleY;
             }
-        });
+            
+            const finalCanvas = document.createElement('canvas');
+            finalCanvas.width = cropW;
+            finalCanvas.height = cropH;
+            const finalCtx = finalCanvas.getContext('2d');
+            finalCtx.save();
+            finalCtx.translate(cropW / 2, cropH / 2);
+            finalCtx.rotate(cropState.rotation * Math.PI / 180);
+            finalCtx.drawImage(cropState.img, -cropX - cropW/2, -cropY - cropH/2, cropState.img.width, cropState.img.height);
+            finalCtx.restore();
+            
+            const croppedImg = new Image();
+            croppedImg.onload = () => {
+                if (cropState.side === 'front') {
+                    originalImg1 = croppedImg;
+                    updatePreview('front');
+                } else {
+                    originalImg2 = croppedImg;
+                    updatePreview('back');
+                }
+                updateRealTimePreview();
+                closeCropTool();
+                alert('Image cropped successfully! ✅');
+            };
+            croppedImg.src = finalCanvas.toDataURL();
+        }
+        
+        function closeCropTool() {
+            const overlay = document.getElementById('cropOverlay');
+            if (overlay) overlay.remove();
+            cropState.active = false;
+        }
 
-        document.getElementById("file2").addEventListener("change", function(e){
-            if(e.target.files[0]){
+        // File uploads
+        document.getElementById('file1').onchange = (e) => {
+            if (e.target.files[0]) {
                 const reader = new FileReader();
-                reader.onload = () => {
-                    document.getElementById("preview2").src = reader.result;
-                    document.getElementById("preview2").style.display = 'block';
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-
-        async function loadImage(file){
-            return new Promise(resolve=>{
-                const reader = new FileReader();
-                reader.onload = ()=>{
+                reader.onload = (ev) => {
                     const img = new Image();
-                    img.onload = ()=>resolve(img);
-                    img.src = reader.result;
+                    img.onload = () => { originalImg1 = img; updatePreview('front'); updateRealTimePreview(); };
+                    img.src = ev.target.result;
+                    document.getElementById('preview1').style.display = 'block';
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        };
+        document.getElementById('file2').onchange = (e) => {
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => { originalImg2 = img; updatePreview('back'); updateRealTimePreview(); };
+                    img.src = ev.target.result;
+                    document.getElementById('preview2').style.display = 'block';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        };
+
+        function downloadOutput() {
+            if (!canvas.width) { alert('Upload images first!'); return; }
+            const type = document.getElementById('downloadType').value;
+            const q = document.querySelector('input[name="quality"]:checked').value;
+            const quality = q === 'ultra' ? 1 : q === 'veryhigh' ? 0.98 : 0.95;
+            if (type === 'PDF') {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: [canvas.width, canvas.height] });
+                pdf.addImage(canvas.toDataURL('image/jpeg', quality), 'JPEG', 0, 0, canvas.width, canvas.height);
+                pdf.save('ID_Card.pdf');
+            } else {
+                const link = document.createElement('a');
+                link.download = `ID_Card.${type.toLowerCase()}`;
+                link.href = canvas.toDataURL(type === 'PNG' ? 'image/png' : 'image/jpeg', quality);
+                link.click();
+            }
+            alert('Downloaded! ✅');
+        }
+
+        function printCanvas() {
+            if (!canvas.width) { alert('Upload images first!'); return; }
+            const w = window.open('', '_blank');
+            w.document.write(`<html><body style="margin:0;padding:20px;text-align:center;"><img src="${canvas.toDataURL('image/png')}" style="max-width:100%;"></body></html>`);
+            w.print();
+        }
+
+        async function shareCanvas() {
+            if (!canvas.width) { alert('Upload images first!'); return; }
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], 'ID_Card.png', { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'ID Card' }); alert('Shared! ✅'); }
+                else alert('Share not supported');
             });
         }
 
-        async function drawCanvas(){
-            const file1 = document.getElementById("file1").files[0];
-            const file2 = document.getElementById("file2").files[0];
-            if(!file1 || !file2){
-                alert("Please select both files!");
-                return;
-            }
-
-            try {
-                img1 = await loadImage(file1);
-                img2 = await loadImage(file2);
-                
-                const paper = document.getElementById("paperSize").value;
-                switch(paper){
-                    case "A4": 
-                        canvas.width=794;
-                        canvas.height=1123;
-                        break;
-                    case "Letter": 
-                        canvas.width=816;
-                        canvas.height=1056;
-                        break;
-                    case "Legal": 
-                        canvas.width=816;
-                        canvas.height=1344;
-                        break;
-                }
-                
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.fillStyle="white";
-                ctx.fillRect(0,0,canvas.width,canvas.height);
-
-                const cardWidth = parseFloat(document.getElementById("widthMM").value)*3.78;
-                const cardHeight = parseFloat(document.getElementById("heightMM").value)*3.78;
-                const gap = 90;
-                const x = (canvas.width - cardWidth)/2;
-                const y1 = (canvas.height - (cardHeight*2 + gap))/2;
-                const y2 = y1 + cardHeight + gap;
-
-                ctx.drawImage(img1,x,y1,cardWidth,cardHeight);
-                ctx.drawImage(img2,x,y2,cardWidth,cardHeight);
-                
-                alert("Preview created successfully! ✅");
-                
-            } catch (error) {
-                alert("Error creating preview!");
-                console.error(error);
-            }
-        }
-
-        function downloadOutput(){
-            if (!canvas.width) {
-                alert("Please create preview first!");
-                return;
-            }
-
-            const type = document.getElementById("downloadType").value;
-            try {
-                if(type==="PDF"){
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF("p","pt",[canvas.width, canvas.height]);
-                    pdf.addImage(canvas.toDataURL("image/jpeg"),"JPEG",0,0,canvas.width,canvas.height);
-                    pdf.save("ID_Arranged.pdf");
-                } else {
-                    const link = document.createElement("a");
-                    link.download = `ID_Arranged.${type.toLowerCase()}`;
-                    link.href = canvas.toDataURL(`image/${type.toLowerCase()}`);
-                    link.click();
-                }
-                alert("Download started! ✅");
-            } catch (error) {
-                alert("Download error!");
-            }
-        }
-
-        function printCanvas(){
-            if (!canvas.width) {
-                alert("Please create preview first!");
-                return;
-            }
-
-            try {
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write(`
-                    <html>
-                        <head><title>Print ID Card</title></head>
-                        <body style="text-align: center; margin: 0; padding: 20px;">
-                            <img src="${canvas.toDataURL('image/png')}" style="max-width: 100%; height: auto;">
-                        </body>
-                    </html>
-                `);
-                printWindow.document.close();
-                printWindow.print();
-            } catch (error) {
-                alert("Print error!");
-            }
-        }
-
-        async function shareCanvas(){
-            if (!canvas.width) {
-                alert("Please create preview first!");
-                return;
-            }
-
-            try {
-                canvas.toBlob(async function(blob){
-                    const filesArray = [new File([blob], "ID_A4.png", {type: "image/png"})];
-                    if(navigator.canShare && navigator.canShare({ files: filesArray })){
-                        try{
-                            await navigator.share({
-                                files: filesArray,
-                                title: 'ID Card A4',
-                                text: 'Here is your arranged ID card!'
-                            });
-                            alert("Shared successfully ✅");
-                        } catch(err){
-                            alert("Share failed: " + err);
-                        }
-                    } else {
-                        alert("Your device/browser does not support direct file sharing!");
-                    }
-                });
-            } catch (error) {
-                alert("Share error!");
-            }
-        }
-
-        // Firebase Functions
         async function saveToFirestore() {
             const user = auth.currentUser;
-            if (!user) {
-                alert("Please login first!");
-                return;
-            }
-
-            if (!canvas.width) {
-                alert("Please create preview first!");
-                return;
-            }
-
-            const canvasDataURL = canvas.toDataURL('image/png');
-            const cardId = 'card_' + Date.now();
-            
-            try {
-                await db.collection('idcards').doc(cardId).set({
-                    canvasImage: canvasDataURL,
-                    image1: document.getElementById("preview1").src,
-                    image2: document.getElementById("preview2").src,
-                    width: document.getElementById("widthMM").value,
-                    height: document.getElementById("heightMM").value,
-                    paperSize: document.getElementById("paperSize").value,
-                    userId: user.uid,
-                    userName: user.displayName || 'User',
-                    userEmail: user.email,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                alert(`Saved successfully! ✅\nYour ID: ${cardId}`);
-                
-                const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
-                alert(`Shareable Link:\n${shareableLink}`);
-                
-            } catch (error) {
-                console.error("Error saving:", error);
-                alert("Save error: " + error.message);
-            }
+            if (!user) { alert('Login first!'); return; }
+            if (!canvas.width) { alert('Upload images first!'); return; }
+            const q = document.querySelector('input[name="quality"]:checked').value;
+            const quality = q === 'ultra' ? 1 : 0.95;
+            const id = 'card_' + Date.now();
+            await db.collection('idcards').doc(id).set({
+                canvasImage: canvas.toDataURL('image/png', quality), width: document.getElementById('widthMM').value,
+                height: document.getElementById('heightMM').value, paperSize: document.getElementById('paperSize').value,
+                quality: q, frontAdjustments, backAdjustments, userId: user.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert(`Saved! ID: ${id}`);
+            navigator.clipboard.writeText(`${location.origin}${location.pathname}?id=${id}`);
+            alert('Share link copied!');
         }
 
         async function viewMyCards() {
             const user = auth.currentUser;
-            if (!user) {
-                alert("Please login first!");
-                return;
-            }
+            if (!user) { alert('Login first!'); return; }
+            const snap = await db.collection('idcards').get();
+            const list = document.getElementById('savedCardsList');
+            const section = document.getElementById('savedCardsSection');
+            list.innerHTML = ''; let found = 0;
+            snap.forEach(doc => { const data = doc.data(); if (data.userId === user.uid) { found++; list.innerHTML += `<div style="border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:12px; margin-bottom:10px;"><p><strong>ID:</strong> ${doc.id}</p><p><strong>Date:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p><div style="display:flex; gap:8px; margin-top:10px;"><button class="side-btn" style="flex:1;" onclick="loadCard('${doc.id}')">Load</button><button class="side-btn" style="flex:1; background:#fee2e2;" onclick="deleteCard('${doc.id}')">Delete</button></div></div>`; } });
+            if (found === 0) list.innerHTML = '<p style="color:var(--gray-500);">No saved cards yet</p>';
+            section.style.display = 'block';
+        }
 
-            try {
-                const snapshot = await db.collection('idcards').get();
-                
-                const cardsList = document.getElementById('savedCardsList');
-                cardsList.innerHTML = '<h3>My Saved Cards:</h3>';
-                
-                if (snapshot.empty) {
-                    cardsList.innerHTML += '<p>No cards found in database.</p>';
-                    return;
-                }
-                
-                let foundCards = 0;
-                let totalCards = 0;
-                
-                snapshot.forEach(doc => {
-                    totalCards++;
-                    const data = doc.data();
-                    
-                    if (data.userId === user.uid) {
-                        foundCards++;
-                        const cardElement = document.createElement('div');
-                        cardElement.className = 'card-item';
-                        
-                        cardElement.innerHTML = `
-                            <p><strong>ID:</strong> ${doc.id}</p>
-                            <p><strong>Saved:</strong> ${data.createdAt?.toDate().toLocaleString() || 'Unknown'}</p>
-                            <p><strong>Size:</strong> ${data.width}mm x ${data.height}mm</p>
-                            <div class="card-actions">
-                                <button class="btn" onclick="loadCard('${doc.id}')">Load This Card</button>
-                                <button class="btn" onclick="shareCard('${doc.id}')">Share</button>
-                                <button class="btn" onclick="deleteCard('${doc.id}')" style="background: #f44336; color: white;">Delete</button>
-                            </div>
-                        `;
-                        
-                        cardsList.appendChild(cardElement);
-                    }
-                });
-                
-                if (foundCards === 0) {
-                    cardsList.innerHTML += '<p>No saved cards found for your account.</p>';
-                }
-                
-            } catch (error) {
-                console.error("Error loading cards:", error);
-                alert("Error loading cards: " + error.message);
+        async function loadCard(id) {
+            const doc = await db.collection('idcards').doc(id).get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('widthMM').value = data.width;
+                document.getElementById('heightMM').value = data.height;
+                document.getElementById('paperSize').value = data.paperSize;
+                if (data.frontAdjustments) frontAdjustments = data.frontAdjustments;
+                if (data.backAdjustments) backAdjustments = data.backAdjustments;
+                if (data.quality) document.querySelector(`input[name="quality"][value="${data.quality}"]`).checked = true;
+                if (originalImg1) updatePreview('front');
+                if (originalImg2) updatePreview('back');
+                updateControlValues();
+                const img = new Image();
+                img.onload = () => {
+                    const scale = getScale();
+                    let bw, bh;
+                    if (data.paperSize === 'A4') { bw = 794; bh = 1123; }
+                    else if (data.paperSize === 'Letter') { bw = 816; bh = 1056; }
+                    else { bw = 816; bh = 1344; }
+                    canvas.width = bw * scale; canvas.height = bh * scale;
+                    canvas.style.width = `${bw}px`; canvas.style.height = `${bh}px`;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    alert('Card loaded!');
+                };
+                img.src = data.canvasImage;
             }
         }
 
-        async function loadCard(cardId) {
-            try {
-                const doc = await db.collection('idcards').doc(cardId).get();
-                
-                if (doc.exists) {
-                    const data = doc.data();
-                    
-                    const paper = data.paperSize || "A4";
-                    switch(paper){
-                        case "A4": 
-                            canvas.width = 794;
-                            canvas.height = 1123;
-                            break;
-                        case "Letter": 
-                            canvas.width = 816;
-                            canvas.height = 1056;
-                            break;
-                        case "Legal": 
-                            canvas.width = 816;
-                            canvas.height = 1344;
-                            break;
-                    }
-                    
-                    const img = new Image();
-                    img.onload = function() {
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        alert("Card loaded successfully! ✅");
-                    };
-                    
-                    img.onerror = function() {
-                        alert("Error loading image!");
-                    };
-                    
-                    img.src = data.canvasImage;
-                    
-                    if(data.width) document.getElementById("widthMM").value = data.width;
-                    if(data.height) document.getElementById("heightMM").value = data.height;
-                    if(data.paperSize) document.getElementById("paperSize").value = data.paperSize;
-                    
-                } else {
-                    alert("Card not found!");
-                }
-            } catch (error) {
-                console.error("Error loading card:", error);
-                alert("Load error: " + error.message);
-            }
-        }
+        async function deleteCard(id) { if (confirm('Delete this card?')) { await db.collection('idcards').doc(id).delete(); alert('Deleted!'); viewMyCards(); } }
 
-        function shareCard(cardId) {
-            const shareableLink = `${window.location.origin}${window.location.pathname}?id=${cardId}`;
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(shareableLink);
-                alert("Link copied! ✅\n\n" + shareableLink);
-            } else {
-                alert("Shareable Link:\n" + shareableLink);
-            }
-        }
-
-        async function deleteCard(cardId) {
-            if (confirm("Are you sure you want to delete this card?")) {
-                try {
-                    await db.collection('idcards').doc(cardId).delete();
-                    alert("Card deleted successfully! ✅");
-                    viewMyCards();
-                } catch (error) {
-                    console.error("Error deleting:", error);
-                    alert("Delete error: " + error.message);
-                }
-            }
-        }
-
-        // Load card from URL when page loads
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const cardId = urlParams.get('id');
-            
-            if (cardId) {
-                setTimeout(() => {
-                    loadCard(cardId);
-                }, 2000);
-            }
-        };
+        // Auth functions
+        function togglePassword(id) { const inp = document.getElementById(id); inp.type = inp.type === 'password' ? 'text' : 'password'; }
+        function toggleSettings() { document.getElementById('settingsDropdown').classList.toggle('show'); }
+        document.addEventListener('click', (e) => { if (!e.target.closest('.user-section')) document.getElementById('settingsDropdown').classList.remove('show'); if (!e.target.closest('.expanded-panel') && !e.target.closest('.control-card')) closeExpandedPanel(); });
+        function showMainToolPage() { document.getElementById('settingsPage').style.display = 'none'; document.getElementById('mainToolPage').style.display = 'block'; }
+        function showSettingsPage() { document.getElementById('mainToolPage').style.display = 'none'; document.getElementById('settingsPage').style.display = 'block'; const u = auth.currentUser; if (u) { document.getElementById('profileName').value = u.displayName || ''; document.getElementById('profileEmail').value = u.email; } }
+        function showChangePassword() { showSettingsPage(); }
+        function showRegister() { document.getElementById('loginPage').style.display = 'none'; document.getElementById('registerPage').style.display = 'block'; }
+        function showLogin() { document.getElementById('registerPage').style.display = 'none'; document.getElementById('loginPage').style.display = 'block'; }
+        function showForgotPassword() { document.getElementById('forgotPasswordModal').classList.add('show'); }
+        function closeForgotPassword() { document.getElementById('forgotPasswordModal').classList.remove('show'); }
+        function showMainApp() { document.getElementById('loginPage').style.display = 'none'; document.getElementById('registerPage').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; showMainToolPage(); }
+        function showLoginForm() { document.getElementById('mainApp').style.display = 'none'; document.getElementById('loginPage').style.display = 'block'; }
+        function register() { const name = document.getElementById('registerName').value; const email = document.getElementById('registerEmail').value; const pass = document.getElementById('registerPassword').value; auth.createUserWithEmailAndPassword(email, pass).then(cred => db.collection('users').doc(cred.user.uid).set({ name, email })).then(() => { alert('Registered!'); showLogin(); }).catch(e => alert(e.message)); }
+        function login() { const email = document.getElementById('loginEmail').value; const pass = document.getElementById('loginPassword').value; auth.signInWithEmailAndPassword(email, pass).then(() => showMainApp()).catch(e => alert(e.message)); }
+        function logout() { auth.signOut().then(() => showLoginForm()); }
+        function sendPasswordResetEmail() { const email = document.getElementById('resetEmail').value; auth.sendPasswordResetEmail(email).then(() => { alert('Reset email sent!'); closeForgotPassword(); }).catch(e => alert(e.message)); }
+        function changePassword() { const user = auth.currentUser; const curr = document.getElementById('currentPassword').value; const newP = document.getElementById('newPassword').value; const conf = document.getElementById('confirmNewPassword').value; if (newP !== conf) { alert('Passwords do not match'); return; } const cred = firebase.auth.EmailAuthProvider.credential(user.email, curr); user.reauthenticateWithCredential(cred).then(() => user.updatePassword(newP)).then(() => alert('Password changed!')).catch(e => alert(e.message)); }
+        function updateProfile() { const user = auth.currentUser; const name = document.getElementById('profileName').value; user.updateProfile({ displayName: name }).then(() => db.collection('users').doc(user.uid).update({ name })).then(() => { alert('Profile updated!'); document.getElementById('userName').textContent = name; document.getElementById('userAvatar').textContent = name.charAt(0); }).catch(e => alert(e.message)); }
+        auth.onAuthStateChanged(user => { if (user) { db.collection('users').doc(user.uid).get().then(doc => { if (doc.exists) { document.getElementById('userName').textContent = doc.data().name; document.getElementById('userAvatar').textContent = doc.data().name.charAt(0); } showMainApp(); }); } else showLoginForm(); });
+        function updateQualityBadge() { const q = document.querySelector('input[name="quality"]:checked').value; const badge = document.getElementById('qualityBadge'); badge.textContent = q === 'high' ? '✨ High' : q === 'veryhigh' ? '🔥 Very High' : '⚡ Ultra'; updateRealTimePreview(); }
+        document.querySelectorAll('input[name="quality"]').forEach(r => r.addEventListener('change', updateQualityBadge));
+        document.getElementById('widthMM').addEventListener('input', updateRealTimePreview);
+        document.getElementById('heightMM').addEventListener('input', updateRealTimePreview);
+        document.getElementById('paperSize').addEventListener('change', updateRealTimePreview);
+        generateControlGrid(); updateQualityBadge(); setMode('idcard');
+        window.onload = () => { const id = new URLSearchParams(location.search).get('id'); if (id) setTimeout(() => loadCard(id), 1000); };
     </script>
 </body>
 </html>
